@@ -22,21 +22,24 @@ res.json({
 else{
     
         bcrypt.compare(req.body.password, userResult[0].password, function(err, result) {
-            if (err) res.json({
+            if (!result) res.json({
                 statusCode:401,
                 error:"Password is incorrect"
             })
-            var token=jwt.sign({
-                data: {
-                    username:userResult[0].username,
-                    role_id:userResult[0].role_id
-                }
-              }, 'secret');
-res.json({
-    token:token,
-    username:userResult[0].username,
-    role_id:userResult[0].role_id
-})
+            else{
+
+                var token=jwt.sign({
+                    data: {
+                        username:userResult[0].username,
+                        role_id:userResult[0].role_id
+                    }
+                  }, 'secret');
+    res.json({
+        token:token,
+        username:userResult[0].username,
+        role_id:userResult[0].role_id
+    })
+            }
             
         })
 

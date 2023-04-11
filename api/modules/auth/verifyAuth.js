@@ -5,7 +5,10 @@ const bcrypt = require('bcryptjs')
 var jwt = require('jsonwebtoken');
 const verifyAuth = (req, res, next) => {
     const token = req.headers["authorization"];
-    jwt.verify(token.substring(7, token.length), 'secret', function (err, decoded) {
+    if(token)
+   {
+
+   jwt.verify(token.substring(7, token.length), 'secret', function (err, decoded) {
         if (decoded !== undefined) {
             database.connect(() => {
                 
@@ -14,6 +17,7 @@ const verifyAuth = (req, res, next) => {
                         req.body.result = {
                             role_id: decoded.data.role_id
                         }
+                        
                         next()
                    
         })
@@ -28,6 +32,13 @@ const verifyAuth = (req, res, next) => {
             })
         }
     })
+}
+else {
+    res.json({
+        statusCode:401,
+        error:"Token is not present"
+    })
+}
 }
 
 module.exports = verifyAuth

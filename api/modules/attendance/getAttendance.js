@@ -1,8 +1,5 @@
 
 const database = require("../../../config/database");
-const mysql = require("mysql")
-const bcrypt = require('bcryptjs')
-var jwt = require('jsonwebtoken');
 const getAttendance = (req, res, next) => {
     const role_id = req.body.result.role_id
     database.query("Select * from roles where id=" + role_id, (err, result) => {

@@ -1,7 +1,6 @@
-
 const express = require("express");
 const app = express();
-
+const database = require("../config/database"); 
 var cors = require("cors");
 const path = require("path")
 const router=express.Router()
@@ -12,6 +11,10 @@ const router=express.Router()
 //    console.log(err);
 //    next(err);
 //  });
+
+
+    
+
 
 
  app.use(
@@ -54,6 +57,32 @@ const getApprovalsByEmployeeId=require('../api/modules/timing/getApprovalsByEmpl
 const getApprovalsByEmployeeName=require('../api/modules/timing/getApprovalsByEmployeeName')
 const getApprovalsByDesignation=require('../api/modules/timing/getApprovalsByDesignation')
 const getTotalApprovals=require('../api/modules/timing/getTotalApprovals')
+const getEmployees=require('../api/modules/employees/getEmployees')
+const addLoan=require('../api/modules/loan/addLoan')
+const getLoans=require('../api/modules/loan/getLoans')
+const getLoansByEmployeeId=require('../api/modules/loan/getLoansByEmployeeId')
+const getLoansByEmployeeName=require('../api/modules/loan/getLoansByEmployeeName')
+const getLoansByFloorName=require('../api/modules/loan/getLoansByFloorName')
+const getTotalLoansGranted=require('../api/modules/loan/getTotalLoansGranted')
+const getTotalEmployeesTakenLoan=require('../api/modules/loan/getTotalEmployeesTakenLoan')
+const getTotalPendingEmis=require('../api/modules/loan/getTotalPendingEmis')
+const getAdvance=require('../api/modules/advance/getAdvance')
+const getAdvanceByEmployeeid=require('../api/modules/advance/getAdvanceByEmployeeid')
+const getAdvanceByEmployeeName=require('../api/modules/advance/getAdvanceByEmployeeName')
+const getAdvanceByFloor=require('../api/modules/advance/getAdvanceByFloor')
+const addAdvance=require('../api/modules/advance/addAdvance')
+const approveAdvance=require('../api/modules/advance/approveAdvance')
+const approveLoan=require('../api/modules/loan/approveLoan')
+const getFines=require('../api/modules/fines/getFines')
+const getFinesByEmployeeId=require('../api/modules/fines/getFinesByEmployeeId')
+const getFinesByEmployeeName=require('../api/modules/fines/getFinesByEmployeeName')
+const getFinesByDate=require('../api/modules/fines/getFinesByDate')
+const getFinesByFloor=require('../api/modules/fines/getFinesByFloor')
+const addFine=require('../api/modules/fines/addFine')
+const editFine=require('../api/modules/fines/editFine')
+const deleteFine=require('../api/modules/fines/deleteFine')
+const getTotalFines=require('../api/modules/fines/getTotalFines')
+const getTotalFinedEmployees=require('../api/modules/fines/getTotalFinedEmployees')
 
 
 
@@ -185,11 +214,122 @@ router.get("/api/getTotalApprovals",
  verifyAuth,getTotalApprovals
    
 )
+router.get("/api/getEmployees",
+ verifyAuth,getEmployees
+   
+)
+router.get("/api/getLoans",
+ verifyAuth,getLoans
+   
+)
+router.get("/api/getLoansByEmployeeId",
+ verifyAuth,getLoansByEmployeeId
+   
+)
+router.get("/api/getLoansByEmployeeName",
+ verifyAuth,getLoansByEmployeeName
+   
+)
+router.get("/api/getLoansByFloorName",
+ verifyAuth,getLoansByFloorName
+   
+)
+router.get("/api/getTotalLoansGranted",
+ verifyAuth,getTotalLoansGranted
+   
+)
+router.get("/api/getTotalEmployeesTakenLoan",
+ verifyAuth,getTotalEmployeesTakenLoan
+   
+)
+router.get("/api/getTotalPendingEmis",
+ verifyAuth,getTotalPendingEmis
+   
+)
+router.get("/api/getAdvance",
+ verifyAuth,getAdvance
+   
+)
+router.get("/api/getAdvanceByEmployeeid",
+ verifyAuth,getAdvanceByEmployeeid
+   
+)
+router.get("/api/getAdvance",
+ verifyAuth,getAdvance
+   
+)
+router.get("/api/getAdvanceByEmployeeName",
+ verifyAuth,getAdvanceByEmployeeName
+   
+)
+router.get("/api/getAdvanceByFloor",
+ verifyAuth,getAdvanceByFloor
+   
+)
+router.get("/api/getFines",
+ verifyAuth,getFines
+   
+)
+router.get("/api/getFinesByDate",
+ verifyAuth,getFinesByDate
+   
+)
+router.get("/api/getFinesByEmployeeId",
+ verifyAuth,getFinesByEmployeeId
+   
+)
+router.get("/api/getFinesByEmployeeName",
+ verifyAuth,getFinesByEmployeeName
+   
+)
+router.get("/api/getFinesByFloor",
+ verifyAuth,getFinesByFloor
+   
+)
+router.get("/api/getTotalFines",
+ verifyAuth,getTotalFines
+   
+)
+router.get("/api/getTotalFinedEmployees",
+ verifyAuth,getTotalFinedEmployees
+   
+)
+router.post("/api/addLoan",
+[verifyAuth, upload.single('download')],verifyAuth,addLoan
+   
+)
+router.post("/api/addAdvance",
+[verifyAuth, upload.single('download')],verifyAuth,addAdvance
+   
+)
+router.post("/api/addFine",
+verifyAuth,addFine
+   
+)
+router.delete("/api/deleteFine/:id",
+verifyAuth,deleteFine
+   
+)
 router.put("/api/updateTimingCorrection/:id",
  [verifyAuth, upload.single('download')],verifyAuth,updateTimingCorrection
    
 )
-
+router.patch("/api/approveAdvance/:id",
+ verifyAuth,approveAdvance
+   
+)
+router.patch("/api/editFine/:id",
+ verifyAuth,editFine
+   
+)
+router.patch("/api/approveAdvance/:id",
+ verifyAuth,approveAdvance
+   
+)
+router.patch("/api/approveLoan/:id",
+ verifyAuth,approveLoan
+   
+)
 
 app.use(errorHandlerMiddleware)
 app.use(notFound)

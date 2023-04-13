@@ -6,7 +6,7 @@ const approveAdvance = (req, res, next) => {
         let allowed_roles = ['Admin','Super Admin']
         if (allowed_roles.includes(result[0].role_name)) {
             
-            database.query("update advance set status = 'Approved' where id="+req.params.id , (err, advanceData, fields) => {
+            database.query("update advance set status = 'Approved' and approval_id="+role_id+" where id="+req.params.id , (err, advanceData, fields) => {
                 res.send(advanceData) 
                     
             })

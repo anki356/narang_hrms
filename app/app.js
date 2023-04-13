@@ -83,7 +83,14 @@ const editFine=require('../api/modules/fines/editFine')
 const deleteFine=require('../api/modules/fines/deleteFine')
 const getTotalFines=require('../api/modules/fines/getTotalFines')
 const getTotalFinedEmployees=require('../api/modules/fines/getTotalFinedEmployees')
-
+const addLeave=require('../api/modules/leaves/addLeave')
+const getLeaves=require('../api/modules/leaves/getLeaves')
+const getLeavesByEmployeeId=require('../api/modules/leaves/getLeavesByEmployeeId')
+const getLeavesByDesignation=require('../api/modules/leaves/getLeavesByDesignation')
+const getLeavesByEmployeeName=require('../api/modules/leaves/getLeavesByEmployeeName')
+const getTotalEmployeesOnLeave=require('../api/modules/leaves/getTotalEmployeesOnLeave')
+const getLeavesByStatus=require('../api/modules/leaves/getLeavesByStatus')
+ 
 
 
 const storage = multer.diskStorage({
@@ -132,6 +139,10 @@ router.get("/api/getTotalExpenseADay",
 )
 router.get("/api/getExpenses",
  verifyAuth,getExpenses
+   
+)
+router.get("/api/getLeaves",
+ verifyAuth,getLeaves
    
 )
 router.get("/api/getExpensesByEmployeeId",
@@ -222,6 +233,10 @@ router.get("/api/getLoans",
  verifyAuth,getLoans
    
 )
+router.get("/api/getLeavesByDesignation",
+ verifyAuth,getLeavesByDesignation
+   
+)
 router.get("/api/getLoansByEmployeeId",
  verifyAuth,getLoansByEmployeeId
    
@@ -242,6 +257,10 @@ router.get("/api/getTotalEmployeesTakenLoan",
  verifyAuth,getTotalEmployeesTakenLoan
    
 )
+router.get("/api/getTotalEmployeesOnLeave",
+ verifyAuth,getTotalEmployeesOnLeave
+   
+)
 router.get("/api/getTotalPendingEmis",
  verifyAuth,getTotalPendingEmis
    
@@ -256,6 +275,10 @@ router.get("/api/getAdvanceByEmployeeid",
 )
 router.get("/api/getAdvance",
  verifyAuth,getAdvance
+   
+)
+router.get("/api/getLeavesByEmployeeId",
+ verifyAuth,getLeavesByEmployeeId
    
 )
 router.get("/api/getAdvanceByEmployeeName",
@@ -294,6 +317,14 @@ router.get("/api/getTotalFinedEmployees",
  verifyAuth,getTotalFinedEmployees
    
 )
+router.get("/api/getLeavesByEmployeeName",
+ verifyAuth,getLeavesByEmployeeName
+   
+)
+router.get("/api/getLeavesByStatus",
+ verifyAuth,getLeavesByStatus
+   
+)
 router.post("/api/addLoan",
 [verifyAuth, upload.single('download')],verifyAuth,addLoan
    
@@ -312,6 +343,10 @@ verifyAuth,deleteFine
 )
 router.put("/api/updateTimingCorrection/:id",
  [verifyAuth, upload.single('download')],verifyAuth,updateTimingCorrection
+   
+)
+router.post("/api/addLeave",
+ [verifyAuth, upload.single('download')],verifyAuth,addLeave
    
 )
 router.patch("/api/approveAdvance/:id",

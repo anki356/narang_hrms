@@ -41,7 +41,7 @@ const getExpensesByDesignation=require('../api/modules/expense/getExpensesByDesi
 const getTotalEmployees=require('../api/modules/expense/getTotalEmployees')
 const addExpenses=require('../api/modules/expense/addExpenses')
 const addExpenseSubCategory=require('../api/modules/expense/addExpenseSubCategory')
-const getExpesesByFloorId=require('../api/modules/expense/getExpesesByFloorId')
+const getExpesesByFloor=require('../api/modules/expense/getExpesesByFloor')
 const getTimings=require('../api/modules/timing/getTimings')
 const getTotalSessions=require('../api/modules/timing/getTotalSessions')
 const addTiming=require('../api/modules/timing/addTiming')
@@ -94,6 +94,21 @@ const updateExpenseStatus=require('../api/modules/expense/updateExpenseStatus')
 const updateFineApproval=require('../api/modules/fines/updateFineApproval')
 const updateLeaveStatus=require('../api/modules/leaves/updateLeaveStatus')
 const updateTimingStatus=require('../api/modules/timing/updateTimingStatus')
+const addTransfer=require('../api/modules/transfer/addTransfer')
+const getTransfer=require('../api/modules/transfer/getTransfer')
+const getTransferByEmployeeId=require('../api/modules/transfer/getTransferByEmployeeId')
+const getTransferByEmployeeName=require('../api/modules/transfer/getTransferByEmployeeName')
+const getTransferByDesignation=require('../api/modules/transfer/getTransferByDesignation')
+const getTransferByFloor=require('../api/modules/transfer/getTransferByFloor')
+const addTransferWithStoreId=require('../api/modules/transfer/addTransferWithStoreId')
+const getTransferByStore=require('../api/modules/transfer/getTransferByStore')
+const getTimingByStore=require('../api/modules/timing/getTimingByStore')
+const getLoansByStoreName=require('../api/modules/loan/getLoansByStoreName')
+const getLeavesByFloor=require('../api/modules/leaves/getLeavesByFloor')
+const getLeavesByStore=require('../api/modules/leaves/getLeavesByStore')
+const getFinesByStore=require('../api/modules/fines/getFinesByStore')
+const getExpensesByStore=require('../api/modules/expense/getExpensesByStore')
+const getAttendanceByStore=require('../api/modules/attendance/getAttendanceByStore')
  
 
 
@@ -153,6 +168,22 @@ router.get("/api/getExpensesByEmployeeId",
  verifyAuth,getExpensesByEmployeeId
    
 )
+router.get("/api/getExpensesByStore",
+ verifyAuth,getExpensesByStore
+   
+)
+router.get("/api/getTimingByStore",
+ verifyAuth,getTimingByStore
+   
+)
+router.get("/api/getAttendanceByStore",
+ verifyAuth,getAttendanceByStore
+   
+)
+router.get("/api/getLoansByStoreName",
+ verifyAuth,getLoansByStoreName
+   
+)
 router.get("/api/getExpensesByDesignation",
  verifyAuth,getExpensesByDesignation
    
@@ -169,8 +200,8 @@ router.post("/api/addExpenseSubCategory",
  verifyAuth,addExpenseSubCategory
    
 )
-router.get("/api/getExpesesByFloorId",
- verifyAuth,getExpesesByFloorId
+router.get("/api/getExpesesByFloor",
+ verifyAuth,getExpesesByFloor
    
 )
 router.patch("/api/updateExpenseStatus/:id",
@@ -233,8 +264,20 @@ router.get("/api/getTotalApprovals",
  verifyAuth,getTotalApprovals
    
 )
+router.get("/api/getTransferByEmployeeName",
+ verifyAuth,getTransferByEmployeeName
+   
+)
+router.get("/api/getTransferByFloor",
+ verifyAuth,getTransferByFloor
+   
+)
 router.get("/api/getEmployees",
  verifyAuth,getEmployees
+   
+)
+router.get("/api/getTransferByDesignation",
+ verifyAuth,getTransferByDesignation
    
 )
 router.get("/api/getLoans",
@@ -243,6 +286,10 @@ router.get("/api/getLoans",
 )
 router.get("/api/getLeavesByDesignation",
  verifyAuth,getLeavesByDesignation
+   
+)
+router.get("/api/getLeavesByStore",
+ verifyAuth,getLeavesByStore
    
 )
 router.get("/api/getLoansByEmployeeId",
@@ -293,6 +340,10 @@ router.get("/api/getAdvanceByEmployeeName",
  verifyAuth,getAdvanceByEmployeeName
    
 )
+router.get("/api/getFinesByStore",
+ verifyAuth,getFinesByStore
+   
+)
 router.get("/api/getAdvanceByFloor",
  verifyAuth,getAdvanceByFloor
    
@@ -337,6 +388,22 @@ router.get("/api/getLeavesByStatus",
  verifyAuth,getLeavesByStatus
    
 )
+router.get("/api/getLeavesByFloor",
+ verifyAuth,getLeavesByFloor
+   
+)
+router.get("/api/getTransfer",
+ verifyAuth,getTransfer
+   
+)
+router.get("/api/getTransferByStore",
+ verifyAuth,getTransferByStore
+   
+)
+router.get("/api/getTransferByEmployeeId",
+ verifyAuth,getTransferByEmployeeId
+   
+)
 router.patch("/api/updateLeaveStatus",
  verifyAuth,updateLeaveStatus
    
@@ -355,6 +422,14 @@ verifyAuth,addFine
 )
 router.delete("/api/deleteFine/:id",
 verifyAuth,deleteFine
+   
+)
+router.post("/api/addTransfer",
+verifyAuth,addTransfer
+   
+)
+router.post("/api/addTransferWithStoreId",
+verifyAuth,addTransferWithStoreId
    
 )
 router.put("/api/updateTimingCorrection/:id",

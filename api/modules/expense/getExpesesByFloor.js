@@ -1,6 +1,6 @@
 const database = require("../../../config/database");
 const mysql = require("mysql")
-const getExpesesByFloorId = (req, res, next) => {
+const getExpesesByFloor = (req, res, next) => {
     const role_id = req.body.result.role_id
     database.query("Select * from roles where id=" + role_id, (err, result) => {
         if (err) console.log(err)
@@ -17,4 +17,4 @@ const getExpesesByFloorId = (req, res, next) => {
 
 }
 
-module.exports=getExpesesByFloorId
+module.exports=getExpesesByFloor

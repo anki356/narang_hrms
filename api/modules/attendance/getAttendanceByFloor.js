@@ -5,21 +5,15 @@ const getAttendanceByFloor=(req,res,next)=>{
     database.query("Select * from roles where id=" + role_id, (err, result) => {
         let allowed_roles = ['Admin', 'Super Admin', 'HR Head', 'HR Assistant']
         if (allowed_roles.includes(result[0].role_name)) {
-            if(req.query.role_name!==undefined)
-            {
-
-                database.query("SELECT roles.role_name,employees.employee_id,employees.name,floors.name AS floor_name,attendance.status,attendance.check_in_datetime as datetime FROM attendance  LEFT JOIN employees ON employees.id=attendance.employee_id RIGHT JOIN job_details ON employees.job_details_id=job_details.id RIGHT JOIN floors ON job_details.floor_id=floors.id left join roles on job_details.role_id=roles.id where roles.role_name="+mysql.escape(req.query.role_name)+'and attendance.check_in_datetime>=' + req.query.date_time_first + "and attendance.check_in_datetime<= " + req.query.date_time_second+"and floors.name="+mysql.escape(req.query.floor_name) , (err, attendanceResult, fields) => {
-                    res.send(attendanceResult) 
-                        
-                })
-            }
-            else{
-                database.query("SELECT roles.role_name,employees.employee_id,employees.name,floors.name AS floor_name,attendance.status,attendance.check_in_datetime as datetime FROM attendance  LEFT JOIN employees ON employees.id=attendance.employee_id RIGHT JOIN job_details ON employees.job_details_id=job_details.id RIGHT JOIN floors ON job_details.floor_id=floors.id left join roles on job_details.role_id=roles.id where  attendance.check_in_datetime>=" + req.query.date_time_first + "and attendance.check_in_datetime<= " + req.query.date_time_second+"and floors.name="+mysql.escape(req.query.floor_name) , (err, attendanceResult, fields) => {
+            
+    
+                database.query("SELECT roles.role_name,employees.employee_id,employees.name,floors.name AS floor_name,attendance.status,attendance.check_in_datetime as datetime FROM attendance  LEFT JOIN employees ON employees.id=attendance.employee_id RIGHT JOIN job_details ON employees.job_details_id=job_details.id RIGHT JOIN floors ON job_details.floor_id=floors.id left join roles on job_details.role_id=roles.id where  attendance.check_in_datetime>=" + req.query.from_date + "and attendance.check_in_datetime<= " + req.query.to_date+" and floors.name="+req.query.floor_name , (err, attendanceResult, fields) => {
+                    console.log(err)
                     res.send(attendanceResult) 
                         
                 })
 
-            }
+
         }
 
 

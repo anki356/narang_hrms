@@ -71,8 +71,8 @@ const getAdvanceByEmployeeid=require('../api/modules/advance/getAdvanceByEmploye
 const getAdvanceByEmployeeName=require('../api/modules/advance/getAdvanceByEmployeeName')
 const getAdvanceByFloor=require('../api/modules/advance/getAdvanceByFloor')
 const addAdvance=require('../api/modules/advance/addAdvance')
-const approveAdvance=require('../api/modules/advance/approveAdvance')
-const approveLoan=require('../api/modules/loan/approveLoan')
+const updateAdvanceStatus=require('../api/modules/advance/updateAdvanceStatus')
+const updateLoanStatus=require('../api/modules/loan/updateLoanStatus')
 const getFines=require('../api/modules/fines/getFines')
 const getFinesByEmployeeId=require('../api/modules/fines/getFinesByEmployeeId')
 const getFinesByEmployeeName=require('../api/modules/fines/getFinesByEmployeeName')
@@ -90,6 +90,10 @@ const getLeavesByDesignation=require('../api/modules/leaves/getLeavesByDesignati
 const getLeavesByEmployeeName=require('../api/modules/leaves/getLeavesByEmployeeName')
 const getTotalEmployeesOnLeave=require('../api/modules/leaves/getTotalEmployeesOnLeave')
 const getLeavesByStatus=require('../api/modules/leaves/getLeavesByStatus')
+const updateExpenseStatus=require('../api/modules/expense/updateExpenseStatus')
+const updateFineApproval=require('../api/modules/fines/updateFineApproval')
+const updateLeaveStatus=require('../api/modules/leaves/updateLeaveStatus')
+const updateTimingStatus=require('../api/modules/timing/updateTimingStatus')
  
 
 
@@ -167,6 +171,10 @@ router.post("/api/addExpenseSubCategory",
 )
 router.get("/api/getExpesesByFloorId",
  verifyAuth,getExpesesByFloorId
+   
+)
+router.patch("/api/updateExpenseStatus/:id",
+ verifyAuth,updateExpenseStatus
    
 )
 router.get("/api/getTimings",
@@ -293,6 +301,10 @@ router.get("/api/getFines",
  verifyAuth,getFines
    
 )
+router.patch("/api/updateFineApproval/:id",
+ verifyAuth,updateFineApproval
+   
+)
 router.get("/api/getFinesByDate",
  verifyAuth,getFinesByDate
    
@@ -325,6 +337,10 @@ router.get("/api/getLeavesByStatus",
  verifyAuth,getLeavesByStatus
    
 )
+router.patch("/api/updateLeaveStatus",
+ verifyAuth,updateLeaveStatus
+   
+)
 router.post("/api/addLoan",
 [verifyAuth, upload.single('download')],verifyAuth,addLoan
    
@@ -349,20 +365,22 @@ router.post("/api/addLeave",
  [verifyAuth, upload.single('download')],verifyAuth,addLeave
    
 )
-router.patch("/api/approveAdvance/:id",
- verifyAuth,approveAdvance
+router.patch("/api/updateAdvanceStatus/:id",
+ verifyAuth,updateAdvanceStatus
+   
+)
+router.patch("/api/updateTimingStatus/:id",
+ verifyAuth,updateTimingStatus
    
 )
 router.patch("/api/editFine/:id",
  verifyAuth,editFine
    
 )
-router.patch("/api/approveAdvance/:id",
- verifyAuth,approveAdvance
-   
-)
-router.patch("/api/approveLoan/:id",
- verifyAuth,approveLoan
+
+
+router.patch("/api/updateLoanStatus/:id",
+ verifyAuth,updateLoanStatus
    
 )
 

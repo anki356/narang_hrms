@@ -1,5 +1,5 @@
 const database = require("../../../config/database");
-const approveLoan = (req, res, next) => {
+const updateLoanStatus = (req, res, next) => {
     const role_id = req.body.result.role_id
     database.query("Select * from roles where id=" + role_id, (err, result) => {
         if (err) console.log(err)
@@ -18,4 +18,4 @@ const approveLoan = (req, res, next) => {
     })
 
 }
-module.exports=approveLoan
+module.exports=updateLoanStatus

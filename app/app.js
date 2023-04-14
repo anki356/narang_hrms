@@ -109,6 +109,7 @@ const getLeavesByStore=require('../api/modules/leaves/getLeavesByStore')
 const getFinesByStore=require('../api/modules/fines/getFinesByStore')
 const getExpensesByStore=require('../api/modules/expense/getExpensesByStore')
 const getAttendanceByStore=require('../api/modules/attendance/getAttendanceByStore')
+const getAdvanceByStore=require('../api/modules/advance/getAdvanceByStore')
  
 
 
@@ -330,6 +331,10 @@ router.get("/api/getAdvanceByEmployeeid",
 )
 router.get("/api/getAdvance",
  verifyAuth,getAdvance
+   
+)
+router.get("/api/getAdvanceByStore",
+ verifyAuth,getAdvanceByStore
    
 )
 router.get("/api/getLeavesByEmployeeId",

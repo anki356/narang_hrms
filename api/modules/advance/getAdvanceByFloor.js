@@ -5,7 +5,7 @@ const getAdvanceByFloor = (req, res, next) => {
         if (err) console.log(err)
         let allowed_roles = ['HR Head']
         if (allowed_roles.includes(result[0].role_name)) {
-            database.query("SELECT advance.*,employees.name,employees.employee_id as empID,floors.name as floor_name from advance left join employees on employees.id=advance.employee_id left join job_details on job_details.id=employees.job_details_id left join floors on floors.id=job_details.floor_id where floors.name="+req.query.floor_name , (err, advanceData, fields) => {
+            database.query("SELECT file_upload.name as photo, advance.*,employees.name,employees.employee_id as empID,floors.name as floor_name from advance left join employees on employees.id=advance.employee_id left join job_details on job_details.id=employees.job_details_id left join floors on floors.id=job_details.floor_id left join file_upload on file_upload.id=employees.photo_id where date>="+req.query.from_date+"and date<"+req.query.to_date+" and floors.name="+req.query.floor_name , (err, advanceData, fields) => {
                 res.send(advanceData) 
                     
             })

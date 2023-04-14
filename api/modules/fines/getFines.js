@@ -5,7 +5,7 @@ const getFines = (req, res, next) => {
         if (err) console.log(err)
         let allowed_roles = ['HR Head','HR Assistant']
         if (allowed_roles.includes(result[0].role_name)) {
-            database.query("SELECT fines.*,employees.name ,employees.employee_id as empID, floors.name as floor_name from fines left join employees on employees.id=fines.employee_id left join job_details on job_details.id=employees.job_details_id left join floors on floors.id=job_details.floor_id" , (err, fineData, fields) => {
+            database.query("SELECT file_upload.name as photo, fines.*,employees.name ,employees.employee_id as empID, floors.name as floor_name from fines left join employees on employees.id=fines.employee_id left join job_details on job_details.id=employees.job_details_id left join floors on floors.id=job_details.floor_id left join file_upload on file_upload.id=employees.photo_id" , (err, fineData, fields) => {
                 console.log(err)
                 res.send(fineData) 
                     

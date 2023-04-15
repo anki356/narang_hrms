@@ -1,6 +1,6 @@
 const database = require("../../../config/database");
 const mysql = require("mysql")
-const addGrades = (req, res, next) => {
+const addGradesBYFI = (req, res, next) => {
     const role_id = req.body.result.role_id
     database.query("Select * from roles where id=" + role_id, (err, result) => {
         if (err) console.log(err)
@@ -17,4 +17,4 @@ const addGrades = (req, res, next) => {
 
 }
 
-module.exports=addGrades
+module.exports=addGradesBYFI

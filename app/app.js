@@ -66,12 +66,14 @@ const addTransferWithStoreId=require('../api/modules/transfer/addTransferWithSto
 const updateAttendance=require('../api/modules/attendance/updateAttendance')
 const addInterview=require('../api/modules/interview/addInterview')
 const getInterview=require('../api/modules/interview/getInterview')
-const addGrades=require('../api/modules/grades/addGrades')
+const addGradesBYFI=require('../api/modules/grades/addGradesBYFI')
 const getGrades=require('../api/modules/grades/getGrades')
 const makeAttendanceCorrectionRequests=require('../api/modules/attendance/makeAttendanceCorrectionRequests')
 const getAttendanceCorrectionRequests=require('../api/modules/attendance/getAttendanceCorrectionRequests')
 const getTotalEmployeesOnLeave=require('../api/modules/leaves/getTotalEmployeesOnLeave')
- 
+const restructureLoans=require('../api/modules/loan/restructureLoans')
+const addGradesByAdmins=require('../api/modules/grades/addGradesByAdmins')
+
 
 
 const storage = multer.diskStorage({
@@ -244,6 +246,10 @@ router.post("/api/addLoan",
 [verifyAuth, upload.single('download')],verifyAuth,addLoan
    
 )
+router.post("/api/restructureLoans",
+verifyAuth,restructureLoans
+   
+)
 router.post("/api/addAdvance",
 [verifyAuth, upload.single('download')],verifyAuth,addAdvance
    
@@ -291,8 +297,12 @@ router.get("/api/getInterview",
    
 )
 
-router.post("/api/addGrades",
- verifyAuth,addGrades
+router.post("/api/addGradesBYFI",
+ verifyAuth,addGradesBYFI
+   
+)
+router.post("/api/addGradesByAdmins",
+ verifyAuth,addGradesByAdmins
    
 )
 router.get("/api/getGrades",
@@ -311,6 +321,6 @@ router.get("/api/getAttendanceCorrectionRequests",
    
 
 
-app.use(errorHandlerMiddleware)
+// app.use(errorHandlerMiddleware)
 app.use(notFound)
 module.exports = app;

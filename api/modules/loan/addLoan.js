@@ -13,24 +13,24 @@ const addLoan = (req, res, next) => {
                     for (let i = 0; i < req.body.tenure; i++) {
                         let month=new Date(req.body.date).getMonth()+i                 
 
-if(month<12){
+// if(month<12){
     
-    await    database.query("Insert Into loan_repayment (loan_id,date,month,year,status) values(" + loanResult.insertId +","+new Date(req.body.date).getDate()+","+month +","+new Date(req.body.date).getFullYear()  + ",'Unpaid')", (err, loanRepaymentResult, fields) => {
+    await    database.query("Insert Into loan_repayment (loan_id,date,month,year,status,amount) values(" + loanResult.insertId +","+new Date(req.body.date).getDate()+","+month +","+new Date(req.body.date).getFullYear()  + ",'Unpaid',"+req.body.amount/req.body.tenure+")", (err, loanRepaymentResult, fields) => {
         console.log(err)
             loanResult.loan_repaymentData.push(loanRepaymentResult)
         })
         
-    }
-    else{
-        month=month%12
-        let year=new Date(req.body.date).getFullYear()+(i/12)
-        await    database.query("Insert Into loan_repayment (loan_id,date,month,year,status) values(" + loanResult.insertId +","+new Date(req.body.date).getDate()+","+month +","+year  + ",'Unpaid')", (err, loanRepaymentResult, fields) => {
-            console.log(err)
-                loanResult.loan_repaymentData.push(loanRepaymentResult)
-            })
+    // }
+    // else{
+    //     month=month%12
+    //     let year=new Date(req.body.date).getFullYear()+(i/12)
+    //     await    database.query("Insert Into loan_repayment (loan_id,date,month,year,status) values(" + loanResult.insertId +","+new Date(req.body.date).getDate()+","+month +","+year  + ",'Unpaid')", (err, loanRepaymentResult, fields) => {
+    //         console.log(err)
+    //             loanResult.loan_repaymentData.push(loanRepaymentResult)
+    //         })
             
 
-    }
+    // }
 }
 res.send(loanResult)         
                     

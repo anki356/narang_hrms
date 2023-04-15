@@ -1,0 +1,20 @@
+const database = require("../../../config/database");
+const mysql = require("mysql")
+const addGrades = (req, res, next) => {
+    const role_id = req.body.result.role_id
+    database.query("Select * from roles where id=" + role_id, (err, result) => {
+        if (err) console.log(err)
+        let allowed_roles = ['Floor Incharge']
+        if (allowed_roles.includes(result[0].role_name)) {
+            database.query("Insert Into grades (employee_id,grade_1st,grade_2nd,grade_3rd,grade_4th,type,type,week/month,date) values ("+mysql.escape(req.body.employee_id)+","+mysql.escape(req.body.grade_1st)+"," +mysql.escape(req.body.grade_2nd)+","+mysql.escape(req.body.grade_3rd)+","+mysql.escape(req.body.grade_4th)+",'monthly',"+req.body.month+",current_timestamp())", (err, gradesData, fields) => {
+                res.send(gradesData) 
+                    
+            })
+        }
+
+
+    })
+
+}
+
+module.exports=addGrades

@@ -6,7 +6,7 @@ const addGradesByAdmins = (req, res, next) => {
         if (err) console.log(err)
         let allowed_roles = ['Admin','Super Admin']
         if (allowed_roles.includes(result[0].role_name)) {
-            database.query("select * from grades where employee_id="+req.body.employee_id+" and month="+new Date().getMonth(), (err, gradesFirstData, fields) => {
+            database.query("select * from grades where employee_id="+req.body.employee_id+" and month="+new Date().getMonth()+" and year="+new Date().getFullYear(), (err, gradesFirstData, fields) => {
                 let total_marks=gradesFirstData[0].grade_1st+ gradesFirstData[0].grade_2nd+ gradesFirstData[0].grade_3rd+ gradesFirstData[0].grade_4th+req.body.grade_5th+req.body.grade_6th+req.body.grade_7th
                 let grade_equivalent
                if(total_marks>90){
@@ -37,7 +37,7 @@ const addGradesByAdmins = (req, res, next) => {
                 grade_equivalent='F'
                }
 
-            database.query("Update grades set grade_5th ="+req.body.grade_5th+",grade_6th ="+req.body.grade_6th+",grade_7th="+req.body.grade_7th+",total_grades="+total_marks+",grade_equivalent="+mysql.escape(grade_equivalent)+",modified_date = current_timestamp() where employee_id="+req.body.employee_id+" and month="+new Date().getMonth(), (err, gradesData, fields) => {
+            database.query("Update grades set grade_5th ="+req.body.grade_5th+",grade_6th ="+req.body.grade_6th+",grade_7th="+req.body.grade_7th+",total_grades="+total_marks+",grade_equivalent="+mysql.escape(grade_equivalent)+",modified_date = current_timestamp() where employee_id="+req.body.employee_id+" and month="+new Date().getMonth()+" and year="+new Date().getFullYear(), (err, gradesData, fields) => {
                 console.log(err)
                 res.send(gradesData) 
                     

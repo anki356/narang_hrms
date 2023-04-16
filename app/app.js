@@ -5,7 +5,7 @@ var cors = require("cors");
 const path = require("path")
 const router=express.Router()
  require('express-async-errors');
-
+ const cron = require("node-cron");
 
 
 
@@ -73,9 +73,13 @@ const getAttendanceCorrectionRequests=require('../api/modules/attendance/getAtte
 const getTotalEmployeesOnLeave=require('../api/modules/leaves/getTotalEmployeesOnLeave')
 const restructureLoans=require('../api/modules/loan/restructureLoans')
 const addGradesByAdmins=require('../api/modules/grades/addGradesByAdmins')
+const addSalary=require('../api/modules/salary/addSalary')
+const addEmployee=require('../api/modules/employees/addEmployee')
+const getEmployeeDetails=require('../api/modules/employees/getEmployeeDetails')
 
 
-
+// addSalary()
+// cron.schedule("0 42 16 15 * *",addSalary)
 const storage = multer.diskStorage({
    destination: function (req, file, cb) {
      cb(null, 'uploads/')
@@ -317,10 +321,18 @@ router.get("/api/getAttendanceCorrectionRequests",
  verifyAuth,getAttendanceCorrectionRequests
    
 )
+router.get("/api/getEmployeeDetails",
+ verifyAuth,getEmployeeDetails
+   
+)
+router.post("/api/addEmployee",
+ [verifyAuth,upload.fields([{name:'photo',maxCount: 1},{name:'document',maxCount: 2}])],verifyAuth,addEmployee
+   
+)
 
    
 
 
-// app.use(errorHandlerMiddleware)
+app.use(errorHandlerMiddleware)
 app.use(notFound)
 module.exports = app;

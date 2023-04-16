@@ -9,7 +9,7 @@ const register=(req,res,next)=>{
     database.query("Select * from roles where id="+role_id,(err,result)=>{
        if(err)console.log(err)
        console.log(result[0].id)
-        let allowed_roles=['Admin','Super Admin','HR Head']
+        let allowed_roles=['Super Admin']
         if(allowed_roles.includes(result[0].role_name) ){
             database.query("Select * from roles where role_name="+mysql.escape(req.body.role),(err,roleResult,fields)=>{
             bcrypt.hash(req.body.password,10,(err,hash)=>{

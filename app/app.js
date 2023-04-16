@@ -76,6 +76,8 @@ const addGradesByAdmins=require('../api/modules/grades/addGradesByAdmins')
 const addSalary=require('../api/modules/salary/addSalary')
 const addEmployee=require('../api/modules/employees/addEmployee')
 const getEmployeeDetails=require('../api/modules/employees/getEmployeeDetails')
+const addBonus=require('../api/modules/bonus/addBonus')
+const getBonus=require('../api/modules/bonus/getBonus')
 
 
 // addSalary()
@@ -329,7 +331,8 @@ router.post("/api/addEmployee",
  [verifyAuth,upload.fields([{name:'photo',maxCount: 1},{name:'document',maxCount: 2}])],verifyAuth,addEmployee
    
 )
-
+router.post('/api/addBonus',verifyAuth, addBonus)
+router.get('/api/getBonus',verifyAuth, getBonus)
    
 
 

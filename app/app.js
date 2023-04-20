@@ -85,6 +85,7 @@ const calculateGrades=require('../api/modules/grades/calculateGrades')
 const addGrades=require('../api/modules/grades/addGrades')
 const getSalaryDetails=require('../api/modules/salary/getSalaryDetails')
 const addSalaryDetails=require('../api/modules/salary/addSalaryDetails')
+const incrementSalary=require('../api/modules/salary/incrementSalary')
 
 
 // addSalary()
@@ -347,6 +348,7 @@ router.get("/api/calculateGrades",verifyAuth,calculateGrades)
 router.get("/api/getSalaryDetails",verifyAuth,getSalaryDetails)
 router.post("/api/addGrades",verifyAuth,addGrades)
 router.post("/api/addSalaryDetails",verifyAuth,addSalaryDetails)
+router.patch("/api/incrementSalary",verifyAuth,incrementSalary)
 
 
 app.use(errorHandlerMiddleware)

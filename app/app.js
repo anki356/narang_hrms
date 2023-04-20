@@ -6,10 +6,10 @@ const path = require("path")
 const router=express.Router()
  require('express-async-errors');
  const cron = require("node-cron");
+const markAbsent=require("../api/modules/attendance/markAbsent")
 
-
-
-
+//cron.schedule("0 0 10 * * *",markAbsent)
+// markAbsent()
     
 
 
@@ -72,12 +72,18 @@ const makeAttendanceCorrectionRequests=require('../api/modules/attendance/makeAt
 const getAttendanceCorrectionRequests=require('../api/modules/attendance/getAttendanceCorrectionRequests')
 const getTotalEmployeesOnLeave=require('../api/modules/leaves/getTotalEmployeesOnLeave')
 const restructureLoans=require('../api/modules/loan/restructureLoans')
-const addGradesByAdmins=require('../api/modules/grades/addGradesByAdmins')
-const addSalary=require('../api/modules/salary/addSalary')
+const addSalary=require('../api/modules/salary/getSalaryDetails')
 const addEmployee=require('../api/modules/employees/addEmployee')
 const getEmployeeDetails=require('../api/modules/employees/getEmployeeDetails')
 const addBonus=require('../api/modules/bonus/addBonus')
 const getBonus=require('../api/modules/bonus/getBonus')
+const markPresent=require('../api/modules/attendance/markPresent')
+const changePassword=require('../api/modules/auth/changePassword')
+const addRole=require('../api/modules/roles/addRole')
+const getRoles=require('../api/modules/roles/getRoles')
+const calculateGrades=require('../api/modules/grades/calculateGrades')
+const addGrades=require('../api/modules/grades/addGrades')
+const getSalaryDetails=require('../api/modules/salary/getSalaryDetails')
 
 
 // addSalary()
@@ -307,10 +313,6 @@ router.post("/api/addGradesBYFI",
  verifyAuth,addGradesBYFI
    
 )
-router.post("/api/addGradesByAdmins",
- verifyAuth,addGradesByAdmins
-   
-)
 router.get("/api/getGrades",
  verifyAuth,getGrades
    
@@ -327,13 +329,22 @@ router.get("/api/getEmployeeDetails",
  verifyAuth,getEmployeeDetails
    
 )
+router.get("/api/getRoles",
+ verifyAuth,getRoles
+   
+)
 router.post("/api/addEmployee",
  [verifyAuth,upload.fields([{name:'photo',maxCount: 1},{name:'document',maxCount: 2}])],verifyAuth,addEmployee
    
 )
 router.post('/api/addBonus',verifyAuth, addBonus)
+router.patch('/api/markPresent',verifyAuth, markPresent)
 router.get('/api/getBonus',verifyAuth, getBonus)
-   
+router.patch('/api/auth/changePassword',verifyAuth, changePassword)
+router.post('/api/addRole',verifyAuth, addRole)
+router.get("/api/calculateGrades",verifyAuth,calculateGrades)
+router.get("/api/getSalaryDetails",verifyAuth,getSalaryDetails)
+router.post("/api/addGrades",verifyAuth,addGrades)
 
 
 app.use(errorHandlerMiddleware)

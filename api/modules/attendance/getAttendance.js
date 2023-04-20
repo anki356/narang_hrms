@@ -1,6 +1,5 @@
 
 const database = require("../../../config/database");
-const knex=require("../../../config/knex")
 const getAttendance = (req, res, next) => {
     const role_id = req.body.result.role_id
     database.query("Select * from roles where id=" + role_id, (err, result) => {

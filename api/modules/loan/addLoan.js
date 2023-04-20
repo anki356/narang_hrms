@@ -14,8 +14,8 @@ const addLoan = (req, res, next) => {
                         let month=Number(req.body.month)+i                 
 
 if(month<12){
-    
-    await    database.query("Insert Into loan_repayment (loan_id,date,month,year,status,amount) values(" + loanResult.insertId +","+new Date(req.body.date).getDate()+","+month +","+new Date(req.body.date).getFullYear()  + ",'Unpaid',"+req.body.amount/req.body.tenure+")", (err, loanRepaymentResult, fields) => {
+    console.log(req.body.amount_array[i])
+    await    database.query("Insert Into loan_repayment (loan_id,date,month,year,status,amount) values(" + loanResult.insertId +","+new Date(req.body.date).getDate()+","+month +","+new Date(req.body.date).getFullYear()  + ",'Unpaid',"+req.body.amount_array[i]+")", (err, loanRepaymentResult, fields) => {
         console.log(err)
             loanResult.loan_repaymentData.push(loanRepaymentResult)
         })
@@ -24,7 +24,7 @@ if(month<12){
     else{
         month_new=month%12
         let year=new Date(req.body.date).getFullYear()+(month/12)
-        await    database.query("Insert Into loan_repayment (loan_id,date,month,year,status,amount) values(" + loanResult.insertId +","+new Date(req.body.date).getDate()+","+month_new +","+year  + ",'Unpaid',"+req.body.amount/req.body.tenure+")", (err, loanRepaymentResult, fields) => {
+        await    database.query("Insert Into loan_repayment (loan_id,date,month,year,status,amount) values(" + loanResult.insertId +","+new Date(req.body.date).getDate()+","+month_new +","+year  + ",'Unpaid',"+req.body.amount_array[i]+")", (err, loanRepaymentResult, fields) => {
             console.log(err)
                 loanResult.loan_repaymentData.push(loanRepaymentResult)
             })

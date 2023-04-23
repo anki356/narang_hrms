@@ -6,7 +6,7 @@ const updateExpenseStatus = (req, res, next) => {
         if (err) console.log(err)
         let allowed_roles = ['Admin', 'Super Admin', 'HR Head']
         if (allowed_roles.includes(result[0].role_name)) {
-            database.query("Update expenses set status= "+mysql.escape(req.body.status)+", approval_by_id="+role_id+" , approval_date=current_timestamp() where id="+req.params.id , (err, expenseData, fields) => {
+            database.query("Update expenses set status= "+mysql.escape(req.body.status)+", status_by_id="+role_id+" , status_date=current_timestamp() where id="+req.params.id , (err, expenseData, fields) => {
                 console.log(err)
                 res.send(expenseData) 
                     

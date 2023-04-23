@@ -45,8 +45,8 @@ tea=300
                         loan=loanRepaymentResult[0].amount
                     database.query("select amount from loan_repayment where loan_id="+loanResult[0].id+" and month="+month+" and year="+year,(err,loanRepaymentResult,fields)=>{
                
-                         net_salary=salary+req.query.commission-expense-tea-advance+loanRepaymentResult[0].amount
-                    })
+                         net_salary=salary+req.query.commission-expense-tea-advance-loanRepaymentResult[0].amount
+                    })//number
                 }
                 else{
                     net_salary=Number(salary)+Number(req.query.commission)-Number(expense)-tea-Number(advance)
@@ -73,7 +73,7 @@ database.query("select type from employees where id="+req.query.employee_id,(err
     if(employeeTypeResponse[0].type==='PF'){
         let esi
         if(net_salary<21000){
-        esi= net_salary*0.75/100
+        esi= basic_salary*0.75/100*60/100
         }
         let pf=basic_salary*12/100
         let net_payable_salary=net_salary-esi-pf

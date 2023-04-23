@@ -5,9 +5,9 @@ const getAttendance = (req, res, next) => {
     database.query("Select * from roles where id=" + role_id, (err, result) => {
         let allowed_roles = ['Admin', 'Super Admin', 'HR Head', 'HR Assistant','Floor Incharge']
         if (allowed_roles.includes(result[0].role_name)) {
-            let queryString="SELECT file_upload.name as photo, roles.role_name,employees.employee_id,employees.name,floors.name AS floor_name,stores.name as store_name ,attendance.status,attendance.check_in_datetime as datetime FROM attendance  LEFT JOIN employees ON employees.id=attendance.employee_id RIGHT JOIN job_details ON employees.job_details_id=job_details.id RIGHT JOIN floors ON job_details.floor_id=floors.id left join roles on job_details.role_id=roles.id left join file_upload on file_upload.id=employees.photo_id left join stores on stores.id=job_details.store_id where attendance.check_in_datetime>=" + req.query.from_date + "and attendance.check_in_datetime< " + req.query.to_date
+            let queryString="SELECT file_upload.name as photo, roles.role_name,employees.employee_id,employees.name,floors.name AS floor_name,stores.name as store_name ,attendance.status,attendance.check_in_datetime as datetime FROM attendance  LEFT JOIN employees ON employees.id=attendance.employee_id left JOIN job_details ON employees.job_details_id=job_details.id left JOIN floors ON job_details.floor_id=floors.id left join roles on job_details.role_id=roles.id left join file_upload on file_upload.id=employees.photo_id left join stores on stores.id=job_details.store_id where attendance.check_in_datetime>=" + req.query.from_date + "and attendance.check_in_datetime< " +req.query.to_date
             if(result[0].role_name.split(" ")[0]==='Floor'){
-                database.query("select id from employees left join job_details on job_details.id=employees.job_details_id where job_details.role_id="+role_id,(err,employeesResult,fields)=>{
+                database.query("select employees.id from employees left join job_details on job_details.id=employees.job_details_id where job_details.role_id="+role_id,(err,employeesResult,fields)=>{
                     queryString+=" and job_details.head_employee_id=" +employeesResult[0].id
                 })
                 
@@ -27,6 +27,7 @@ const getAttendance = (req, res, next) => {
            if (req.query.employee_name){
             queryString+="and employees.name like '%'"+ req.query.employee_name+"'%'"
            }
+           console.log(queryString)
             database.query(queryString , (err, attendanceResult, fields) => {
                 console.log(err)
                 res.send(attendanceResult) 

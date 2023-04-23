@@ -7,7 +7,7 @@ const updateFineApproval = (req, res, next) => {
         if (err) console.log(err)
         let allowed_roles = ['Admin', 'Super Admin']
         if (allowed_roles.includes(result[0].role_name)) {
-            database.query("Update fines set status= "+mysql.escape(req.body.status)+", approval_by_id="+role_id+" , approval_date=current_timestamp() where id="+req.params.id , (err, fineData, fields) => {
+            database.query("Update fines set status= "+mysql.escape(req.body.status)+", status_by_id="+role_id+",rejection_reason="+mysql.escape(req.body.rejection_reason)+" , status_date=current_timestamp() where id="+req.params.id , (err, fineData, fields) => {
                 console.log(err)
                 res.send(fineData) 
                     

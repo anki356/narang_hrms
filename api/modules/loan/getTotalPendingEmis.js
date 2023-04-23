@@ -5,7 +5,7 @@ const getTotalPendingEmis = (req, res, next) => {
         if (err) console.log(err)
         let allowed_roles = ['HR Head']
         if (allowed_roles.includes(result[0].role_name)) {
-            database.query("SELECT count(loan_id) from loan_repayment where month="+new Date().getMonth()+" and year="+new Date().getFullYear()+ " and status='Unpaid'" , (err, loanRepaymentData, fields) => {
+            database.query("SELECT count(loan_id) from loan_repayment where month="+new Date().getMonth()+" and year="+new Date().getFullYear()+ " and status='Unpaid' and amount!=0" , (err, loanRepaymentData, fields) => {
              console.log(err)
                 res.send(loanRepaymentData) 
                     

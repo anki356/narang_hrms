@@ -5,7 +5,7 @@ const getAttendanceCorrectionRequests= (req, res, next) => {
     database.query("Select * from roles where id=" + role_id, (err, result) => {
         let allowed_roles = [ 'Hr Assistant','Hr Head','Admin','Super Admin']
         if (allowed_roles.includes(result[0].role_name)) {
-            let queryString="select attendance_requests.*,employees.name as employee_name,employees.employee_id as empID,floors.name as floor_name,roles.role_name as role_name from attendance_requests left join employees on employees.id=attendance_requests.employee_id left join job_details on job_details.id=employees.job_details_id left join floors on floors.id=job_details.floor_id left join roles on roles.id=job_details.role_id where date_time>="+req.query.from_date+"and date_time<"+req.query.to_date
+            let queryString="select attendance_requests.*,employees.name as employee_name,employees.employee_id as empID,floors.name as floor_name,roles.role_name as role_name from attendance_requests left join employees on employees.id=attendance_requests.employee_id left join job_details on job_details.id=employees.job_details_id left join floors on floors.id=job_details.floor_id left join roles on roles.id=job_details.role_id where date_time>="+req.query.from_date+"and date_time<"+req.query.to_date+"and status='Pending'"
             if(req.query.floor_name){
                 queryString+="and floors.name=" +req.query.floor_name
                }

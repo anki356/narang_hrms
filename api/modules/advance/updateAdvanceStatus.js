@@ -7,7 +7,8 @@ const updateAdvanceStatus = (req, res, next) => {
         let allowed_roles = ['Admin','Super Admin']
         if (allowed_roles.includes(result[0].role_name)) {
             
-            database.query("update advance set status = "+mysql.escape(req.body.status)+", approval_date=current_timestamp() , approval_id="+role_id+" where id="+req.params.id , (err, advanceData, fields) => {
+            database.query("update advance set status = "+mysql.escape(req.body.status)+", status_date=current_timestamp() , status_id="+role_id+",rejection_reason="+mysql.escape(req.body.rejection_reason)+" where id="+req.params.id , (err, advanceData, fields) => {
+              
                 res.send(advanceData) 
                     
             })

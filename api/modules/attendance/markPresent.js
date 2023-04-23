@@ -8,7 +8,7 @@ const addAttendance= (req, res, next) => {
         let allowed_roles = [  'Guard']
         if (allowed_roles.includes(result[0].role_name)) {
           let today=moment()
-          let timeOfAbsent=today.set('h',10).set('m',0).set('s',0)
+          let timeOfAbsent=today.set('h',0).set('m',0).set('s',0)
           database.query("select id from attendance where check_in_datetime="+mysql.escape(timeOfAbsent.format("YYYY-MM-DDTHH:mm:ss"))+" and employee_id="+req.body.employee_id+" and status='Absent'",(err,attendanceAbsentResult)=>{
             
 if(attendanceAbsentResult.length>0)

@@ -5,7 +5,7 @@ const getTotalEmployeesTakenLoan = (req, res, next) => {
         if (err) console.log(err)
         let allowed_roles = ['HR Head']
         if (allowed_roles.includes(result[0].role_name)) {
-            database.query("SELECT count(distinct employee_id ) from loan where date>="+req.query.from_date+"and date <"+req.query.to_date , (err, loanData, fields) => {
+            database.query("SELECT count(distinct employee_id ) from loan where date>="+req.query.from_date+"and date <"+req.query.to_date+"and status='Approved'" , (err, loanData, fields) => {
              
                 res.send(loanData) 
                     

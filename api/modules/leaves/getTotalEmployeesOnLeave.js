@@ -5,7 +5,7 @@ const getTotalEmployeesOnLeave = (req, res, next) => {
         if (err) console.log(err)
         let allowed_roles = ['HR Head']
         if (allowed_roles.includes(result[0].role_name)) {
-            database.query("SELECT count (employee_id) from leaves where leaves.date>="+req.query.from_date +" and leaves.date<"+req.query.to_date , (err, leavesData, fields) => {
+            database.query("SELECT count (employee_id) from leaves where leaves.from_date>="+req.query.from_date +" and leaves.to_date<="+req.query.to_date , (err, leavesData, fields) => {
                 res.send(leavesData) 
                     
             })

@@ -86,10 +86,15 @@ const addGrades=require('../api/modules/grades/addGrades')
 const getSalaryDetails=require('../api/modules/salary/getSalaryDetails')
 const addSalaryDetails=require('../api/modules/salary/addSalaryDetails')
 const incrementSalary=require('../api/modules/salary/incrementSalary')
+const addTimingyByFI=require('../api/modules/timing/addTimingyByFI')
+const updateTimingByFiByGuard=require('../api/modules/timing/updateTimingByFiByGuard')
+const updateInterview=require('../api/modules/interview/updateInterview')
+const calculateGradesForAll=require('../api/modules/grades/calculateGradesForAll')
+const calculateGradesOtherThanSalesman=require('../api/modules/grades/calculateGradesOtherThanSalesman')
 
 
 // addSalary()
-// cron.schedule("0 42 16 15 * *",addSalary)
+// cron.schedule("0 47 10 15 * *",addSalary)
 const storage = multer.diskStorage({
    destination: function (req, file, cb) {
      cb(null, 'uploads/')
@@ -348,7 +353,12 @@ router.get("/api/calculateGrades",verifyAuth,calculateGrades)
 router.get("/api/getSalaryDetails",verifyAuth,getSalaryDetails)
 router.post("/api/addGrades",verifyAuth,addGrades)
 router.post("/api/addSalaryDetails",verifyAuth,addSalaryDetails)
+router.post("/api/addTimingyByFI",verifyAuth,addTimingyByFI)
 router.patch("/api/incrementSalary",verifyAuth,incrementSalary)
+router.patch("/api/updateTimingByFiByGuard/:id",verifyAuth,updateTimingByFiByGuard)
+router.patch("/api/updateInterview/:id",verifyAuth,updateInterview)
+router.get("/api/calculateGradesForAll",verifyAuth,calculateGradesForAll)
+router.get("/api/calculateGradesOtherThanSalesman",verifyAuth,calculateGradesOtherThanSalesman)
 
 
 app.use(errorHandlerMiddleware)

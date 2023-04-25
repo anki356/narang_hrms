@@ -91,6 +91,8 @@ const updateTimingByFiByGuard=require('../api/modules/timing/updateTimingByFiByG
 const updateInterview=require('../api/modules/interview/updateInterview')
 const calculateGradesForAll=require('../api/modules/grades/calculateGradesForAll')
 const calculateGradesOtherThanSalesman=require('../api/modules/grades/calculateGradesOtherThanSalesman')
+const addTimingCorrection=require('../api/modules/timing/addTimingCorrection')
+const getTimingCorrectionRequests=require('../api/modules/timing/getTimingCorrectionRequests')
 
 
 // addSalary()
@@ -359,6 +361,8 @@ router.patch("/api/updateTimingByFiByGuard/:id",verifyAuth,updateTimingByFiByGua
 router.patch("/api/updateInterview/:id",verifyAuth,updateInterview)
 router.get("/api/calculateGradesForAll",verifyAuth,calculateGradesForAll)
 router.get("/api/calculateGradesOtherThanSalesman",verifyAuth,calculateGradesOtherThanSalesman)
+router.post("/api/addTimingCorrection",verifyAuth,addTimingCorrection)
+router.get("/api/getTimingCorrectionRequests",verifyAuth,getTimingCorrectionRequests)
 
 
 app.use(errorHandlerMiddleware)

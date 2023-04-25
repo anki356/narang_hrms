@@ -9,7 +9,7 @@ const calculateGradesForAll = (req, res, next) => {
         if (allowed_roles.includes(result[0].role_name)) {
             let result=[]
             
-            database.query("select employees.*,job_details.*,roles.* from employees left join job_details on employees.job_details_id=job_details.id left join roles on roles.id=job_details.role_id  limit " + req.query.limit + " offset " + req.query.offset, async(err, employeesResult) => {
+            database.query("select employees.id,employees.name,employees.employee_id,roles.role_name,floors.name as floor_name,stores.name as store_name, store_departments.name as store_department_name from employees left join job_details on employees.job_details_id=job_details.id left join roles on roles.id=job_details.role_id left join store_departments on store_departments.id=job_details.store_department_id left join floors on floors.id=job_details.floor_id left join stores on stores.id=job_details.store_id limit " + req.query.limit + " offset " + req.query.offset, async(err, employeesResult) => {
                 console.log(err)
                 let promiseArray=[]
                 employeesResult.forEach(async(data,index) => {
@@ -21,6 +21,7 @@ const calculateGradesForAll = (req, res, next) => {
                     })
 promiseArray[index]=pr.promise
                     database.query("Select count(id) as count_id from attendance where check_in_datetime>=" + req.query.from_date + "and check_in_datetime<=" + req.query.to_date + " and employee_id =" + data.id + " and status='Present'", (err, attendanceCountResult) => {
+                        console.log(err)
                         let from_moment = moment(req.query.from_date, "YYYY-MM-DD")
                         let to_moment = moment(req.query.to_date, "YYYY-MM-DD")
                         let total_working_days = to_moment.diff(from_moment, 'd')
@@ -38,12 +39,13 @@ promiseArray[index]=pr.promise
                         else {
                             grade_5th = 0
                         }
+                        let grade_6th
                         if(data.role_name==='Floor Incharge'){
                             grade_6th=10
                         }
                         else{
                             let avg_commission = req.query.commission[index] / total_working_days
-                            let grade_6th
+                            
                             if (avg_commission > 125) {
                                 grade_6th = 10
                             }
@@ -108,8 +110,17 @@ promiseArray[index]=pr.promise
                                 }
                                 result.push({
                                     employee_data: data,
-                                    avg_grade: (gradeResult[0]?.first_Avg + gradeResult[0]?.second_Avg + gradeResult[0]?.third_Avg + gradeResult[0]?.fourth_AVG + grade_5th + grade_6th + grade_7th) / 7,
-                                    grade_equivalent: grade_equivalent
+                                    "grade_1st": gradeResult[0].first_Avg,
+                                    "grade_2nd": gradeResult[0].second_Avg,
+                                    "grade_3rd": gradeResult[0].third_Avg,
+                                    "grade_4th": gradeResult[0].fourth_AVG,
+                                    "grade_out_of_40":gradeResult[0].first_Avg+gradeResult[0].second_Avg+gradeResult[0].third_Avg+gradeResult[0].fourth_AVG,
+                                    "grade_5th":grade_5th,
+                                    "grade_6th":grade_6th,
+                                    "grade_7th":grade_7th,
+                                    "grade_out_of_60":(grade_5th+grade_6th+grade_7th)*2,
+                                    "total_grades":total_grades,
+                                    "grade_equivalent": grade_equivalent
                                 })
                                 pr.resolve(true)
                             })

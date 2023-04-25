@@ -1,4 +1,5 @@
 const database = require("../../../config/database");
+const mysql=require('mysql')
 const getEmployees = (req, res, next) => {
     const role_id = req.body.result.role_id
     database.query("Select * from roles where id=" + role_id, (err, result) => {
@@ -20,6 +21,12 @@ const getEmployees = (req, res, next) => {
                }
                if (req.query.employee_name){
                 queryString+="and employees.name like '%'"+ req.query.employee_name+"'%'"
+               }
+               if (req.query.type){
+                queryString+="and employees.type = "+mysql.escape(req.query.type)
+               }
+               if (req.query.sub_type){
+                queryString+=" and employees.sub_type = "+mysql.escape(req.query.sub_type)
                }
             database.query(queryString , (err, employeesResult, fields) => {
                 console.log(err)

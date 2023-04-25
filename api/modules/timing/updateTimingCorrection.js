@@ -6,11 +6,19 @@ const updateTimingCorrection= (req, res, next) => {
         let allowed_roles = [ 'HR Head', 'HR Assistant']
         if (allowed_roles.includes(result[0].role_name)) {
             database.query("Insert into file_upload (type,name) values ('in_time_image',"+mysql.escape(req.file.filename)+")",(err,fileResult,fields)=>{ 
-                database.query("Update timing set in_time="+req.body.in_time+",timer="+req.body.timer+",file_upload_id="+fileResult.insertId+", modified_date_time = current_timestamp() where timing.id="+req.params.id, (err, timingResult, fields) => {
-                   console.log(err)
-                    res.send(timingResult) 
-                        
-                })
+               
+                   database.query("Update timing_requests set status="+mysql.escape(req.body.status)+" where id="+req.params.id, (err, timingRequestsResult, fields) => {
+                    if(req.body.status==='Approved'){
+                        database.query("Update timing set in_time="+req.body.in_time+",timer="+req.body.timer+",file_upload_id="+fileResult.insertId+", modified_date_time = current_timestamp() where timing.id="+req.body.timing_id, (err, timingResult, fields) => {
+                        res.json({"timingResult":timingResult,"timingRequestsResult":timingRequestsResult}) 
+                            
+                    })
+                    }
+                    else{
+res.json({"timingRequestsResult":timingRequestsResult})
+                    }
+                    
+            })
             })
                
         

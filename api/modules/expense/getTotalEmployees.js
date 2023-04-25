@@ -5,7 +5,7 @@ const getTotalEmployees = (req, res, next) => {
         if (err) console.log(err)
         let allowed_roles = ['Admin', 'Super Admin', 'HR Head', 'HR Assistant']
         if (allowed_roles.includes(result[0].role_name)) {
-            database.query("SELECT count(employee_id) from expenses where date>="+req.query.today_date+"and date<"+req.query.tommorow_date , (err, expenseData, fields) => {
+            database.query("SELECT count(employee_id) from expenses where date>="+req.query.from_date+"and date<"+req.query.to_date+"and status='Approved'" , (err, expenseData, fields) => {
                 res.send(expenseData) 
                     
             })

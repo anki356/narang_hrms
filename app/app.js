@@ -8,7 +8,10 @@ const router=express.Router()
  const cron = require("node-cron");
 const markAbsent=require("../api/modules/attendance/markAbsent")
 
-//cron.schedule("0 0 10 * * *",markAbsent)
+// cron.schedule("42 8 * * *",markAbsent,{
+//   scheduled: true,
+//   timezone: "Asia/Calcutta"
+// })
 // markAbsent()
     
 
@@ -21,7 +24,7 @@ const markAbsent=require("../api/modules/attendance/markAbsent")
 app.use(cors());
 
 app.use("/",router)
-
+app.use(express.static('uploads'));
  const multer = require("multer")
  const errorHandlerMiddleware=require("../errorHandler/errorHandlerMiddleware")
  const notFound=require("../errorHandler/notFound")
@@ -93,7 +96,20 @@ const calculateGradesForAll=require('../api/modules/grades/calculateGradesForAll
 const calculateGradesOtherThanSalesman=require('../api/modules/grades/calculateGradesOtherThanSalesman')
 const addTimingCorrection=require('../api/modules/timing/addTimingCorrection')
 const getTimingCorrectionRequests=require('../api/modules/timing/getTimingCorrectionRequests')
-
+const getFloors=require('../api/modules/Floors/getFloors')
+const getStores=require('../api/modules/Stores/getStores')
+const getTotal=require('../api/modules/attendance/getTotal')
+const getTotalOutSessions=require('../api/modules/timing/getTotalOutSessions')
+const uploadFile=require("../upload/uploadFile")
+const getStoreIncharge=require("../api/getStoreIncharge")
+const getStoreIdOfGuard=require("../api/modules/stores/getStoreIdOfGuard")
+const getAllEmployees=require("../api/modules/employees/getAllEmployees")
+const getEmployeesWithTotalOutSessions=require("../api/modules/timing/getEmployeesWithTotalOutSessions")
+const getStoreIdOfFloorIncharge=require("../api/getStoreIdOfFloorIncharge")
+const getSubcategories=require("../api/getSubcategories")
+const getTotalEmployeesApproved=require("../api/modules/timing/getTotalEmployeesApproved")
+const getTotalApproved=require("../api/modules/attendance/getTotalApproved")
+const getPendingExpenses=require("../api/modules/expense/getPendingExpenses")
 
 // addSalary()
 // cron.schedule("0 47 10 15 * *",addSalary)
@@ -118,7 +134,8 @@ router.post("/api/auth/login",async (req,res,next)=>{
      
 })
 router.get("/api/getAttendance",
-    verifyAuth,getAttendance
+    verifyAuth,
+    getAttendance
       
  )
  router.post("/api/auth/register",
@@ -127,7 +144,11 @@ router.get("/api/getAttendance",
  )
  
 router.patch("/api/updateAttendance/:id",
-[verifyAuth, upload.single('download')],verifyAuth,updateAttendance
+verifyAuth,uploadFile,updateAttendance
+   
+)
+router.patch("/api/rejectAttendance/:id",
+verifyAuth,updateAttendance
    
 )
 router.post("/api/addInterview",
@@ -145,6 +166,14 @@ router.get("/api/getExpenses",
 )
 router.get("/api/getLeaves",
  verifyAuth,getLeaves
+   
+)
+router.get("/api/getFloors",
+ verifyAuth,getFloors
+   
+)
+router.get("/api/getStores",
+ verifyAuth,getStores
    
 )
 
@@ -176,6 +205,10 @@ router.get("/api/getTimings",
 )
 router.get("/api/getTotalSessions",
  verifyAuth,getTotalSessions
+   
+)
+router.get("/api/getStoreIdOfGuard",
+ verifyAuth,getStoreIdOfGuard
    
 )
 router.post("/api/addTiming",
@@ -363,6 +396,16 @@ router.get("/api/calculateGradesForAll",verifyAuth,calculateGradesForAll)
 router.get("/api/calculateGradesOtherThanSalesman",verifyAuth,calculateGradesOtherThanSalesman)
 router.post("/api/addTimingCorrection",verifyAuth,addTimingCorrection)
 router.get("/api/getTimingCorrectionRequests",verifyAuth,getTimingCorrectionRequests)
+router.get("/api/getTotal",verifyAuth,getTotal)
+router.get("/api/getTotalOutSessions",verifyAuth,getTotalOutSessions)
+router.get("/api/getStoreIncharge",verifyAuth,getStoreIncharge)
+router.get("/api/getAllEmployees",verifyAuth,getAllEmployees)
+router.get("/api/getEmployeesWithTotalOutSessions",verifyAuth,getEmployeesWithTotalOutSessions)
+router.get("/api/getStoreIdOfFloorIncharge",verifyAuth,getStoreIdOfFloorIncharge)
+router.get("/api/getSubcategories",verifyAuth,getSubcategories)
+router.get("/api/getTotalEmployeesApproved",verifyAuth,getTotalEmployeesApproved)
+router.get("/api/getTotalApproved",verifyAuth,getTotalApproved)
+router.get("/api/getPendingExpenses",verifyAuth,getPendingExpenses)
 
 
 app.use(errorHandlerMiddleware)

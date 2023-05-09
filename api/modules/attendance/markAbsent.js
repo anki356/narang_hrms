@@ -13,7 +13,9 @@ database.query("select employee_id from attendance where check_in_datetime>="+my
         employeeIds=employeeIds.filter((data)=>{
             return !leaveEmployees.includes(data.id)
         })
+       
         employeeIds.forEach(element => {
+            
            database.query("Insert into attendance (check_in_datetime,employee_id,status) values("+mysql.escape(moment([date.getFullYear(),date.getMonth(),date.getDate()]).toISOString(true))+","+element.id+",'absent')",(err,attendanceInsertResult)=>{
             console.log(attendanceInsertResult)
            }) 

@@ -7,6 +7,7 @@ const addTiming = (req, res, next) => {
         let allowed_roles = ['Guard']
         if (allowed_roles.includes(result[0].role_name)) {
             database.query("Insert Into timing (employee_id,date,out_time,approval_status,reason) values("+req.body.employee_id+","+mysql.escape(req.body.date)+ ","+mysql.escape(req.body.out_time)+","+mysql.escape(req.body.approval_status)+","+mysql.escape(req.body.reason)+")", (err, timingResult, fields) => {
+               console.log(err)
                 res.send(timingResult) 
                     
             })

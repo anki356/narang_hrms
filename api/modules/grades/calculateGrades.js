@@ -5,10 +5,11 @@ const calculateGrades = (req, res, next) => {
 
     const role_id = req.body.result.role_id
     database.query("Select * from roles where id=" + role_id, (err, result) => {
-        let allowed_roles = ['Admin', 'Super Admin']
+        let allowed_roles = ['Admin', 'Super Admin','HR Assistant','HR Head']
         if (allowed_roles.includes(result[0].role_name)) {
             console.log("Select count(id) as count_id from attendance where check_in_datetime>=" + mysql.escape(req.query.from_date) + "and check_in_datetime<=" + mysql.escape(req.query.to_date) + " and employee_id=" + req.query.employee_id + " and status='Present'")
-            database.query("Select count(id) as count_id from attendance where check_in_datetime>=" + req.query.from_date + "and check_in_datetime<=" + req.query.to_date + " and employee_id=" + req.query.employee_id + " and status='Present'", (err, attendanceCountResult) => {
+            database.query("Select count(id) as count_id from attendance where check_in_datetime>=" + req.query.from_date + " and check_in_datetime<=" + req.query.to_date + " and employee_id=" + req.query.employee_id + " and status='Present'", (err, attendanceCountResult) => {
+                console.log(err, attendanceCountResult)
                 let from_moment = moment(req.query.from_date, "YYYY-MM-DD")
                 let to_moment = moment(req.query.to_date, "YYYY-MM-DD")
                 let total_working_days = to_moment.diff(from_moment, 'd')
@@ -43,7 +44,7 @@ const calculateGrades = (req, res, next) => {
                 else {
                     grade_6th = 0
                 }
-                database.query("select sum(amount) as total_fine from fines where employee_id=" + req.query.employee_id + " and date>=" + req.query.from_date + "and date<=" + req.query.to_date, (err, fineResult) => {
+                database.query("select sum(amount) as total_fine from fines where employee_id=" + req.query.employee_id + " and date>=" + req.query.from_date + " and date<=" + req.query.to_date, (err, fineResult) => {
                     let total_fine
                     if (fineResult[0].total_fine === null) {
                         total_fine = 0

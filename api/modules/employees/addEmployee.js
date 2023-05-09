@@ -21,8 +21,8 @@ const getEmployees = (req, res, next) => {
      database.query("Insert into base_salaries (amount,employee_id) values("+req.body.base_salary+","+employeeId+")",(err,baseSalariesResult)=>{
 console.log(baseSalariesResult,err)
      
-                            req.files.document.forEach((data) => {
-                                database.query("Insert into file_upload (type,name,created_on) values('documents'," + mysql.escape(data.filename) + ",current_timestamp())", (err, fileUploadResultSecond, fields) => {
+                            req.files.document.forEach((data,index) => {
+                                database.query("Insert into file_upload (type,name,created_on) values("+mysql.escape(req.body.file_types[index])+"," + mysql.escape(data.filename) + ",current_timestamp())", (err, fileUploadResultSecond, fields) => {
                                     database.query("Insert into documents (file_id,employee_id) values(" + fileUploadResultSecond.insertId + "," + employeeId + ")", (err, documentResult, fields) => {
             console.log(err)
             

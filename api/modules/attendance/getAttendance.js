@@ -49,6 +49,9 @@ const getAttendance = (req, res, next) => {
                    if(req.query.employee_query){
                     queryString+=" and (employees.employee_id like '%"+ req.query.employee_query+"%'or employees.name like '%"+req.query.employee_query+"%')"
                    }
+                   if(req.query.status){
+                    queryString+=" and attendance.status in ("+ req.query.status+")"
+                   }
                    queryString+=" limit "+req.query.limit+" Offset "+req.query.offset
                   
         

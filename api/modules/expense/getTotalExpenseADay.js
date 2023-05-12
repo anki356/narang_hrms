@@ -20,6 +20,7 @@ const getTotalExpenseADay = (req, res, next) => {
     }else{
         let  queryString="SELECT sum(amount)as total from expenses left join employees on employees.id=expenses.employee_id left join job_details on job_details.id=employees.job_details_id where date>="+mysql.escape(req.query.from_date)+" and date<"+mysql.escape(req.query.to_date)+" and status='Approved'"
         database.query( queryString, (err, expense_total, fields) => {
+            console.log(err,queryString,expense_total)
             res.send(expense_total) 
                 
         })

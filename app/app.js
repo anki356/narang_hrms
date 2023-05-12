@@ -111,6 +111,8 @@ const getTotalEmployeesApproved=require("../api/modules/timing/getTotalEmployees
 const getTotalApproved=require("../api/modules/attendance/getTotalApproved")
 const getPendingExpenses=require("../api/modules/expense/getPendingExpenses")
 const getAttendanceCorrectionDatabyAttendanceID=require("../api/modules/attendance/getAttendanceCorrectionDatabyAttendanceID")
+const getExpenseDataByExpenseId=require("../api/modules/expense/getExpenseDataByExpenseId")
+const getExpenseHistory=require("../api/modules/expense/getExpenseHistory")
 
 // addSalary()
 // cron.schedule("0 47 10 15 * *",addSalary)
@@ -408,6 +410,8 @@ router.get("/api/getTotalEmployeesApproved",verifyAuth,getTotalEmployeesApproved
 router.get("/api/getTotalApproved",verifyAuth,getTotalApproved)
 router.get("/api/getPendingExpenses",verifyAuth,getPendingExpenses)
 router.get("/api/getAttendanceCorrectionDatabyAttendanceID",verifyAuth,getAttendanceCorrectionDatabyAttendanceID)
+router.get("/api/getExpenseDataByExpenseId",verifyAuth,getExpenseDataByExpenseId)
+router.get("/api/getExpenseHistory",verifyAuth,getExpenseHistory)
 
 
 app.use(errorHandlerMiddleware)

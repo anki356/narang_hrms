@@ -18,7 +18,7 @@ const getAttendance = (req, res, next) => {
                         queryString+=" and stores.name="+ mysql.escape(req.query.store_name)
                        }
                        if(req.query.role_name){
-                        queryString+=" and roles.role_name="+ req.query.role_name
+                        queryString+=" and roles.role_name= "+req.query.role_name
                        }
                        if(req.query.status){
                         queryString+=" and attendance.status in ("+ req.query.status+")"
@@ -44,7 +44,7 @@ const getAttendance = (req, res, next) => {
                     queryString+=" and stores.name="+ mysql.escape(req.query.store_name)
                    }
                    if(req.query.role_name){
-                    queryString+=" and roles.role_name="+ req.query.role_name
+                    queryString+=" and roles.role_name="+ mysql.escape(req.query.role_name)
                    }
                    if(req.query.employee_query){
                     queryString+=" and (employees.employee_id like '%"+ req.query.employee_query+"%'or employees.name like '%"+req.query.employee_query+"%')"

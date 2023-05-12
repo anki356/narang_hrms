@@ -110,6 +110,7 @@ const getSubcategories=require("../api/getSubcategories")
 const getTotalEmployeesApproved=require("../api/modules/timing/getTotalEmployeesApproved")
 const getTotalApproved=require("../api/modules/attendance/getTotalApproved")
 const getPendingExpenses=require("../api/modules/expense/getPendingExpenses")
+const getAttendanceCorrectionDatabyAttendanceID=require("../api/modules/attendance/getAttendanceCorrectionDatabyAttendanceID")
 
 // addSalary()
 // cron.schedule("0 47 10 15 * *",addSalary)
@@ -406,6 +407,7 @@ router.get("/api/getSubcategories",verifyAuth,getSubcategories)
 router.get("/api/getTotalEmployeesApproved",verifyAuth,getTotalEmployeesApproved)
 router.get("/api/getTotalApproved",verifyAuth,getTotalApproved)
 router.get("/api/getPendingExpenses",verifyAuth,getPendingExpenses)
+router.get("/api/getAttendanceCorrectionDatabyAttendanceID",verifyAuth,getAttendanceCorrectionDatabyAttendanceID)
 
 
 app.use(errorHandlerMiddleware)

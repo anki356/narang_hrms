@@ -1,6 +1,6 @@
 const database = require("../../../config/database");
 const mysql = require("mysql")
-const getTotalEmployees = (req, res, next) => {
+const getTotalEmployeesExpending = (req, res, next) => {
     const role_id = req.body.result.role_id
     database.query("Select * from roles where id=" + role_id, (err, result) => {
         if (err) console.log(err)
@@ -33,4 +33,4 @@ const getTotalEmployees = (req, res, next) => {
 
 }
 
-module.exports=getTotalEmployees
+module.exports=getTotalEmployeesExpending

@@ -15,6 +15,9 @@ const getExpenses = (req, res, next) => {
                     if(req.query.floor_name){
                         queryString+=" and floors.name=" + mysql.escape(req.query.floor_name)
                        }
+                    if(req.query.category_name){
+                        queryString+=" and expenses_categories.name=" + mysql.escape(req.query.category_name)
+                       }
                        if(req.query.store_name){
                         queryString+=" and stores.name="+ mysql.escape(req.query.store_name)
                        }
@@ -28,6 +31,7 @@ const getExpenses = (req, res, next) => {
                    if(req.query.status){
                     queryString+=" and expenses.status="+ req.query.status
                    }
+                   queryString+=" limit "+req.query.limit+" Offset "+req.query.offset
                     database.query(queryString , (err, expenseData, fields) => {
                         console.log(err)
                         res.send(expenseData) 
@@ -46,13 +50,16 @@ const getExpenses = (req, res, next) => {
                    if(req.query.role_name){
                     queryString+=" and roles.role_name="+ mysql.escape(req.query.role_name) 
                    }
-             
+                   if(req.query.category_name){
+                    queryString+=" and expenses_categories.name=" + mysql.escape(req.query.category_name)
+                   }
                if(req.query.employee_query){
                 queryString+=" and (employees.employee_id like '%"+ req.query.employee_query+"%'or employees.name like '%"+req.query.employee_query+"%')"
                }
                if(req.query.status){
                 queryString+=" and expenses.status="+ req.query.status
                }
+               queryString+=" limit "+req.query.limit+" Offset "+req.query.offset
                 database.query(queryString , (err, expenseData, fields) => {
                     console.log(err)
                     res.send(expenseData) 

@@ -33,7 +33,7 @@ const register=require("../api/modules/auth/register")
 const getAttendance=require('../api/modules/attendance/getAttendance')
 const getTotalExpenseADay=require('../api/modules/expense/getTotalExpenseADay')
 const getExpenses=require('../api/modules/expense/getExpenses')
-const getTotalEmployees=require('../api/modules/expense/getTotalEmployees')
+const getTotalEmployeesExpending=require('../api/modules/expense/getTotalEmployeesExpending')
 const addExpenses=require('../api/modules/expense/addExpenses')
 const addExpenseSubCategory=require('../api/modules/expense/addExpenseSubCategory')
 const getTimings=require('../api/modules/timing/getTimings')
@@ -113,6 +113,10 @@ const getPendingExpenses=require("../api/modules/expense/getPendingExpenses")
 const getAttendanceCorrectionDatabyAttendanceID=require("../api/modules/attendance/getAttendanceCorrectionDatabyAttendanceID")
 const getExpenseDataByExpenseId=require("../api/modules/expense/getExpenseDataByExpenseId")
 const getExpenseHistory=require("../api/modules/expense/getExpenseHistory")
+const getCategories=require("../api/getCategories")
+const getTotalEmployees=require("../api/modules/employees/getTotalEmployees")
+const getSalaryIncrement=require("../api/modules/salary/getSalaryIncrement")
+const getSalaryHistory=require("../api/modules/salary/getSalaryHistory")
 
 // addSalary()
 // cron.schedule("0 47 10 15 * *",addSalary)
@@ -185,8 +189,8 @@ router.get("/api/getStores",
 
 
 
-router.get("/api/getTotalEmployees",
- verifyAuth,getTotalEmployees
+router.get("/api/getTotalEmployeesExpending",
+ verifyAuth,getTotalEmployeesExpending
    
 )
 router.post("/api/addExpenses",
@@ -412,6 +416,10 @@ router.get("/api/getPendingExpenses",verifyAuth,getPendingExpenses)
 router.get("/api/getAttendanceCorrectionDatabyAttendanceID",verifyAuth,getAttendanceCorrectionDatabyAttendanceID)
 router.get("/api/getExpenseDataByExpenseId",verifyAuth,getExpenseDataByExpenseId)
 router.get("/api/getExpenseHistory",verifyAuth,getExpenseHistory)
+router.get("/api/getCategories",verifyAuth,getCategories)
+router.get("/api/getTotalEmployees",verifyAuth,getTotalEmployees)
+router.get("/api/getSalaryIncrement",verifyAuth,getSalaryIncrement)
+router.get("/api/getSalaryHistory",verifyAuth,getSalaryHistory)
 
 
 app.use(errorHandlerMiddleware)

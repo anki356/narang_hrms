@@ -8,7 +8,7 @@ const getInterview = (req, res, next) => {
         if (allowed_roles.includes(result[0].role_name)) {
             let queryString="SELECT roles.role_name,interview.*,interview.name as employee_name,employees.name as interviewer_name from interview left join employees on employees.id=interview.interviewer_employee_id left join job_details on job_details.id=employees.job_details_id left join floors on job_details.floor_id=floors.id left join stores on stores.id=job_details.store_id  left join roles on roles.id=interview.designation_id where date_time>="+mysql.escape(req.query.from_date)+" and date_time<"+mysql.escape(req.query.to_date)
             if(req.query.floor_name){
-                queryString+=" and floors.name=" +req.query.floor_name
+                queryString+=" and floors.name=" +mysql.escape(req.query.floor_name)
                }
             if(req.query.interviewee_name){
                 queryString+=" and interview.name like '%'" +req.query.interviewee_name+"'%'"
@@ -17,7 +17,7 @@ const getInterview = (req, res, next) => {
                 queryString+=" and stores.name="+ mysql.escape(req.query.store_name)
                }
                if(req.query.role_name){
-                queryString+=" and roles.role_name= "+req.query.role_name
+                queryString+=" and roles.role_name= "+mysql.escape(req.query.role_name)
                }
                
                if(req.query.employee_query){
@@ -38,9 +38,17 @@ const getInterview = (req, res, next) => {
                 })
                     if(reference_id_employee_id_array.length>0)
                       {
-                          database.query("SELECT employees.name as reference_name from employees where employees.id in ("+reference_id_employee_id_array+")" , (err, referenceIdResult, fields) => {
+                          database.query("SELECT employees.name as reference_name,employees.id from employees where employees.id in ("+reference_id_employee_id_array+")" , (err, referenceIdResult, fields) => {
                               console.log(err)
-  res.json({"interviewResult":interviewResult,"refernceResult":referenceIdResult})
+                              interviewResult.forEach(element => {
+                                referenceIdResult.forEach((data)=>{
+
+                                    if(element.reference_id===data.id){
+                                        element.reference=data.reference_name
+                                    }
+                                })  
+                              });
+                              res.send(interviewResult)
                           })
 
                       }  

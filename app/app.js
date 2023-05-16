@@ -275,9 +275,6 @@ router.get("/api/getAdvance",
    
 )
 
-
-
-
 router.get("/api/getFines",
  verifyAuth,getFines
    

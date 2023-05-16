@@ -30,7 +30,9 @@ const getAttendance = (req, res, next) => {
                        if(req.query.limit){
                         queryString+=" limit "+req.query.limit
                        }
-                       queryString+=" Offset "+req.query.offset
+                       if(req.query.offset){
+                        queryString+=" Offset "+req.query.offset
+                       }
                        console.log(queryString)
             
                         database.query(queryString , (err, attendanceResult, fields) => {

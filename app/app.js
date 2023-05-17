@@ -7,14 +7,17 @@ const router=express.Router()
  require('express-async-errors');
  const cron = require("node-cron");
 const markAbsent=require("../api/modules/attendance/markAbsent")
-
+const Salary =require("./Salary")
 // cron.schedule("42 8 * * *",markAbsent,{
 //   scheduled: true,
 //   timezone: "Asia/Calcutta"
 // })
 // markAbsent()
-    
-
+//  cron.schedule("31 12 17 * *",Salary,{
+//   scheduled: true,
+//   timezone: "Asia/Calcutta"
+// })   
+// Salary()
 
 
  app.use(
@@ -125,6 +128,7 @@ const getTotalInterviews=require("../api/modules/interview/getTotalInterviews")
 
 // addSalary()
 // cron.schedule("0 47 10 15 * *",addSalary)
+
 const storage = multer.diskStorage({
    destination: function (req, file, cb) {
      cb(null, 'uploads/')

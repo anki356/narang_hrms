@@ -8,8 +8,9 @@ const addLeave = (req, res, next) => {
         let allowed_roles = ['HR Head','Admin','Super Admin']
         if (allowed_roles.includes(result[0].role_name)) {
             database.query("Insert into file_upload (type,name) values ('leave_document_image'," + mysql.escape(req.file.filename) + ")", (err, fileResult, fields) => {
-                var from_date = moment(req.body.from_date, 'DD-MM-YYYY');
-                var to_date = moment(req.body.to_date, 'DD-MM-YYYY');
+                var from_date = moment(req.body.from_date)
+                var to_date = moment(req.body.to_date)
+                console.log(from_date,to_date)
                 let d = to_date.diff(from_date, 'days');
                 let attendanceArray = []
                 for (let i = 0; i <= d; i++) {
@@ -32,7 +33,7 @@ else{
 
                     
                 }
-                database.query("Insert into leaves (employee_id,from_date,to_date,approval_status,recall_head,head_approval) values(" + req.body.employee_id + "," + mysql.escape(from_date.toISOString(true)) + "," + mysql.escape(to_date.toISOString(true)) + ",'Pending',1,1)", (err, leaveData, fields) => {
+                database.query("Insert into leaves (employee_id,from_date,to_date,approval_status,recall_head,head_approval,approval_document_id) values(" + req.body.employee_id + "," + mysql.escape(from_date.toISOString(true)) + "," + mysql.escape(to_date.toISOString(true)) + ",'Pending',"+req.body.recall_head+","+req.body.head_approval+","+fileResult.insertId+")", (err, leaveData, fields) => {
                     console.log(err)
                     res.json({ "leaveData": leaveData, "attendanceArray": attendanceArray })
                 })

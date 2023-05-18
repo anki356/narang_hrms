@@ -14,6 +14,9 @@ const getLeaves = (req, res, next) => {
                if(req.query.store_name){
                 queryString+=" and stores.name="+ mysql.escape(req.query.store_name)
                }
+               if(req.query.status){
+                queryString+=" and leaves.approval_status in ("+ req.query.status+")"
+               }
                if(req.query.role_name){
                 queryString+=" and roles.role_name="+mysql.escape(req.query.role_name)
                }

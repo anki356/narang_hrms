@@ -125,6 +125,7 @@ const getTotalAdvanceGranted=require("../api/modules/advance/getTotalAdvanceGran
 const getTotalEmployeesGranted=require("../api/modules/advance/getTotalEmployeesGranted")
 const getTotalUnpaidAdvance=require("../api/modules/advance/getTotalUnpaidAdvance")
 const getTotalInterviews=require("../api/modules/interview/getTotalInterviews")
+const getLeave=require("../api/modules/leaves/getLeave")
 
 // addSalary()
 // cron.schedule("0 47 10 15 * *",addSalary)
@@ -434,6 +435,7 @@ router.get("/api/getTotalAdvanceGranted",verifyAuth,getTotalAdvanceGranted)
 router.get("/api/getTotalEmployeesGranted",verifyAuth,getTotalEmployeesGranted)
 router.get("/api/getTotalUnpaidAdvance",verifyAuth,getTotalUnpaidAdvance)
 router.get("/api/getTotalInterviews",verifyAuth,getTotalInterviews)
+router.get("/api/getLeave",verifyAuth,getLeave)
 
 app.use(errorHandlerMiddleware)
 app.use(notFound)

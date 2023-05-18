@@ -7,7 +7,7 @@ const getEmployeeDetails = (req, res, next) => {
         if (allowed_roles.includes(result[0].role_name)) {
             let queryString="SELECT bank_details.name as bank_name, base_salaries.*,file_upload.name as photo,floors.name as floor_name,employees.employee_id as empID, job_details.*,bank_details.*,floors.*,stores.name as store_name,roles.*,store_departments.name as store_department_name,employees.* from employees left join job_details on job_details.id=employees.job_details_id left join bank_details on bank_details.id=employees.bank_details_id left join floors on floors.id =job_details.floor_id left join stores on stores.id =job_details.store_id left join roles on roles.id=job_details.role_id left join store_departments on store_departments.id=job_details.store_department_id left join file_upload on file_upload.id=employees.photo_id left join base_salaries on base_salaries.employee_id =employees.id"
             if(req.query.id){
-queryString+="where employees.id="+req.query.id
+queryString+=" where employees.id="+req.query.id
             }
             if(req.query.employee_query){
                 queryString+=" where (employees.employee_id like '%"+ req.query.employee_query+"%'or employees.name like '%"+req.query.employee_query+"%')"

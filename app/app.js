@@ -51,7 +51,7 @@ const getLoans=require('../api/modules/loan/getLoans')
 const getTotalLoansGranted=require('../api/modules/loan/getTotalLoansGranted')
 const getTotalEmployeesTakenLoan=require('../api/modules/loan/getTotalEmployeesTakenLoan')
 const getTotalPendingEmis=require('../api/modules/loan/getTotalPendingEmis')
-const getAdvance=require('../api/modules/advance/getAdvance')
+const getAdvances=require('../api/modules/advance/getAdvances')
 const addAdvance=require('../api/modules/advance/addAdvance')
 const updateAdvanceStatus=require('../api/modules/advance/updateAdvanceStatus')
 const updateLoanStatus=require('../api/modules/loan/updateLoanStatus')
@@ -126,6 +126,9 @@ const getTotalEmployeesGranted=require("../api/modules/advance/getTotalEmployees
 const getTotalUnpaidAdvance=require("../api/modules/advance/getTotalUnpaidAdvance")
 const getTotalInterviews=require("../api/modules/interview/getTotalInterviews")
 const getLeave=require("../api/modules/leaves/getLeave")
+const getLoan=require("../api/modules/loan/getLoan")
+const getAdvance=require("../api/modules/advance/getAdvance")
+const getFine=require("../api/modules/fines/getFine")
 
 // addSalary()
 // cron.schedule("0 47 10 15 * *",addSalary)
@@ -273,6 +276,10 @@ router.get("/api/getTotalEmployeesOnLeave",
 )
 router.get("/api/getTotalPendingEmis",
  verifyAuth,getTotalPendingEmis
+   
+)
+router.get("/api/getAdvances",
+ verifyAuth,getAdvances
    
 )
 router.get("/api/getAdvance",
@@ -433,6 +440,8 @@ router.get("/api/getTotalEmployeesGranted",verifyAuth,getTotalEmployeesGranted)
 router.get("/api/getTotalUnpaidAdvance",verifyAuth,getTotalUnpaidAdvance)
 router.get("/api/getTotalInterviews",verifyAuth,getTotalInterviews)
 router.get("/api/getLeave",verifyAuth,getLeave)
+router.get("/api/getLoan",verifyAuth,getLoan)
+router.get("/api/getFine",verifyAuth,getFine)
 
 app.use(errorHandlerMiddleware)
 app.use(notFound)

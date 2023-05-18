@@ -23,6 +23,9 @@ const getLoans = (req, res, next) => {
                if(req.query.employee_query){
                 queryString+=" and (employees.employee_id like '%"+ req.query.employee_query+"%'or employees.name like '%"+req.query.employee_query+"%')"
                }
+               if(req.query.status){
+                queryString+=" and loan.status in ("+ req.query.status+")"
+               }
                if(req.query.limit){
                 queryString+=" limit "+req.query.limit
                }
@@ -30,9 +33,16 @@ const getLoans = (req, res, next) => {
                 queryString+=" Offset "+req.query.offset
                }
             database.query( queryString, (err, loanData, fields) => {
-                let loan_ids=loanData.map((loan)=>{
-                    return loan.id
-                })
+                console.log(err)
+                let  loan_ids=[]
+                if(loanData.length>0){
+                    loan_ids=loanData.map((loan)=>{
+                        return loan.id
+                    })
+                }else{
+                   loan_ids=[]
+                }
+                
                 if(loan_ids.length>0)
                {
                 database.query("Select * from loan_repayment where loan_id  in ("+loan_ids+")",(err, loanRepaymentData, fields) => {

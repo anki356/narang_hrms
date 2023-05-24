@@ -130,6 +130,13 @@ const getLoan=require("../api/modules/loan/getLoan")
 const getAdvance=require("../api/modules/advance/getAdvance")
 const getFine=require("../api/modules/fines/getFine")
 const getEmployeesBasedOnRole=require("../api/modules/employees/getEmployeesBasedOnRole")
+const getRoleData=require("../api/modules/roles/getRoleData")
+const editRole=require("../api/modules/roles/editRole")
+const totalEmployeesGivenBonus=require("../api/modules/bonus/totalEmployeesGivenBonus")
+const totalAmountOfBonusGiven=require("../api/modules/bonus/totalAmountOfBonusGiven")
+const getStoreDep=require("../api/getStoreDep")
+const calculateAverageGrade=require("../api/modules/grades/calculateAverageGrade")
+const isGraded=require("../api/modules/grades/isGraded")
 
 // addSalary()
 // cron.schedule("0 47 10 15 * *",addSalary)
@@ -372,6 +379,10 @@ router.get("/api/getInterview",
  verifyAuth,getInterview
    
 )
+router.get("/api/totalAmountOfBonusGiven",
+ verifyAuth,totalAmountOfBonusGiven
+   
+)
 
 router.post("/api/addGradesBYFI",
  verifyAuth,addGradesBYFI
@@ -381,6 +392,11 @@ router.get("/api/getGrades",
  verifyAuth,getGrades
    
 )
+router.get("/api/totalEmployeesGivenBonus",
+ verifyAuth,totalEmployeesGivenBonus
+   
+)
+
 router.post("/api/makeAttendanceCorrectionRequests",
  verifyAuth,makeAttendanceCorrectionRequests
    
@@ -401,7 +417,7 @@ router.post("/api/addEmployee",
  [verifyAuth,upload.fields([{name:'photo',maxCount: 1},{name:'document',maxCount: 2}])],verifyAuth,addEmployee
    
 )
-router.post('/api/addBonus',verifyAuth, addBonus)
+router.post('/api/addBonus',verifyAuth, upload.single('download'),verifyAuth, addBonus)
 router.patch('/api/markPresent',verifyAuth, markPresent)
 router.get('/api/getBonus',verifyAuth, getBonus)
 router.patch('/api/auth/changePassword',verifyAuth, changePassword)
@@ -444,6 +460,11 @@ router.get("/api/getLeave",verifyAuth,getLeave)
 router.get("/api/getLoan",verifyAuth,getLoan)
 router.get("/api/getFine",verifyAuth,getFine)
 router.get("/api/getEmployeesBasedOnRole",verifyAuth,getEmployeesBasedOnRole)
+router.get("/api/getRoleData",verifyAuth,getRoleData)
+router.patch("/api/editRole/:id",verifyAuth,editRole)
+router.get("/api/getStoreDep",verifyAuth,getStoreDep)
+router.get("/api/calculateAverageGrade",verifyAuth,calculateAverageGrade)
+router.get("/api/isGraded",verifyAuth,isGraded)
 
 app.use(errorHandlerMiddleware)
 app.use(notFound)

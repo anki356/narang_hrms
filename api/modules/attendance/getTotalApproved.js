@@ -3,7 +3,7 @@ const mysql=require('mysql')
 const getTotalApproved = (req, res, next) => {
     const role_id = req.body.result.role_id
     database.query("Select * from roles where id=" + role_id, (err, result) => {
-        let allowed_roles = ['Admin', 'Super Admin', 'HR Head', 'HR Assistant','Floor Incharge 1','Floor Incharge 2']
+        let allowed_roles = ['Admin', 'Super Admin', 'HR Head', 'HR Assistant','Floor Incharge']
         if (allowed_roles.includes(result[0].role_name)) {
             if(result[0].role_name.split(" ")[0]==='Floor'){
                 database.query("select employees.id from employees left join job_details on job_details.id=employees.job_details_id where job_details.role_id="+role_id,(err,employeesResult,fields)=>{

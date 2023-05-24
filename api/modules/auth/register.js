@@ -18,7 +18,7 @@ const register=(req,res,next)=>{
                     if(endResult.length===0){
                         database.query("Insert into users (role_id,username,password) values("+roleResult[0].id+","+mysql.escape(req.body.username)+","+mysql.escape(hash)+")",(err,endResult,fields)=>{
                             res.send(endResult)
-                            next()
+                            
                         })
                     }else{
                         res.json({

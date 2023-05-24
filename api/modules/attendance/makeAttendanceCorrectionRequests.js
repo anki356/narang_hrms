@@ -3,7 +3,7 @@ const mysql = require("mysql")
 const makeAttendanceCorrectionRequests= (req, res, next) => {
     const role_id = req.body.result.role_id
     database.query("Select * from roles where id=" + role_id, (err, result) => {
-        let allowed_roles = [ 'Floor Incharge 1','Floor Incharge 2']
+        let allowed_roles = [ 'Floor Incharge']
         if (allowed_roles.includes(result[0].role_name)) {
             database.query("Insert Into attendance_requests (employee_id,type,reason,date_time,attendance_id,status) values("+mysql.escape(req.body.employee_id)+","+mysql.escape(req.body.type)+","+mysql.escape(req.body.reason)+","+mysql.escape(req.body.date_time)+","+req.body.attendance_id+",'Pending')",(err,AttendanceRequestData,fields)=>{
                 console.log(err)

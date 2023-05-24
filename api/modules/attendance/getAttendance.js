@@ -4,7 +4,7 @@ const mysql=require('mysql')
 const getAttendance = (req, res, next) => {
     const role_id = req.body.result.role_id
     database.query("Select * from roles where id=" + role_id, (err, result) => {
-        let allowed_roles = ['Admin', 'Super Admin', 'HR Head', 'HR Assistant','Floor Incharge 1','Floor Incharge 2']
+        let allowed_roles = ['Admin', 'Super Admin', 'HR Head', 'HR Assistant','Floor Incharge']
         if (allowed_roles.includes(result[0].role_name)) {
             let queryString="SELECT file_upload.name as photo,attendance.id as attendance_id, roles.role_name,employees.id as employee_id,employees.employee_id as empID,employees.name as employee_name,floors.name AS floor_name,stores.name as store_name ,attendance.status,attendance.check_in_datetime as datetime FROM attendance  LEFT JOIN employees ON employees.id=attendance.employee_id left JOIN job_details ON employees.job_details_id=job_details.id left JOIN floors ON job_details.floor_id=floors.id left join roles on job_details.role_id=roles.id left join file_upload on file_upload.id=employees.photo_id left join stores on stores.id=job_details.store_id where attendance.check_in_datetime>=" + mysql.escape(req.query.from_date) + " and attendance.check_in_datetime< " +mysql.escape(req.query.to_date)
             if(result[0].role_name.split(" ")[0]==='Floor'){

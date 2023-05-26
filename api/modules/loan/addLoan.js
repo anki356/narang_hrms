@@ -3,10 +3,10 @@ const mysql = require("mysql")
 const addLoan = (req, res, next) => {
     const role_id = req.body.result.role_id
     database.query("Select * from roles where id=" + role_id, (err, result) => {
-        let allowed_roles = ['HR Head']
+        let allowed_roles = ['HR Head','Super Admin','Admin']
         if (allowed_roles.includes(result[0].role_name)) {
             database.query("Insert into file_upload (type,name) values ('loan_document_image'," + mysql.escape(req.file.filename) + ")", (err, fileResult, fields) => {
-                database.query("Insert Into loan (employee_id,amount,tenure,approval_status,file_upload_id,date,recall_head,head_approval) values(" + req.body.employee_id + "," + mysql.escape(req.body.amount) + "," + mysql.escape(req.body.tenure) + "," + mysql.escape(req.body.approval_status) + "," + fileResult.insertId + ",current_timestamp()," + req.body.recall_head + "," + req.body.head_approval + ")", async(err, loanResult, fields) => {
+                database.query("Insert Into loan (employee_id,amount,tenure,status,file_upload_id,date,recall_head,head_approval) values(" + req.body.employee_id + "," + mysql.escape(req.body.amount) + "," + mysql.escape(req.body.tenure) + "," + mysql.escape(req.body.approval_status) + "," + fileResult.insertId + ",current_timestamp()," + req.body.recall_head + "," + req.body.head_approval + ")", async(err, loanResult, fields) => {
                     console.log(err)
                     loanResult.loan_repaymentData = []
                     

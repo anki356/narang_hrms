@@ -8,6 +8,7 @@ const router=express.Router()
  const cron = require("node-cron");
 const markAbsent=require("../api/modules/attendance/markAbsent")
 const Salary =require("./Salary")
+const moment=require('moment')
 // cron.schedule("42 8 * * *",markAbsent,{
 //   scheduled: true,
 //   timezone: "Asia/Calcutta"
@@ -137,10 +138,20 @@ const totalAmountOfBonusGiven=require("../api/modules/bonus/totalAmountOfBonusGi
 const getStoreDep=require("../api/getStoreDep")
 const calculateAverageGrade=require("../api/modules/grades/calculateAverageGrade")
 const isGraded=require("../api/modules/grades/isGraded")
+const getTransferDetails=require("../api/modules/transfer/getTransferDetails")
+const updateTransfer=require("../api/modules/transfer/updateTransfer")
 
 // addSalary()
 // cron.schedule("0 47 10 15 * *",addSalary)
 
+cron.schedule("00 00 00 1 * *",()=>{
+  let from_date=moment().subtract(1,'month').startOf('month').format("YYYY-MM-DD")
+  let to_date=moment().subtract(1,'month').endOf('month').format("YYYY-MM-DD")
+  addGrades(from_date,to_date,12000)},{
+    scheduled: true,
+    timezone: "Asia/Calcutta"
+  })   
+// addGrades(from_date,to_date,12000)
 const storage = multer.diskStorage({
    destination: function (req, file, cb) {
      cb(null, 'uploads/')
@@ -465,6 +476,8 @@ router.patch("/api/editRole/:id",verifyAuth,editRole)
 router.get("/api/getStoreDep",verifyAuth,getStoreDep)
 router.get("/api/calculateAverageGrade",verifyAuth,calculateAverageGrade)
 router.get("/api/isGraded",verifyAuth,isGraded)
+router.get("/api/getTransferDetails",verifyAuth,getTransferDetails)
+router.patch("/api/updateTransfer/:id",verifyAuth,updateTransfer)
 
 app.use(errorHandlerMiddleware)
 app.use(notFound)

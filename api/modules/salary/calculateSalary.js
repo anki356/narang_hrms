@@ -5,12 +5,20 @@ const calculateSalary = async ( from_date, to_date, commission) => {
 try {
    let month=moment(from_date).month()
    let year=moment(from_date).year()
-    database.query("select base_salaries.amount as base_salary, employees.min_wages_as_per_rule as min_wages,loan_repayment.amount as loan_emi,count (attendance.id) as attendance_count,sum(expenses.amount) as expense_total,sum(advance.amount) as advance_total from attendance left join expenses on expenses.employee_id=attendance.employee_id left join advance on advance.employee_id=attendance.employee_id left join loan on loan.employee_id=attendance.employee_id left join loan_repayment on loan_repayment.loan_id=loan.id left join employees on employees.id=attendance.employee_id left join base_salaries on base_salaries.employee_id=attendance.employee_id where loan_repayment.month="+month+" and loan_repayment.year="+year+" and attendance.status='Present' and check_in_datetime>" + mysql.escape(from_date) + " and check_in_datetime<=" + mysql.escape(to_date)+"  group by attendance.employee_id ", (err, result, fields) => {
-        
+    database.query("select count (attendance.id) as attendance_count, attendance.employee_id as employee_idattendance.status='Present' and check_in_datetime>" + mysql.escape(from_date) + " and check_in_datetime<=" + mysql.escape(to_date)+" ) group by attendance.employee_id ", (err, result, fields) => {
+        console.log(result)
        
             let total_days = moment(from_date).daysInMonth()
-            result.forEach((data)=>{
-                let salary=data.base_salary/total_days*data.id_count
+            let promiseArray=[]
+            result.forEach((data,index)=>{
+                
+                let pr={}
+                pr.pr=new Promise((resolve, reject) => {
+                    pr.resolve=resolve
+                    pr.reject=reject
+                })
+promiseArray[index]=pr.pr
+                let salary=data.base_salary/total_days*data.attendance_count
                 // let salary = baseSalariesResult[0].amount / total_days * 25
                 
                     let tea = 10 * data.attendance_count
@@ -32,16 +40,14 @@ try {
                             advance = 0
                         }
                         let loan = 0
-    
+    if(data.loan_emi!==null){
+        data.loan_emi=0
+    }
                      
                                  
-                                    if (data.loan_emi!==null) {
+                                   
                                         net_salary = Number(salary) + Number(commission) - Number(expense) - tea - Number(advance)-data.loan_emi
                                        
-                                    }
-                                    else {
-                                        net_salary = Number(salary) + Number(commission) - Number(expense) - tea - Number(advance)
-                                    }
                                     
                                
                            
@@ -62,7 +68,7 @@ try {
                                     console.log(err)
                                     let basic_salary = Number(settingsResult[1].value) * net_salary / 100
                                     let hra = Number(settingsResult[0].value) * net_salary / 100
-                                    database.query("select type from employees where id=" + employee_id, (err, employeeTypeResponse) => {
+                                    database.query("select type from employees where id=" + data.employee_id, (err, employeeTypeResponse) => {
                                         console.log(err)
                                         if (employeeTypeResponse[0].type === 'PF') {
                                             let esi
@@ -71,11 +77,18 @@ try {
                                             }
                                             let pf = basic_salary * 12 / 100
                                             let net_payable_salary = net_salary - esi - pf
-                                            return { "days": days, "net_salary": net_salary, "cash_incentive": cash_incentive, "basic": basic_salary, "hra": hra, "esi": esi, "pf": pf, "net_payable_salary": net_payable_salary, "advance": advance, "expense": expense, "loan": loan, "tea": tea, "working_days": attendanceCountResult[0].id_count, "computed": salary }
+                                            database.query("Insert into salaries (employee_id, working_days, month, computed, commission, expense, tea, advance, loan_emi, total_earnings, total_deductions, net_salary, status, esi, pf, basic_salary, hra, days_shown, cash_incentive,net_payable_salary)values ("+data.employee_id+","+data.attendance_count+","+month+","+salary+","+commission+","+expense+","+tea+","+advance+","+loan+","+Number(salary) + Number(commission)+","+(Number(expense) + tea + Number(advance)+Number(data.loan_emi))+","+net_salary+",'Unpaid',"+esi+","+pf+","+basic_salary+","+hra+","+days+","+cash_incentive+","+net_payable_salary+")",(err,salariesResult)=>{
+                                              pr.resolve(true)  
+                                            })
+                                            // return { "days": days, "net_salary": net_salary, "cash_incentive": cash_incentive, "basic": basic_salary, "hra": hra, "esi": esi, "pf": pf, "net_payable_salary": net_payable_salary, "advance": advance, "expense": expense, "loan": loan, "tea": tea, "working_days": attendanceCountResult[0].id_count, "computed": salary }
                                         }
                                         else {
-                                            console.log({ "days": days, "net_salary": net_salary, "cash_incentive": cash_incentive, "basic": basic_salary, "hra": hra, "net_payable_salary": net_salary, "advance": advance, "expense": expense, "loan": loan, "tea": tea, "working_days": attendanceCountResult[0].id_count, "computed": salary })
-                                            return { "days": days, "net_salary": net_salary, "cash_incentive": cash_incentive, "basic": basic_salary, "hra": hra, "net_payable_salary": net_salary, "advance": advance, "expense": expense, "loan": loan, "tea": tea, "working_days": attendanceCountResult[0].id_count, "computed": salary }
+                                            database.query("Insert into salaries (employee_id, working_days, month, computed, commission, expense, tea, advance, loan_emi, total_earnings, total_deductions, net_salary, status,  basic_salary, hra, days_shown, cash_incentive,net_payable_salary)values ("+data.employee_id+","+data.attendance_count+","+month+","+salary+","+commission+","+expense+","+tea+","+advance+","+loan+","+Number(salary) + Number(commission)+","+(Number(expense) + tea + Number(advance)+Number(data.loan_emi))+","+net_salary+",'Unpaid',"+basic_salary+","+hra+","+days+","+cash_incentive+","+net_salary+")",(err,salariesResult)=>{
+                                                console.log("here",err)
+                                              pr.resolve(true) 
+                                            })
+                                            // console.log({ "days": days, "net_salary": net_salary, "cash_incentive": cash_incentive, "basic": basic_salary, "hra": hra, "net_payable_salary": net_salary, "advance": advance, "expense": expense, "loan": loan, "tea": tea, "working_days": attendanceCountResult[0].id_count, "computed": salary })
+                                            // return { "days": days, "net_salary": net_salary, "cash_incentive": cash_incentive, "basic": basic_salary, "hra": hra, "net_payable_salary": net_salary, "advance": advance, "expense": expense, "loan": loan, "tea": tea, "working_days": attendanceCountResult[0].id_count, "computed": salary }
     
                                         }
     
@@ -92,7 +105,9 @@ try {
             
         
             })
-           
+            Promise.all(promiseArray).then(()=>{
+                return  
+            })
 
     })
 } catch (error) {

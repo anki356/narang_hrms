@@ -150,7 +150,10 @@ cron.schedule("00 00 00 1 * *",()=>{
   addGrades(from_date,to_date,12000)},{
     scheduled: true,
     timezone: "Asia/Calcutta"
-  })   
+  })  
+  let from_date=moment().subtract(1,'month').startOf('month').format("YYYY-MM-DD")
+  let to_date=moment().subtract(1,'month').endOf('month').format("YYYY-MM-DD")
+  // getSalaryDetails(from_date,to_date,12000)
 // addGrades(from_date,to_date,12000)
 const storage = multer.diskStorage({
    destination: function (req, file, cb) {

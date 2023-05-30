@@ -140,6 +140,7 @@ const calculateAverageGrade=require("../api/modules/grades/calculateAverageGrade
 const isGraded=require("../api/modules/grades/isGraded")
 const getTransferDetails=require("../api/modules/transfer/getTransferDetails")
 const updateTransfer=require("../api/modules/transfer/updateTransfer")
+const getDepartments=require("../api/getDepartments")
 
 // addSalary()
 // cron.schedule("0 47 10 15 * *",addSalary)
@@ -194,7 +195,9 @@ verifyAuth,updateAttendance
    
 )
 router.post("/api/addInterview",
-[verifyAuth, upload.array('download')],verifyAuth,addInterview
+  [verifyAuth, upload.any('download')],verifyAuth,addInterview
+
+
    
 )
 
@@ -481,7 +484,8 @@ router.get("/api/calculateAverageGrade",verifyAuth,calculateAverageGrade)
 router.get("/api/isGraded",verifyAuth,isGraded)
 router.get("/api/getTransferDetails",verifyAuth,getTransferDetails)
 router.patch("/api/updateTransfer/:id",verifyAuth,updateTransfer)
+router.get("/api/getDepartments",verifyAuth,getDepartments)
 
-app.use(errorHandlerMiddleware)
+// app.use(errorHandlerMiddleware)
 app.use(notFound)
 module.exports = app;

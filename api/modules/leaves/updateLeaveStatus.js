@@ -10,7 +10,7 @@ const updateLeaveStatus = (req, res, next) => {
 
                 database.query("Update attendance set status_by_id="+role_id+", status_date=current_timestamp(),status='On Leave' where check_in_datetime>="+mysql.escape(req.body.from_date)+" and check_in_datetime<="+mysql.escape(req.body.to_date)+" and employee_id="+req.body.employee_id , (err, attendanceData, fields) => {
                     console.log(err)
-                    database.query("Update leaves set approval_status="+mysql.escape(req.body.status)+",reason="+mysql.escape(req.body.reason)+" where from_date>="+mysql.escape(req.body.from_date)+" and to_date<="+mysql.escape(req.body.to_date)+" and employee_id="+req.body.employee_id , (err, leaveData, fields) => {
+                    database.query("Update leaves set status="+mysql.escape(req.body.status)+",reason="+mysql.escape(req.body.reason)+" where from_date>="+mysql.escape(req.body.from_date)+" and to_date<="+mysql.escape(req.body.to_date)+" and employee_id="+req.body.employee_id , (err, leaveData, fields) => {
                         console.log(err)
                     res.send(leaveData) 
                         
@@ -20,7 +20,7 @@ const updateLeaveStatus = (req, res, next) => {
             else{
                 database.query("Update attendance set status='Absent', status_by_id="+role_id+", status_date=current_timestamp() where check_in_datetime>="+mysql.escape(req.body.from_date)+" and check_in_datetime<="+mysql.escape(req.body.to_date)+" and employee_id="+req.body.employee_id , (err, attendanceData, fields) => {
                     console.log(err)
-                    database.query("Update leaves set approval_status="+mysql.escape(req.body.status)+",reason="+mysql.escape(req.body.reason)+" where from_date>="+mysql.escape(req.body.from_date)+" and to_date<="+mysql.escape(req.body.to_date)+" and employee_id="+req.body.employee_id , (err, leaveData, fields) => {
+                    database.query("Update leaves set status="+mysql.escape(req.body.status)+",reason="+mysql.escape(req.body.reason)+" where from_date>="+mysql.escape(req.body.from_date)+" and to_date<="+mysql.escape(req.body.to_date)+" and employee_id="+req.body.employee_id , (err, leaveData, fields) => {
                         console.log(err)
                     res.send(leaveData) 
                         

@@ -11,7 +11,10 @@ const getInterview = (req, res, next) => {
                 queryString+=" and floors.name=" +mysql.escape(req.query.floor_name)
                }
             if(req.query.interviewee_name){
-                queryString+=" and interview.name like '%'" +req.query.interviewee_name+"'%'"
+                queryString+=" and interview.name like '%" +req.query.interviewee_name+"%'"
+               }
+            if(req.query.interviewer_name){
+                queryString+=" and employees.name like '%" +req.query.interviewer_name+"%'"
                }
                if(req.query.store_name){
                 queryString+=" and stores.name="+ mysql.escape(req.query.store_name)

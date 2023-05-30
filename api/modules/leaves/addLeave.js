@@ -31,7 +31,7 @@ const addLeave = (req, res, next) => {
 
             })
             console.log(queryString)
-            database.query("select id from attendance where check_in_datetime  in (" + queryString + ")", (err, duplicateResult) => {
+            database.query("select id from attendance where check_in_datetime  in (" + queryString + ") and employee_id="+req.body.employee_id, (err, duplicateResult) => {
                 console.log(err)
                 if (duplicateResult.length === 0) {
             database.query("Insert into file_upload (type,name) values ('leave_document_image'," + mysql.escape(req.file.filename) + ")", (err, fileResult, fields) => {
@@ -41,7 +41,6 @@ const addLeave = (req, res, next) => {
                         for (let i = 0; i <= d; i++) {
 
                             let day = moment(req.body.from_date).add(i, 'd')
-
                             if (day.format("DD-MM-YYYY") === moment(new Date()).format("DD-MM-YYYY")) {
 
                                 database.query("Update attendance set status='Pending' where check_in_datetime=" + mysql.escape(day.format("YYYY-MM-DD")) + "and employee_id=" + req.body.employee_id, (err, attendanceData, fields) => {
@@ -60,7 +59,7 @@ const addLeave = (req, res, next) => {
 
 
                         }
-                        database.query("Insert into leaves (employee_id,from_date,to_date,approval_status,recall_head,head_approval,approval_document_id) values(" + req.body.employee_id + "," + mysql.escape(from_date.toISOString(true)) + "," + mysql.escape(to_date.toISOString(true)) + ",'Pending'," + req.body.recall_head + "," + req.body.head_approval + "," + fileResult.insertId + ")", (err, leaveData, fields) => {
+                        database.query("Insert into leaves (employee_id,from_date,to_date,status,recall_head,head_approval,approval_document_id) values(" + req.body.employee_id + "," + mysql.escape(from_date.toISOString(true)) + "," + mysql.escape(to_date.toISOString(true)) + ",'Pending'," + req.body.recall_head + "," + req.body.head_approval + "," + fileResult.insertId + ")", (err, leaveData, fields) => {
                             console.log(err)
                             res.json({ "leaveData": leaveData, "attendanceArray": attendanceArray })
                         })

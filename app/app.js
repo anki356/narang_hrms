@@ -7,7 +7,6 @@ const router=express.Router()
  require('express-async-errors');
  const cron = require("node-cron");
 const markAbsent=require("../api/modules/attendance/markAbsent")
-const Salary =require("./Salary")
 const moment=require('moment')
 // cron.schedule("42 8 * * *",markAbsent,{
 //   scheduled: true,
@@ -102,6 +101,8 @@ const addTimingCorrection=require('../api/modules/timing/addTimingCorrection')
 const getTimingCorrectionRequests=require('../api/modules/timing/getTimingCorrectionRequests')
 const getFloors=require('../api/modules/Floors/getFloors')
 const getStores=require('../api/modules/Stores/getStores')
+const getAllSalary=require('../api/modules/salary/getAllSalary')
+
 const getTotal=require('../api/modules/attendance/getTotal')
 const getTotalOutSessions=require('../api/modules/timing/getTotalOutSessions')
 const uploadFile=require("../upload/uploadFile")
@@ -141,7 +142,8 @@ const isGraded=require("../api/modules/grades/isGraded")
 const getTransferDetails=require("../api/modules/transfer/getTransferDetails")
 const updateTransfer=require("../api/modules/transfer/updateTransfer")
 const getDepartments=require("../api/getDepartments")
-
+const getGrade=require("../api/modules/grades/getGrade")
+const getSalary=require("../api/modules/salary/getSalary")
 // addSalary()
 // cron.schedule("0 47 10 15 * *",addSalary)
 
@@ -181,6 +183,11 @@ router.get("/api/getAttendance",
     getAttendance
       
  )
+router.get("/api/getAllSalary",
+    verifyAuth,
+    getAllSalary
+      
+ )
  router.post("/api/auth/register",
     verifyAuth,register
       
@@ -203,6 +210,10 @@ router.post("/api/addInterview",
 
 router.get("/api/getTotalExpenseADay",
  verifyAuth,getTotalExpenseADay
+   
+)
+router.get("/api/getGrade",
+ verifyAuth,getGrade
    
 )
 router.get("/api/getExpenses",
@@ -360,6 +371,10 @@ verifyAuth,addFine
 )
 router.post("/api/addTransfer",
 verifyAuth,addTransfer
+   
+)
+router.get("/api/getSalary",
+verifyAuth,getSalary
    
 )
 router.post("/api/addTransferWithStoreId",

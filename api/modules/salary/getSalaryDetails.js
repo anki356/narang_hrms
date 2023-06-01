@@ -18,7 +18,9 @@ const getSalaryDetails = async (from_date, to_date, commission) => {
             })
             promiseArray[index] = pr.pr
             database.query("select amount from base_salaries where employee_id=" + data.employee_id, (err, baserSalariesResult, fields) => {
-                let total_days = moment().daysInMonth()
+                database.query("select count (attendance.id) as attendance_count, attendance.employee_id as employee_id from attendance where attendance.status='WeekOff' and check_in_datetime>" + mysql.escape(from_date) + " and check_in_datetime<=" + mysql.escape(to_date) + "  where attendance.employee_id ="+data.employee_id, (err, weekOFFResult, fields) => {
+
+                let total_days = moment().daysInMonth()-weekOFFResult[0].attendance_count
 
                 let salary=baserSalariesResult[0].amount/total_days*result[0].attendance_count
                 // let salary = baserSalariesResult[0].amount / total_days * 25
@@ -122,7 +124,7 @@ else{
         })
     })
 
-
+    })
 
             }
                     

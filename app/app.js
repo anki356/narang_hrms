@@ -144,6 +144,7 @@ const updateTransfer=require("../api/modules/transfer/updateTransfer")
 const getDepartments=require("../api/getDepartments")
 const getGrade=require("../api/modules/grades/getGrade")
 const getSalary=require("../api/modules/salary/getSalary")
+const addGradesForFI=require("../api/modules/grades/addGradesForFI")
 // addSalary()
 // cron.schedule("0 47 10 15 * *",addSalary)
 
@@ -242,6 +243,7 @@ router.get("/api/getTotalEmployeesExpending",
  verifyAuth,getTotalEmployeesExpending
    
 )
+
 router.post("/api/addExpenses",
  verifyAuth,addExpenses
    
@@ -336,6 +338,10 @@ router.patch("/api/updateFineApproval/:id",
 
 router.get("/api/getTotalFines",
  verifyAuth,getTotalFines
+   
+)
+router.post("/api/addGradesForFI",
+ verifyAuth,addGradesForFI
    
 )
 router.get("/api/getTotalFinedEmployees",

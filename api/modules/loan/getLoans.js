@@ -19,7 +19,7 @@ const getLoans = (req, res, next) => {
                 queryString+=" and roles.role_name="+mysql.escape(req.query.role_name)
                }
                if(req.query.employee_id){
-                queryString+="and employees.employee_id="+ req.query.employee_id
+                queryString+="and employees.id="+ req.query.employee_id
                }
                if(req.query.from_date && req.query.to_date){
                 queryString+=" and loan.date>="+mysql.escape(req.query.from_date)+" and leaves.date<"+mysql.escape(req.query.to_date)

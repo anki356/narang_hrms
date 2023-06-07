@@ -147,6 +147,10 @@ const getSalary=require("../api/modules/salary/getSalary")
 const addGradesForFI=require("../api/modules/grades/addGradesForFI")
 const getCountSalary=require("../api/modules/salary/getCountSalary")
 const getLoansHistory=require("../api/modules/loan/getLoansHistory")
+const getAdvanceHistory=require("../api/modules/advance/getAdvanceHistory")
+const getFineHistory=require("../api/modules/fines/getFineHistory")
+const getSalarySummary=require("../api/modules/salary/getSalarySummary")
+const paySalary=require("../api/modules/salary/paySalary")
 // addSalary()
 // cron.schedule("0 47 10 15 * *",addSalary)
 
@@ -235,6 +239,10 @@ router.get("/api/getStores",
  verifyAuth,getStores
    
 )
+router.get("/api/getSalarySummary",
+ verifyAuth,getSalarySummary
+   
+)
 
 
 
@@ -243,6 +251,10 @@ router.get("/api/getStores",
 
 router.get("/api/getTotalEmployeesExpending",
  verifyAuth,getTotalEmployeesExpending
+   
+)
+router.get("/api/getFineHistory",
+ verifyAuth,getFineHistory
    
 )
 
@@ -257,6 +269,10 @@ router.post("/api/addExpenseSubCategory",
 
 router.patch("/api/updateExpenseStatus/:id",
  verifyAuth,updateExpenseStatus
+   
+)
+router.patch("/api/paySalary/:id",
+ verifyAuth,paySalary
    
 )
 router.get("/api/getTimings",
@@ -510,6 +526,7 @@ router.patch("/api/updateTransfer/:id",verifyAuth,updateTransfer)
 router.get("/api/getDepartments",verifyAuth,getDepartments)
 router.get("/api/getCountSalary",verifyAuth,getCountSalary)
 router.get("/api/getLoansHistory",verifyAuth,getLoansHistory)
+router.get("/api/getAdvanceHistory",verifyAuth,getAdvanceHistory)
 
 // app.use(errorHandlerMiddleware)
 app.use(notFound)

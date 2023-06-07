@@ -45,6 +45,11 @@ const getSalaryDetails = async (from_date, to_date, commission) => {
                         if (advance === null) {
                             advance = 0
                         }
+                        database.query("select sum(amount) as fine_total from advance where employee_id=" + data.employee_id + " and date>=" + mysql.escape(from_date) + "and status='Approved' and date<=" + mysql.escape(to_date), (err, fineResult, fields) => {
+                            let fine=fineResult[0].fine_total
+                            if (fine === null) {
+                                fine = 0
+                            }
                         let loan = 0
                         database.query("select id from loan where employee_id=" + data.employee_id, (err, loanResult, fields) => {
 
@@ -54,18 +59,18 @@ const getSalaryDetails = async (from_date, to_date, commission) => {
                                 database.query("select amount from loan_repayment where loan_id=" + loanResult[0].id + " and month=" + month + " and year=" + year, (err, loanRepaymentResult, fields) => {
                                     
 if(loanRepaymentResult.length>0){
-    net_salary = salary + commission - expense - tea - advance - loanRepaymentResult[0].amount
+    net_salary = salary + commission - expense - tea - advance - loanRepaymentResult[0].amount-fine
     loan=loanRepaymentResult[0].amount
 }
 else{
-    net_salary = Number(salary) + Number(commission) - Number(expense) - tea - Number(advance)
+    net_salary = Number(salary) + Number(commission) - Number(expense) - tea - Number(advance)-fine
     loan=0
 }
                                     
                                 })//number
                             }
                             else {
-                                net_salary = Number(salary) + Number(commission) - Number(expense) - tea - Number(advance)
+                                net_salary = Number(salary) + Number(commission) - Number(expense) - tea - Number(advance)-fine
                                 loan=0
                             }
                             database.query("select min_wages_as_per_rule from employees where id= " + data.employee_id, (err, minWagesResult, fields) => {
@@ -93,7 +98,7 @@ else{
                                             }
                                             let pf = basic_salary * 12 / 100
                                             let net_payable_salary = net_salary - esi - pf
-                                            let total_deduction=(Number(expense) + Number(tea) + Number(advance)+Number(loan))
+                                            let total_deduction=(Number(expense) + Number(tea) + Number(advance)+Number(loan)+Number(fine))
                                             let total_earnings=Number(salary) + Number(commission)
                                             database.query("Insert into salaries (employee_id, working_days, month, computed, commission, expense, tea, advance, loan_emi, total_earnings, total_deductions, net_salary, status, esi, pf, basic_salary, hra, days_shown, cash_incentive,net_payable_salary)values ("+data.employee_id+","+data.attendance_count+","+month+","+salary+","+commission+","+expense+","+tea+","+advance+","+loan+","+total_earnings+","+total_deduction+","+net_salary+",'Pending',"+esi+","+pf+","+basic_salary+","+hra+","+days+","+cash_incentive+","+net_payable_salary+")",(err,salariesResult)=>{
                                                 pr.resolve(true)  
@@ -102,7 +107,7 @@ else{
                                         else {
                                             let total_deduction=(Number(expense) + Number(tea) + Number(advance)+Number(loan))
                                             let total_earnings=Number(salary) + Number(commission)
-                                            database.query("Insert into salaries (employee_id, working_days, month, computed, commission, expense, tea, advance, loan_emi, total_earnings, total_deductions, net_salary, status,  basic_salary, hra, days_shown, cash_incentive,net_payable_salary)values ("+data.employee_id+","+data.attendance_count+","+month+","+salary+","+commission+","+expense+","+tea+","+advance+","+loan+","+total_earnings+","+total_deduction+","+net_salary+",'Pending',"+basic_salary+","+hra+","+days+","+cash_incentive+","+net_salary+")",(err,salariesResult)=>{
+                                            database.query("Insert into salaries (employee_id, working_days,fine, month, computed, commission, expense, tea, advance, loan_emi, total_earnings, total_deductions, net_salary, status,  basic_salary, hra, days_shown, cash_incentive,net_payable_salary)values ("+data.employee_id+","+data.attendance_count+","+fine+","+month+","+salary+","+commission+","+expense+","+tea+","+advance+","+loan+","+total_earnings+","+total_deduction+","+net_salary+",'Pending',"+basic_salary+","+hra+","+days+","+cash_incentive+","+net_salary+")",(err,salariesResult)=>{
                                                 console.log("here",err)
                                               pr.resolve(true) 
                                             })
@@ -117,6 +122,7 @@ else{
 
 
                     })
+                })
 
 
                 })

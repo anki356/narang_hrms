@@ -151,6 +151,10 @@ const getAdvanceHistory=require("../api/modules/advance/getAdvanceHistory")
 const getFineHistory=require("../api/modules/fines/getFineHistory")
 const getSalarySummary=require("../api/modules/salary/getSalarySummary")
 const paySalary=require("../api/modules/salary/paySalary")
+const editEmployee=require("../api/modules/employees/editEmployee")
+const getPermissions=require("../api/getPermissions")
+const postNotifications=require("../api/modules/notifications/postNotifications")
+const getNotifications=require("../api/modules/Notifications/getNotifications")
 // addSalary()
 // cron.schedule("0 47 10 15 * *",addSalary)
 
@@ -197,6 +201,15 @@ router.get("/api/getAllSalary",
  )
  router.post("/api/auth/register",
     verifyAuth,register
+      
+ )
+router.get("/api/getNotifications",
+    verifyAuth,
+    getNotifications
+      
+ )
+ router.post("/api/postNotifications",
+    verifyAuth,postNotifications
       
  )
  
@@ -269,6 +282,10 @@ router.post("/api/addExpenseSubCategory",
 
 router.patch("/api/updateExpenseStatus/:id",
  verifyAuth,updateExpenseStatus
+   
+)
+router.patch("/api/editEmployee/:id",
+ [verifyAuth, upload.any('download')],verifyAuth,editEmployee
    
 )
 router.patch("/api/paySalary/:id",
@@ -483,7 +500,7 @@ router.get("/api/getSalaryDetails",verifyAuth,getSalaryDetails)
 router.post("/api/addGrades",verifyAuth,addGrades)
 router.post("/api/addSalaryDetails",verifyAuth,addSalaryDetails)
 router.post("/api/addTimingyByFI",verifyAuth,addTimingyByFI)
-router.patch("/api/incrementSalary",verifyAuth,incrementSalary)
+router.post("/api/incrementSalary",verifyAuth,incrementSalary)
 router.patch("/api/updateTimingByFiByGuard/:id",verifyAuth,updateTimingByFiByGuard)
 router.patch("/api/updateInterview/:id",verifyAuth,updateInterview)
 router.get("/api/calculateGradesForAll",verifyAuth,calculateGradesForAll)
@@ -527,7 +544,8 @@ router.get("/api/getDepartments",verifyAuth,getDepartments)
 router.get("/api/getCountSalary",verifyAuth,getCountSalary)
 router.get("/api/getLoansHistory",verifyAuth,getLoansHistory)
 router.get("/api/getAdvanceHistory",verifyAuth,getAdvanceHistory)
-
-// app.use(errorHandlerMiddleware)
+router.get("/api/getPermissions",verifyAuth,getPermissions)
+// markAbsent()
+app.use(errorHandlerMiddleware)
 app.use(notFound)
 module.exports = app;

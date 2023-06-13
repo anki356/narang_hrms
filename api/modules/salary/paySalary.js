@@ -5,8 +5,15 @@ const paySalary = async(req,res,next) => {
     const role_id = req.body.result.role_id
     database.query("Select * from roles where id=" + role_id,async (err, result) => {
         if (err) console.log(err)
-        let allowed_roles = ['HR Head','Admin','Super Admin']
-        if (allowed_roles.includes(result[0].role_name)) {
+        database.query("select role_id ,permissions.name from permission_roles left join permissions on permissions.id=permission_roles.permission_id where name='Salary'",(
+            err,allowed_roles 
+         )=>{
+           
+            console.log(allowed_roles) 
+           allowed_roles=allowed_roles.map((data)=>{
+             return data.role_id
+           })
+        if (allowed_roles.includes(role_id)) {
 database.query("update advance set payment_status='Paid' where date>="+mysql.escape(req.body.from_date)+" and status='Approved' and date<"+mysql.escape(req.body.to_date),(err,advanceResult)=>{
     console.log(err)
     let month=moment(req.body.from_date).month()
@@ -35,6 +42,7 @@ database.query("update advance set payment_status='Paid' where date>="+mysql.esc
 
 
         }
+    })
     })
 }
 module.exports=paySalary

@@ -50,11 +50,24 @@ const addLeave = (req, res, next) => {
                             }
                             else {
                                 
+database.query("select week_off from weekoffs where employee_id="+req.body.employee_id,(err,weekOffResult)=>{
+    console.log(day.day(),weekOffResult[0].week_off)
+    const dayArray=['Sunday','Monday','TuesDay','Wednesday','Thursday','Friday','Saturday']
+if(dayArray[day.day()]!==weekOffResult[0].week_off){
 
-                                database.query("Insert into attendance (check_in_datetime,employee_id,status,approval_document_id) values(" + mysql.escape(day.format("YYYY-MM-DD")) + "," + req.body.employee_id + ",'Pending'," + fileResult.insertId + ")", (err, attendanceData, fields) => {
+    database.query("Insert into attendance (check_in_datetime,employee_id,status,approval_document_id) values(" + mysql.escape(day.format("YYYY-MM-DD")) + "," + req.body.employee_id + ",'Pending'," + fileResult.insertId + ")", (err, attendanceData, fields) => {
 
-                                    attendanceArray.push(attendanceData)
-                                })
+        attendanceArray.push(attendanceData)
+    })
+}
+else{
+    database.query("Insert into attendance (check_in_datetime,employee_id,status,approval_document_id) values(" + mysql.escape(day.format("YYYY-MM-DD")) + "," + req.body.employee_id + ",'WeekOff'," + fileResult.insertId + ")", (err, attendanceData, fields) => {
+
+        attendanceArray.push(attendanceData)
+    })
+
+}
+})
                             }
 
 
@@ -67,7 +80,7 @@ const addLeave = (req, res, next) => {
                 })
             }
             else{
-                res.json({error:"409",mssg:"Duplicate Entry"})
+                res.json({status:"409",mssg:"Duplicate Entry"})
             }
 
             })

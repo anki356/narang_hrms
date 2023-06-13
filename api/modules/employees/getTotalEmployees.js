@@ -4,8 +4,15 @@ const getTotalEmployees = (req, res, next) => {
     const role_id = req.body.result.role_id
     database.query("Select * from roles where id=" + role_id, (err, result) => {
         if (err) console.log(err)
-        let allowed_roles = ['HR Assistant','HR Head','Admin','Super Admin']
-        if (allowed_roles.includes(result[0].role_name)) {
+        database.query("select role_id ,permissions.name from permission_roles left join permissions on permissions.id=permission_roles.permission_id where name='Employee Detail'",(
+            err,allowed_roles 
+         )=>{
+           
+            console.log(allowed_roles) 
+           allowed_roles=allowed_roles.map((data)=>{
+             return data.role_id
+           })
+        if (allowed_roles.includes(role_id)) {
             let queryString="SELECT count(id ) as count_id from employees"
            
             if(req.query.type){
@@ -19,7 +26,7 @@ const getTotalEmployees = (req, res, next) => {
             })
         }
 
-
+    })
 
     })
 

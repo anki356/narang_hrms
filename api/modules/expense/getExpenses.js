@@ -33,7 +33,12 @@ const getExpenses = (req, res, next) => {
                    if(req.query.status){
                     queryString+=" and expenses.status="+ req.query.status
                    }
-                   queryString+=" limit "+req.query.limit+" Offset "+req.query.offset
+                   if(req.query.limit){
+                    queryString+=" limit "+req.query.limit
+                   }
+                   if(req.query.offset){
+                    queryString+=" Offset "+req.query.offset
+                   }
                     database.query(queryString , (err, expenseData, fields) => {
                         console.log(err)
                         res.send(expenseData) 

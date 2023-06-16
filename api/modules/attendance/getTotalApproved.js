@@ -3,8 +3,16 @@ const mysql=require('mysql')
 const getTotalApproved = (req, res, next) => {
     const role_id = req.body.result.role_id
     database.query("Select * from roles where id=" + role_id, (err, result) => {
-        let allowed_roles = ['Admin', 'Super Admin', 'HR Head', 'HR Assistant','Floor Incharge']
-        if (allowed_roles.includes(result[0].role_name)) {
+        database.query("select role_id ,permissions.name from permission_roles left join permissions on permissions.id=permission_roles.permission_id where name='Attendance'",(
+            err,allowed_roles 
+         )=>{
+           
+             
+           allowed_roles=allowed_roles.map((data)=>{
+             return data.role_id
+           })
+        // let allowed_roles = ['Admin', 'Super Admin', 'HR Head', 'HR Assistant','Floor Incharge']
+        if (allowed_roles.includes(role_id)) {
             if(result[0].role_name.split(" ")[0]==='Floor'){
                 database.query("select employees.id from employees left join job_details on job_details.id=employees.job_details_id where job_details.role_id="+role_id,(err,employeesResult,fields)=>{
 console.log(err)
@@ -26,7 +34,7 @@ console.log(err)
             })
         }
     }
-
+         })
     })
 
 }

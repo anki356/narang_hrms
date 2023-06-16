@@ -8,7 +8,7 @@ const updateLeaveStatus = (req, res, next) => {
         if (allowed_roles.includes(result[0].role_name)) {
             if(req.body.status==='Approved'){
 
-                database.query("Update attendance set status_by_id="+role_id+", status_date=current_timestamp(),status='On Leave' where check_in_datetime>="+mysql.escape(req.body.from_date)+" and check_in_datetime<="+mysql.escape(req.body.to_date)+" and employee_id="+req.body.employee_id , (err, attendanceData, fields) => {
+                database.query("Update attendance set status_by_id="+role_id+", status_date=current_timestamp(),status='On Leave' where check_in_datetime>="+mysql.escape(req.body.from_date)+" and check_in_datetime<="+mysql.escape(req.body.to_date)+" and employee_id="+req.body.employee_id+" and status='Pending'" , (err, attendanceData, fields) => {
                     console.log(err)
                     database.query("Update leaves set status="+mysql.escape(req.body.status)+",reason="+mysql.escape(req.body.reason)+" where from_date>="+mysql.escape(req.body.from_date)+" and to_date<="+mysql.escape(req.body.to_date)+" and employee_id="+req.body.employee_id , (err, leaveData, fields) => {
                         console.log(err)

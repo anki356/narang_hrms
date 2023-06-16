@@ -13,13 +13,33 @@ database.query("select employee_id from attendance where check_in_datetime>="+my
         employeeIds=employeeIds.filter((data)=>{
             return !leaveEmployees.includes(data.id)
         })
-       
-        employeeIds.forEach(element => {
+        const dayArray=['Sunday','Monday','TuesDay','Wednesday','Thursday','Friday','Saturday']
+        let today=dayArray[moment().day()]
+        database.query("select employee_id from weekoffs where week_off="+mysql.escape(today),(err,workingEmployeeResult)=>{
+            workingEmployeeResult=workingEmployeeResult.map((data)=>data.employee_id)
             
-           database.query("Insert into attendance (check_in_datetime,employee_id,status) values("+mysql.escape(moment([date.getFullYear(),date.getMonth(),date.getDate()]).toISOString(true))+","+element.id+",'absent')",(err,attendanceInsertResult)=>{
-            console.log(attendanceInsertResult)
-           }) 
+            employeeIds=employeeIds.filter((data)=>{
+    return !workingEmployeeResult.includes(data.id)
+})
+workingEmployeeResult=workingEmployeeResult.filter((data)=>{
+    return !leaveEmployees(data)
+})
+workingEmployeeResult.forEach((data)=>{
+    database.query("Insert into attendance (check_in_datetime,employee_id,status) values("+mysql.escape(moment([date.getFullYear(),date.getMonth(),date.getDate()]).toISOString(true))+","+data+",'WeekOff')",(err,attendanceInsertResult)=>{
+        console.log(attendanceInsertResult)
+    }) 
+})
+             
+
+                employeeIds.forEach(element => {
+                database.query("Insert into attendance (check_in_datetime,employee_id,status) values("+mysql.escape(moment([date.getFullYear(),date.getMonth(),date.getDate()]).toISOString(true))+","+element.id+",'absent')",(err,attendanceInsertResult)=>{
+                    console.log(attendanceInsertResult)
+                   }) 
+                
+               
+          
         });
+    })
     })
 })
 

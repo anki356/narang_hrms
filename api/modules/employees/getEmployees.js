@@ -38,7 +38,12 @@ const getEmployees = (req, res, next) => {
             queryString+=" and (employees.employee_id like '%"+ req.query.employee_query+"%'or employees.name like '%"+req.query.employee_query+"%')"
            }
            
-           queryString+=" limit "+req.query.limit+" Offset "+req.query.offset
+            if(req.query.limit){
+            queryString+=" limit "+req.query.limit
+           }
+           if(req.query.offset){
+            queryString+=" Offset "+req.query.offset
+           }
             database.query(queryString , (err, expenseData, fields) => {
                 console.log(err)
                 res.send(expenseData) 

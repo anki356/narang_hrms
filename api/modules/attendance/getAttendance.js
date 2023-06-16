@@ -44,8 +44,11 @@ const getAttendance = (req, res, next) => {
                            console.log(queryString)
                 
                             database.query(queryString , (err, attendanceResult, fields) => {
+        
+                                    res.send(attendanceResult) 
+                               
                                 console.log(err)
-                                res.send(attendanceResult) 
+                               
                             })
                     })
                     

@@ -7,7 +7,7 @@ const addRole = (req, res, next) => {
         let allowed_roles = ['Super Admin']
         if (allowed_roles.includes(result[0].role_name)) {
             
-            database.query("Insert into roles (role_name,floor_id,store_id) values("+mysql.escape(req.body.role_name)+","+req.body.floor_id+","+req.body.store_id+")", (err, roleData, fields) => {
+            database.query("Insert into roles (role_name) values("+mysql.escape(req.body.role_name)+")", (err, roleData, fields) => {
                 console.log(err)
                 let pr={}
             if(req.body.attendance===true){

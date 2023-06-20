@@ -7,7 +7,7 @@ const getAdvance = (req, res, next) => {
         if (err) console.log(err)
         let allowed_roles = ['HR Head','Admin','Super Admin']
         if (allowed_roles.includes(result[0].role_name)) {
-            let queryString="SELECT file_upload.name as document, advance.*,employees.name as employee_name ,roles.role_name as role_name,employees.employee_id as empID, floors.name as floor_name from advance left join employees on employees.id=advance.employee_id left join job_details on job_details.id=employees.job_details_id left join floors on floors.id =job_details.floor_id left join stores on stores.id=job_details.store_id left join roles on roles.id=job_details.role_id left join file_upload on file_upload.id=advance.file_id  where advance.id="+req.query.id           
+            let queryString="SELECT file_upload.name as document, advance.*,employees.name as employee_name ,roles.role_name as role_name,employees.employee_id as empID, floors.name as floor_name from advance left join employees on employees.id=advance.employee_id left join job_details on job_details.id=employees.job_details_id left join floors on floors.id =job_details.floor_id left join locations on locations.id=job_details.location_id left join roles on roles.id=job_details.role_id left join file_upload on file_upload.id=advance.file_id  where advance.id="+req.query.id           
             
             database.query(queryString , (err, advanceData, fields) => {
                 console.log(err);

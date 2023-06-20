@@ -1242,7 +1242,7 @@ CREATE TABLE `job_details` (
   `epf_no` varchar(255) DEFAULT NULL,
   `esi_no` varchar(255) DEFAULT NULL,
   `store_department_id` int(11) DEFAULT NULL,
-  `store_id` int(11) DEFAULT NULL,
+  `location_id` int(11) DEFAULT NULL,
   `created_on` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `floor_id` (`floor_id`),
@@ -1250,18 +1250,18 @@ CREATE TABLE `job_details` (
   KEY `hired_by_employee_id` (`hired_by_employee_id`),
   KEY `role_id` (`role_id`),
   KEY `store_department_id` (`store_department_id`),
-  KEY `store_id` (`store_id`),
+  KEY `location_id` (`location_id`),
   CONSTRAINT `job_details_ibfk_3` FOREIGN KEY (`floor_id`) REFERENCES `floors` (`id`),
   CONSTRAINT `job_details_ibfk_4` FOREIGN KEY (`head_employee_id`) REFERENCES `employees` (`id`),
   CONSTRAINT `job_details_ibfk_5` FOREIGN KEY (`hired_by_employee_id`) REFERENCES `employees` (`id`),
   CONSTRAINT `job_details_ibfk_6` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`),
   CONSTRAINT `job_details_ibfk_7` FOREIGN KEY (`store_department_id`) REFERENCES `store_departments` (`id`),
-  CONSTRAINT `job_details_ibfk_8` FOREIGN KEY (`store_id`) REFERENCES `stores` (`id`)
+  CONSTRAINT `job_details_ibfk_8` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `job_details` */
 
-insert  into `job_details`(`id`,`head_employee_id`,`hired_by_employee_id`,`hiring_date_time`,`lead_from`,`location`,`floor_id`,`role_id`,`epf_no`,`esi_no`,`store_department_id`,`store_id`,`created_on`) values 
+insert  into `job_details`(`id`,`head_employee_id`,`hired_by_employee_id`,`hiring_date_time`,`lead_from`,`location`,`floor_id`,`role_id`,`epf_no`,`esi_no`,`store_department_id`,`location_id`,`created_on`) values 
 (1,2,2,'2023-04-02 09:05:17',NULL,NULL,2,8,NULL,NULL,1,2,NULL),
 (2,35,NULL,NULL,NULL,NULL,1,3,NULL,NULL,1,2,NULL),
 (3,NULL,NULL,NULL,NULL,NULL,NULL,5,NULL,NULL,NULL,NULL,NULL),
@@ -1422,17 +1422,17 @@ CREATE TABLE `roles` (
   `role_name` varchar(255) DEFAULT NULL,
   `permissions` longtext DEFAULT NULL,
   `floor_id` int(11) DEFAULT NULL,
-  `store_id` int(11) DEFAULT NULL,
+  `location_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `floor_id` (`floor_id`),
-  KEY `store_id` (`store_id`),
+  KEY `location_id` (`location_id`),
   CONSTRAINT `roles_ibfk_1` FOREIGN KEY (`floor_id`) REFERENCES `floors` (`id`),
-  CONSTRAINT `roles_ibfk_2` FOREIGN KEY (`store_id`) REFERENCES `stores` (`id`)
+  CONSTRAINT `roles_ibfk_2` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `roles` */
 
-insert  into `roles`(`id`,`role_name`,`permissions`,`floor_id`,`store_id`) values 
+insert  into `roles`(`id`,`role_name`,`permissions`,`floor_id`,`location_id`) values 
 (1,'Super Admin',NULL,NULL,NULL),
 (2,'Guard',NULL,NULL,NULL),
 (3,'Floor Incharge',NULL,1,2),
@@ -1440,7 +1440,7 @@ insert  into `roles`(`id`,`role_name`,`permissions`,`floor_id`,`store_id`) value
 (6,'HR Head',NULL,NULL,NULL),
 (7,'Admin',NULL,NULL,NULL),
 (8,'Salesman',NULL,NULL,NULL),
-(9,'Store Incharge',NULL,NULL,2),
+(9,'location Incharge',NULL,NULL,2),
 (10,'Floor Incharge',NULL,2,2),
 (16,'Floor Incharge',NULL,1,1),
 (17,'Floor Incharge',NULL,2,1);
@@ -1544,19 +1544,19 @@ insert  into `store_departments`(`id`,`name`) values
 (2,'Men'),
 (3,'Women');
 
-/*Table structure for table `stores` */
+/*Table structure for table `locations` */
 
-DROP TABLE IF EXISTS `stores`;
+DROP TABLE IF EXISTS `locations`;
 
-CREATE TABLE `stores` (
+CREATE TABLE `locations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-/*Data for the table `stores` */
+/*Data for the table `locations` */
 
-insert  into `stores`(`id`,`name`) values 
+insert  into `locations`(`id`,`name`) values 
 (1,'1st'),
 (2,'2nd'),
 (3,'3rd');
@@ -1664,20 +1664,20 @@ CREATE TABLE `transfer_details` (
   `department_to` int(11) DEFAULT NULL,
   `floor_id_from` int(11) DEFAULT NULL,
   `floor_id_to` int(11) DEFAULT NULL,
-  `store_id_from` int(11) DEFAULT NULL,
-  `store_id_to` int(11) DEFAULT NULL,
+  `location_id_from` int(11) DEFAULT NULL,
+  `location_id_to` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `employee_id` (`employee_id`),
   KEY `floor_id_from` (`floor_id_from`),
   KEY `floor_id_to` (`floor_id_to`),
   KEY `department_from` (`department_from`),
   KEY `department_to` (`department_to`),
-  KEY `store_id_from` (`store_id_from`),
-  KEY `store_id_to` (`store_id_to`),
+  KEY `location_id_from` (`location_id_from`),
+  KEY `location_id_to` (`location_id_to`),
   CONSTRAINT `transfer_details_ibfk_10` FOREIGN KEY (`department_from`) REFERENCES `store_departments` (`id`),
   CONSTRAINT `transfer_details_ibfk_11` FOREIGN KEY (`department_to`) REFERENCES `store_departments` (`id`),
-  CONSTRAINT `transfer_details_ibfk_12` FOREIGN KEY (`store_id_from`) REFERENCES `stores` (`id`),
-  CONSTRAINT `transfer_details_ibfk_13` FOREIGN KEY (`store_id_to`) REFERENCES `stores` (`id`),
+  CONSTRAINT `transfer_details_ibfk_12` FOREIGN KEY (`location_id_from`) REFERENCES `locations` (`id`),
+  CONSTRAINT `transfer_details_ibfk_13` FOREIGN KEY (`location_id_to`) REFERENCES `locations` (`id`),
   CONSTRAINT `transfer_details_ibfk_6` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`),
   CONSTRAINT `transfer_details_ibfk_8` FOREIGN KEY (`floor_id_from`) REFERENCES `floors` (`id`),
   CONSTRAINT `transfer_details_ibfk_9` FOREIGN KEY (`floor_id_to`) REFERENCES `floors` (`id`)
@@ -1685,7 +1685,7 @@ CREATE TABLE `transfer_details` (
 
 /*Data for the table `transfer_details` */
 
-insert  into `transfer_details`(`id`,`employee_id`,`date`,`department_from`,`department_to`,`floor_id_from`,`floor_id_to`,`store_id_from`,`store_id_to`) values 
+insert  into `transfer_details`(`id`,`employee_id`,`date`,`department_from`,`department_to`,`floor_id_from`,`floor_id_to`,`location_id_from`,`location_id_to`) values 
 (2,1,'2023-04-13 15:46:18',1,2,1,2,NULL,NULL),
 (3,1,'2023-04-13 15:47:21',1,2,1,2,NULL,NULL),
 (4,1,'2023-04-13 15:47:57',1,2,1,2,NULL,NULL),

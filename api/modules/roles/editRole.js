@@ -8,12 +8,7 @@ const editRole = (req, res, next) => {
         let allowed_roles = ['Super Admin']
         if (allowed_roles.includes(result[0].role_name)) {
             let queryString="Update roles set role_name="+mysql.escape(req.body.role_name)
-            if(req.body.floor_id!==null){
-                queryString+=",floor_id="+req.body.floor_id
-            }
-            if(req.body.store_id!==null){
-                queryString+=",store_id="+req.body.store_id
-            }
+           
             queryString+="where id="+req.params.id
             if(req.body.username===undefined||req.body.username===''){
                 req.body.username=null

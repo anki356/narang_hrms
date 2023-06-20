@@ -1,14 +1,14 @@
 const database = require("../config/database");
 const mysql = require("mysql")
-const getStoreDep = (req, res, next) => {
+const getlocationDep = (req, res, next) => {
     
-            database.query("select * from store_departments", (err, storeInchargeData, fields) => {
+            database.query("select * from store_departments", (err, locationInchargeData, fields) => {
                 console.log(err)
-                res.send(storeInchargeData) 
+                res.send(locationInchargeData) 
                     
             })
        
 
 }
 
-module.exports=getStoreDep
+module.exports=getlocationDep

@@ -30,7 +30,26 @@ const getEmployees = (req, res, next) => {
                             if(req.body.uan_no===undefined||req.body.uan_no===''){
                                 req.body.uan_no=null
                             }
-                            database.query("Insert into job_details (head_employee_id,hired_by_employee_id,hiring_date_time,lead_from,location,role_id,store_department_id,floor_id,store_id,epf_no,esi_no,department_id,supervisor_id) values(" + req.body.head_employee_id + "," + req.body.hired_by_employee_id +"," + req.body.hiring_date_time + "," + mysql.escape(req.body.lead_from) + "," + mysql.escape(req.body.location) + "," + req.body.role_id + "," + req.body.store_department_id + "," + req.body.floor_id + "," + req.body.store_id + "," + req.body.epf_no + "," + req.body.esi_no +","+req.body.department_id+","+req.body.supervisor_id+ ")", (err, jobDetailsResult, fields) => {
+                            if(req.body.head_employee_id===undefined||req.body.head_employee_id===''){
+                                req.body.head_employee_id=null
+                            }
+                            if(req.body.hired_by_employee_id===undefined||req.body.hired_by_employee_id===''){
+                                req.body.hired_by_employee_id=null
+                            }
+                            if(req.body.floor_id===undefined||req.body.floor_id===''){
+                                req.body.floor_id=null
+                            }
+                            if(req.body.supervisor_id===undefined||req.body.supervisor_id===''){
+                                req.body.supervisor_id=null
+                            }
+                            if(req.body.location_id===undefined||req.body.location_id===''){
+                                req.body.location_id=null
+                            }
+                            if(req.body.store_department_id===undefined||req.body.store_department_id===''){
+                                req.body.store_department_id=null
+                            }
+
+                            database.query("Insert into job_details (head_employee_id,hired_by_employee_id,hiring_date_time,lead_from,location,role_id,store_department_id,floor_id,location_id,epf_no,esi_no,department_id,supervisor_id) values(" + req.body.head_employee_id + "," + req.body.hired_by_employee_id +"," + mysql.escape(req.body.hiring_date_time) + "," + mysql.escape(req.body.lead_from) + "," + mysql.escape(req.body.location) + "," + req.body.role_id + "," + req.body.store_department_id + "," + req.body.floor_id + "," + req.body.location_id + "," + mysql.escape(req.body.epf_no) + "," + mysql.escape(req.body.esi_no) +","+req.body.department_id+","+req.body.supervisor_id+ ")", (err, jobDetailsResult, fields) => {
                               console.log(err)  
                                 database.query("INSERT INTO bank_details (name,branch,ifsc,account_number) values(" + mysql.escape(req.body.bank_name) + "," + mysql.escape(req.body.branch) + "," + mysql.escape(req.body.ifsc) + "," + req.body.account_number + ")", (err, bankDetailsResult, fields) => {
                                     console.log(err)

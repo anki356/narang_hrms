@@ -7,7 +7,7 @@ const calculateGradesForAll = (req, res, next) => {
     database.query("Select * from roles where id=" + role_id, async(err, result) => {
         let allowed_roles = ['Admin', 'Super Admin','Floor Incharge 1','Floor Incharge 2']
         if (allowed_roles.includes(result[0].role_name)) {
-            let queryString="select file_upload.name as photo, job_details.head_employee_id,employees.id,employees.name,employees.employee_id as empID,roles.role_name,floors.name as floor_name,stores.name as store_name, store_departments.name as store_department_name from employees left join job_details on employees.job_details_id=job_details.id left join roles on roles.id=job_details.role_id left join store_departments on store_departments.id=job_details.store_department_id left join floors on floors.id=job_details.floor_id left join stores on stores.id=job_details.store_id left join file_upload on file_upload.id=employees.photo_id where role_id=8 "
+            let queryString="select file_upload.name as photo, job_details.head_employee_id,employees.id,employees.name,employees.employee_id as empID,roles.role_name,floors.name as floor_name,locations.name as location_name, store_departments.name as location_department_name from employees left join job_details on employees.job_details_id=job_details.id left join roles on roles.id=job_details.role_id left join store_departments on store_departments.id=job_details.store_department_id left join floors on floors.id=job_details.floor_id left join locations on locations.id=job_details.location_id left join file_upload on file_upload.id=employees.photo_id where role_id=8 "
            
             if(result[0].role_name.split(" ")[0]==='Floor'){
            

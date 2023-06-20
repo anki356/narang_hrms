@@ -17,7 +17,7 @@ const getTotalSessions = (req, res, next) => {
             })
             }
             else{
-                database.query("select count(timing.id) as count_id from timing left join employees on timing.employee_id=employees.id left join job_details on job_details.id=employees.job_details_id left join stores on stores.id=job_details.store_id where timing.date>="+mysql.escape(req.query.from_date)+"and timing.date<"+mysql.escape(req.query.to_date)+" and stores.id="+req.query.store_id+" and in_time is not null and out_time is not null" , (err, timingResult, fields) => {
+                database.query("select count(timing.id) as count_id from timing left join employees on timing.employee_id=employees.id left join job_details on job_details.id=employees.job_details_id left join locations on locations.id=job_details.location_id where timing.date>="+mysql.escape(req.query.from_date)+"and timing.date<"+mysql.escape(req.query.to_date)+" and locations.id="+req.query.location_id+" and in_time is not null and out_time is not null" , (err, timingResult, fields) => {
                    console.log(err)
                     res.send(timingResult) 
                         

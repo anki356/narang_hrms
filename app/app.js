@@ -68,7 +68,7 @@ const updateLeaveStatus=require('../api/modules/leaves/updateLeaveStatus')
 const updateTimingStatus=require('../api/modules/timing/updateTimingStatus')
 const addTransfer=require('../api/modules/transfer/addTransfer')
 const getTransfer=require('../api/modules/transfer/getTransfer')
-const addTransferWithStoreId=require('../api/modules/transfer/addTransferWithStoreId')
+const addTransferWithlocationId=require('../api/modules/transfer/addTransferWithlocationId')
 const updateAttendance=require('../api/modules/attendance/updateAttendance')
 const addInterview=require('../api/modules/interview/addInterview')
 const getInterview=require('../api/modules/interview/getInterview')
@@ -100,14 +100,15 @@ const calculateGradesOtherThanSalesman=require('../api/modules/grades/calculateG
 const addTimingCorrection=require('../api/modules/timing/addTimingCorrection')
 const getTimingCorrectionRequests=require('../api/modules/timing/getTimingCorrectionRequests')
 const getFloors=require('../api/modules/Floors/getFloors')
-const getStores=require('../api/modules/Stores/getStores')
+const getlocations=require('../api/modules/locations/getlocations')
 const getAllSalary=require('../api/modules/salary/getAllSalary')
+const getHierarchy=require('../api/modules/hierarchy/getHierarchy')
 
 const getTotal=require('../api/modules/attendance/getTotal')
 const getTotalOutSessions=require('../api/modules/timing/getTotalOutSessions')
 const uploadFile=require("../upload/uploadFile")
 const getStoreIncharge=require("../api/getStoreIncharge")
-const getStoreIdOfGuard=require("../api/modules/stores/getStoreIdOfGuard")
+const getStoreIdOfGuard=require("../api/modules/locations/getStoreIdOfGuard")
 const getAllEmployees=require("../api/modules/employees/getAllEmployees")
 const getEmployeesWithTotalOutSessions=require("../api/modules/timing/getEmployeesWithTotalOutSessions")
 const getStoreIdOfFloorIncharge=require("../api/getStoreIdOfFloorIncharge")
@@ -155,6 +156,7 @@ const editEmployee=require("../api/modules/employees/editEmployee")
 const getPermissions=require("../api/getPermissions")
 const postNotifications=require("../api/modules/notifications/postNotifications")
 const getNotifications=require("../api/modules/Notifications/getNotifications")
+const getParentRole=require("../api/modules/hierarchy/getParentRole")
 // addSalary()
 // cron.schedule("0 47 10 15 * *",addSalary)
 
@@ -248,8 +250,8 @@ router.get("/api/getFloors",
  verifyAuth,getFloors
    
 )
-router.get("/api/getStores",
- verifyAuth,getStores
+router.get("/api/getlocations",
+ verifyAuth,getlocations
    
 )
 router.get("/api/getSalarySummary",
@@ -264,6 +266,10 @@ router.get("/api/getSalarySummary",
 
 router.get("/api/getTotalEmployeesExpending",
  verifyAuth,getTotalEmployeesExpending
+   
+)
+router.get("/api/getHierarchy",
+ verifyAuth,getHierarchy
    
 )
 router.get("/api/getFineHistory",
@@ -300,7 +306,7 @@ router.get("/api/getTotalSessions",
  verifyAuth,getTotalSessions
    
 )
-router.get("/api/getStoreIdOfGuard",
+router.get("/api/getlocationIdOfGuard",
  verifyAuth,getStoreIdOfGuard
    
 )
@@ -418,8 +424,8 @@ router.get("/api/getSalary",
 verifyAuth,getSalary
    
 )
-router.post("/api/addTransferWithStoreId",
-verifyAuth,addTransferWithStoreId
+router.post("/api/addTransferWithlocationId",
+verifyAuth,addTransferWithlocationId
    
 )
 router.put("/api/updateTimingCorrection/:id",
@@ -509,10 +515,10 @@ router.post("/api/addTimingCorrection",verifyAuth,addTimingCorrection)
 router.get("/api/getTimingCorrectionRequests",verifyAuth,getTimingCorrectionRequests)
 router.get("/api/getTotal",verifyAuth,getTotal)
 router.get("/api/getTotalOutSessions",verifyAuth,getTotalOutSessions)
-router.get("/api/getStoreIncharge",verifyAuth,getStoreIncharge)
+router.get("/api/getlocationIncharge",verifyAuth,getStoreIncharge)
 router.get("/api/getAllEmployees",verifyAuth,getAllEmployees)
 router.get("/api/getEmployeesWithTotalOutSessions",verifyAuth,getEmployeesWithTotalOutSessions)
-router.get("/api/getStoreIdOfFloorIncharge",verifyAuth,getStoreIdOfFloorIncharge)
+router.get("/api/getlocationIdOfFloorIncharge",verifyAuth,getStoreIdOfFloorIncharge)
 router.get("/api/getSubcategories",verifyAuth,getSubcategories)
 router.get("/api/getTotalEmployeesApproved",verifyAuth,getTotalEmployeesApproved)
 router.get("/api/getTotalApproved",verifyAuth,getTotalApproved)
@@ -535,7 +541,7 @@ router.get("/api/getFine",verifyAuth,getFine)
 router.get("/api/getEmployeesBasedOnRole",verifyAuth,getEmployeesBasedOnRole)
 router.get("/api/getRoleData",verifyAuth,getRoleData)
 router.patch("/api/editRole/:id",verifyAuth,editRole)
-router.get("/api/getStoreDep",verifyAuth,getStoreDep)
+router.get("/api/getlocationDep",verifyAuth,getStoreDep)
 router.get("/api/calculateAverageGrade",verifyAuth,calculateAverageGrade)
 router.get("/api/isGraded",verifyAuth,isGraded)
 router.get("/api/getTransferDetails",verifyAuth,getTransferDetails)
@@ -545,6 +551,7 @@ router.get("/api/getCountSalary",verifyAuth,getCountSalary)
 router.get("/api/getLoansHistory",verifyAuth,getLoansHistory)
 router.get("/api/getAdvanceHistory",verifyAuth,getAdvanceHistory)
 router.get("/api/getPermissions",verifyAuth,getPermissions)
+router.get("/api/getParentRole",verifyAuth,getParentRole)
 // markAbsent()
 app.use(errorHandlerMiddleware)
 app.use(notFound)

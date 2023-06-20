@@ -13,7 +13,7 @@ const updateTransfer = (req, res, next) => {
                 
                 database.query("select job_details_id from employees where employees.id="+req.body.employee_id,(err, jobResult, fields) => {
                    
-                database.query("Update job_details set store_department_id="+req.body.department_to+",floor_id="+req.body.floor_id_to+",store_id="+req.body.store_id+" where job_details.id="+jobResult[0].job_details_id, (err, jobResult, fields) => {
+                database.query("Update job_details set store_department_id="+req.body.department_to+",floor_id="+req.body.floor_id_to+",location_id="+req.body.location_id+" where job_details.id="+jobResult[0].job_details_id, (err, jobResult, fields) => {
                     console.log(err)
                     res.send(jobResult) 
                         

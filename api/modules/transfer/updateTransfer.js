@@ -12,11 +12,18 @@ const updateTransfer = (req, res, next) => {
 
                 
                 database.query("select job_details_id from employees where employees.id="+req.body.employee_id,(err, jobResult, fields) => {
-                   
-                database.query("Update job_details set store_department_id="+req.body.department_to+",floor_id="+req.body.floor_id_to+",location_id="+req.body.location_id+" where job_details.id="+jobResult[0].job_details_id, (err, jobResult, fields) => {
-                    console.log(err)
-                    res.send(jobResult) 
-                        
+                database.query("select employees.id from employees left join job_details on job_details.id=employees.job_details_id left join hierarchy on hierarchy.parent_role_id=job_details.role_id where child_role_id="+req.body.designation_to,(err,employeeResult)=>{
+                    database.query("select job_details.head_employee_id from employees left join job_details on job_details.id=employees.job_details_id  where employees.id="+employeeResult[0].id,(err,employeeSuperVisorResult)=>{
+console.log(err)
+database.query("select department_id from roles where id= "+req.body.designation_to,(err,deptResult)=>{
+    console.log(err)
+                    database.query("Update job_details set store_department_id="+req.body.department_to+",floor_id="+req.body.floor_id_to+",location_id="+req.body.location_id+", head_employee_id="+employeeResult[0].id+",role_id="+req.body.designation_to+", department_id="+deptResult[0].department_id+",supervisor_id="+employeeSuperVisorResult[0].head_employee_id+" where job_details.id="+jobResult[0].job_details_id, (err, jobResult, fields) => {
+                        console.log(err)
+                        res.send(jobResult) 
+                            
+                    })
+                })
+                })
                 })
             })
         }

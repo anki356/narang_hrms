@@ -7,15 +7,13 @@ const editRole = (req, res, next) => {
         if (err) console.log(err)
         let allowed_roles = ['Super Admin']
         if (allowed_roles.includes(result[0].role_name)) {
-            let queryString="Update roles set role_name="+mysql.escape(req.body.role_name)+", location_id="+req.body.location_id
+            let queryString="Update roles set role_name="+mysql.escape(req.body.role_name)+", location_id="+req.body.location_id+", department_id="+req.body.department_id
            
            
             if(req.body.username===undefined||req.body.username===''){
                 req.body.username=null
             }
-            if(req.body.floor_id!==null){
-                queryString+=",floor_id="+req.body.floor_id
-            }
+           
             queryString+=" where id="+req.params.id
             database.query(queryString,(err,result)=>{
                 console.log(queryString)

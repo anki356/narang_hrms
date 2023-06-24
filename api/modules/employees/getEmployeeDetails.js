@@ -33,9 +33,10 @@ const getEmployeeDetails = (req, res, next) => {
             req.query.id,
           (err, documentResult) => {
             database.query(
-              "select loan.*,loan.amount as loan_amount,loan_repayment.date,loan.status as loan_status,loan_repayment.status,loan_repayment.date,loan_repayment.month, loan_repayment.year,loan_repayment.amount from loan left join loan_repayment on loan_repayment.loan_id=loan.id where employee_id=" +
-                req.query.id,
+              "select loan.*,loan.amount as loan_amount,loan.status as loan_status from loan  where employee_id=" +
+                req.query.id+" and status='Approved'",
               (err, loanResult) => {
+                console.log(err)
                 database.query(
                   "select advance.*,advance.status as advance_status from advance where employee_id=" +
                     req.query.id,

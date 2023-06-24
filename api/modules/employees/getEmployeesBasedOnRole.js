@@ -19,7 +19,12 @@ const getEmployeesBasedOnRole = (req, res, next) => {
                         queryString+=" and floors.name=" +mysql.escape(req.query.floor_name)
                        }
                      
-                       queryString+=" limit "+req.query.limit+" Offset "+req.query.offset
+                       if(req.query.limit){
+                        queryString+=" limit "+req.query.limit
+                       }
+                       if(req.query.offset){
+                        queryString+=" Offset "+req.query.offset
+                       }      
                     database.query(queryString , (err, employeesResult, fields) => {
                         console.log(err)
                       res.send(employeesResult)

@@ -15,6 +15,8 @@ cron.schedule("0 10 * * *",markAbsent,{
   scheduled: true,
   timezone: "Asia/Calcutta"
 })
+const insertAttendanceData=require("../api/newFile")
+
 // cron.schedule("1 0 1 * *",addGrades,{
 //   scheduled: true,
 //   timezone: "Asia/Calcutta"
@@ -180,6 +182,9 @@ cron.schedule("00 00 00 1 * *",()=>{
       scheduled: true,
       timezone: "Asia/Calcutta"
     })  
+    // let from_date=moment().subtract(2,'month').startOf('month').format("YYYY-MM-DD")
+    // let to_date=moment().subtract(2,'month').endOf('month').format("YYYY-MM-DD")
+    // getSalaryDetails(from_date,to_date,12000)
   // let from_date=moment().subtract(1,'month').startOf('month').format("YYYY-MM-DD")
   // let to_date=moment().subtract(1,'month').endOf('month').format("YYYY-MM-DD")
   // 
@@ -565,6 +570,7 @@ router.get("/api/getLoansHistory",verifyAuth,getLoansHistory)
 router.get("/api/getAdvanceHistory",verifyAuth,getAdvanceHistory)
 router.get("/api/getPermissions",verifyAuth,getPermissions)
 router.get("/api/getParentRole",verifyAuth,getParentRole)
+router.post("/api/insertAttendance",insertAttendanceData)
 // markAbsent()
 app.use(errorHandlerMiddleware)
 app.use(notFound)

@@ -18,6 +18,10 @@ const getTotalFines = (req, res, next) => {
                 queryString+=" and fines.employee_id = "+req.query.employee_id
               
                }
+               if(req.query.status){
+                queryString+=" and fines.status = "+req.query.status
+              
+               }
             queryString
             database.query(queryString, (err, fineData, fields) => {
                 console.log(err)

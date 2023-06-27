@@ -7,13 +7,20 @@ const router=express.Router()
  require('express-async-errors');
  const cron = require("node-cron");
 const markAbsent=require("../api/modules/attendance/markAbsent")
+const getSalary=require("../api/modules/salary/getSalary")
+
+const addGrades=require('../api/modules/grades/addGrades')
 const moment=require('moment')
-// cron.schedule("42 8 * * *",markAbsent,{
+cron.schedule("0 10 * * *",markAbsent,{
+  scheduled: true,
+  timezone: "Asia/Calcutta"
+})
+// cron.schedule("1 0 1 * *",addGrades,{
 //   scheduled: true,
 //   timezone: "Asia/Calcutta"
 // })
-// markAbsent()
-//  cron.schedule("31 12 17 * *",Salary,{
+// // markAbsent()
+//  cron.schedule("1 0 1 * *",getSalary,{
 //   scheduled: true,
 //   timezone: "Asia/Calcutta"
 // })   
@@ -88,7 +95,6 @@ const changePassword=require('../api/modules/auth/changePassword')
 const addRole=require('../api/modules/roles/addRole')
 const getRoles=require('../api/modules/roles/getRoles')
 const getGradeByEmployeeID=require('../api/modules/grades/getGradeByEmployeeID')
-const addGrades=require('../api/modules/grades/addGrades')
 const getSalaryDetails=require('../api/modules/salary/getSalaryDetails')
 const addSalaryDetails=require('../api/modules/salary/addSalaryDetails')
 const incrementSalary=require('../api/modules/salary/incrementSalary')
@@ -144,7 +150,7 @@ const getTransferDetails=require("../api/modules/transfer/getTransferDetails")
 const updateTransfer=require("../api/modules/transfer/updateTransfer")
 const getDepartments=require("../api/getDepartments")
 const getGrade=require("../api/modules/grades/getGrade")
-const getSalary=require("../api/modules/salary/getSalary")
+
 const addGradesForFI=require("../api/modules/grades/addGradesForFI")
 const getCountSalary=require("../api/modules/salary/getCountSalary")
 const getLoansHistory=require("../api/modules/loan/getLoansHistory")
@@ -166,10 +172,17 @@ cron.schedule("00 00 00 1 * *",()=>{
   addGrades(from_date,to_date,12000)},{
     scheduled: true,
     timezone: "Asia/Calcutta"
-  })  
-  let from_date=moment().subtract(1,'month').startOf('month').format("YYYY-MM-DD")
-  let to_date=moment().subtract(1,'month').endOf('month').format("YYYY-MM-DD")
-  // getSalaryDetails(from_date,to_date,12000)
+  }) 
+  cron.schedule("00 00 00 1 * *",()=>{
+    let from_date=moment().subtract(1,'month').startOf('month').format("YYYY-MM-DD")
+    let to_date=moment().subtract(1,'month').endOf('month').format("YYYY-MM-DD")
+    getSalaryDetails(from_date,to_date,12000)},{
+      scheduled: true,
+      timezone: "Asia/Calcutta"
+    })  
+  // let from_date=moment().subtract(1,'month').startOf('month').format("YYYY-MM-DD")
+  // let to_date=moment().subtract(1,'month').endOf('month').format("YYYY-MM-DD")
+  // 
 // addGrades(from_date,to_date,12000)
 const storage = multer.diskStorage({
    destination: function (req, file, cb) {

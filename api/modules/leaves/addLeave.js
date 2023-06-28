@@ -51,20 +51,21 @@ const addLeave = (req, res, next) => {
                             else {
                                 
 database.query("select week_off from weekoffs where employee_id="+req.body.employee_id,(err,weekOffResult)=>{
-    console.log(day.day(),weekOffResult[0].week_off)
+   
     const dayArray=['Sunday','Monday','TuesDay','Wednesday','Thursday','Friday','Saturday']
-if(dayArray[day.day()]!==weekOffResult[0].week_off){
-
-    database.query("Insert into attendance (check_in_datetime,employee_id,status,approval_document_id) values(" + mysql.escape(day.format("YYYY-MM-DD")) + "," + req.body.employee_id + ",'Pending'," + fileResult.insertId + ")", (err, attendanceData, fields) => {
-
-        attendanceArray.push(attendanceData)
-    })
-}
-else{
+if(weekOffResult.length>0&&dayArray[day.day()]===weekOffResult[0].week_off ){
     database.query("Insert into attendance (check_in_datetime,employee_id,status,approval_document_id) values(" + mysql.escape(day.format("YYYY-MM-DD")) + "," + req.body.employee_id + ",'WeekOff'," + fileResult.insertId + ")", (err, attendanceData, fields) => {
 
         attendanceArray.push(attendanceData)
     })
+    
+}
+else{
+    database.query("Insert into attendance (check_in_datetime,employee_id,status,approval_document_id) values(" + mysql.escape(day.format("YYYY-MM-DD")) + "," + req.body.employee_id + ",'Pending'," + fileResult.insertId + ")", (err, attendanceData, fields) => {
+
+        attendanceArray.push(attendanceData)
+    })
+  
 
 }
 })

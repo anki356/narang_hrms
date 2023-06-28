@@ -35,6 +35,7 @@ const getLeaves = (req, res, next) => {
                 queryString+=" Offset "+req.query.offset
               
                }
+               console.log(queryString)
                 database.query(queryString ,(err, leavesData, fields) => {
                     console.log(err);
                 res.send(leavesData) 

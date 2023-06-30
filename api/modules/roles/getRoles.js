@@ -13,7 +13,13 @@ const getRoles = (req, res, next) => {
             if(req.query.location_id){
                 queryString+=" where location_id="+req.query.location_id
             }
-            
+            if(req.query.limit){
+                queryString+=" limit "+req.query.limit
+               }
+               if(req.query.offset){
+                queryString+=" Offset "+req.query.offset
+              
+               }
             database.query(queryString, (err, roleData, fields) => {
                 console.log(err)
                 res.send(roleData) 

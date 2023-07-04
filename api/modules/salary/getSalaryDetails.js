@@ -20,7 +20,7 @@ const getSalaryDetails = async (from_date, to_date, commission) => {
             database.query("select amount from base_salaries where employee_id=" + data.employee_id, (err, baserSalariesResult, fields) => {
                 database.query("select count (attendance.id) as attendance_count, attendance.employee_id as employee_id from attendance where attendance.status='WeekOff' and check_in_datetime>=" + mysql.escape(from_date) + " and check_in_datetime<=" + mysql.escape(to_date) + " and attendance.employee_id =" + data.employee_id, (err, weekOFFResult, fields) => {
 console.log(err)
-                    let total_days = moment().daysInMonth() - weekOFFResult[0].attendance_count
+                    let total_days = moment(from_date).daysInMonth() - weekOFFResult[0].attendance_count
 
                     let salary = baserSalariesResult[0].amount / total_days * data.attendance_count
                     // let salary = baserSalariesResult[0].amount / total_days * 25
@@ -91,18 +91,21 @@ console.log(err)
                                                 let cash_incentive = per_day_salary * days - net_salary
                                                 database.query("Select value from settings where name in ('hra','basic')", (err, settingsResult) => {
                                                     console.log(err)
-                                                    let basic_salary = Number(settingsResult[1].value) * net_salary / 100
-                                                    let hra = Number(settingsResult[0].value) * net_salary / 100
+                                                    
                                     
+                                                   
+                                                    let total_deduction = (Number(expense) + Number(tea) + Number(advance) + Number(loan) + Number(fine))
+                                                    let total_earnings = Number(salary) + Number(commission)
+                                                    let basic_salary = Number(settingsResult[1].value) * total_earnings / 100
+                                                    let hra = Number(settingsResult[0].value) * total_earnings / 100
                                                     let esi
                                                     if (net_salary < 21000) {
                                                         esi = basic_salary * 0.75 / 100 * 60 / 100
                                                     }
                                                     let pf = basic_salary * 12 / 100
                                                     let net_payable_salary = net_salary - esi - pf
-                                                    let total_deduction = (Number(expense) + Number(tea) + Number(advance) + Number(loan) + Number(fine))
-                                                    let total_earnings = Number(salary) + Number(commission)
-                                                    database.query("Insert into salaries (employee_id, working_days, month, computed, commission, expense, tea, advance, loan_emi,fine, total_earnings, total_deductions, net_salary, status, esi, pf, basic_salary, hra, days_shown, cash_incentive,net_payable_salary)values (" + data.employee_id + "," + data.attendance_count + "," + month + "," + salary + "," + commission + "," + expense + "," + tea + "," + advance + "," + loan + "," + fine+","+total_earnings + "," + total_deduction + "," + net_salary + ",'Pending'," + esi + "," + pf + "," + basic_salary + "," + hra + "," + days + "," + cash_incentive + "," + net_payable_salary + ")", (err, salariesResult) => {
+                                                    database.query("Insert into salaries (employee_id, working_days, month, computed, commission, expense, tea, advance, loan_emi,fine, total_earnings, total_deductions, net_salary, status, esi, pf, basic_salary, hra, days_shown, cash_incentive,net_payable_salary,year)values (" + data.employee_id + "," + data.attendance_count + "," + month + "," + salary + "," + commission + "," + expense + "," + tea + "," + advance + "," + loan + "," + fine+","+total_earnings + "," + total_deduction + "," + net_salary + ",'Pending'," + esi + "," + pf + "," + basic_salary + "," + hra + "," + days + "," + cash_incentive + "," + net_payable_salary +","+moment(from_date).year()+ ")", (err, salariesResult) => {
+                                                        console.log(err)
                                                         pr.resolve(true)
                                                     })
                                                 })
@@ -111,7 +114,7 @@ console.log(err)
                                         else {
                                             let total_deduction = (Number(expense) + Number(tea) + Number(advance) + Number(loan) + Number(fine))
                                             let total_earnings = Number(salary) + Number(commission)
-                                            database.query("Insert into salaries (employee_id, working_days,fine, month, computed, commission, expense, tea, advance, loan_emi, total_earnings, total_deductions, net_salary, status,  basic_salary, hra, days_shown, cash_incentive,net_payable_salary)values (" + data.employee_id + "," + data.attendance_count + "," + fine + "," + month + "," + salary + "," + commission + "," + expense + "," + tea + "," + advance + "," + loan + "," + total_earnings + "," + total_deduction +","+net_salary + ",'Pending'," + null + "," + null + "," + null + "," + null + "," + null + ")", (err, salariesResult) => {
+                                            database.query("Insert into salaries (employee_id, working_days,fine, month, computed, commission, expense, tea, advance, loan_emi, total_earnings, total_deductions, net_salary, status,  basic_salary, hra, days_shown, cash_incentive,net_payable_salary,year)values (" + data.employee_id + "," + data.attendance_count + "," + fine + "," + month + "," + salary + "," + commission + "," + expense + "," + tea + "," + advance + "," + loan + "," + total_earnings + "," + total_deduction +","+net_salary + ",'Pending'," + null + "," + null + "," + null + "," + null + "," + null + ","+moment(from_date).year()+")", (err, salariesResult) => {
                                                 console.log("here", err)
                                                 pr.resolve(true)
                                             })

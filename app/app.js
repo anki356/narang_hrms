@@ -111,7 +111,7 @@ const getFloors=require('../api/modules/Floors/getFloors')
 const getlocations=require('../api/modules/locations/getlocations')
 const getAllSalary=require('../api/modules/salary/getAllSalary')
 const getHierarchy=require('../api/modules/hierarchy/getHierarchy')
-
+const getSalarySlipDetails=require("../api/modules/salary/getSalarySlipDetails")
 const getTotal=require('../api/modules/attendance/getTotal')
 const getTotalOutSessions=require('../api/modules/timing/getTotalOutSessions')
 const uploadFile=require("../upload/uploadFile")
@@ -182,8 +182,8 @@ cron.schedule("00 00 00 1 * *",()=>{
       scheduled: true,
       timezone: "Asia/Calcutta"
     })  
-    // let from_date=moment().subtract(2,'month').startOf('month').format("YYYY-MM-DD")
-    // let to_date=moment().subtract(2,'month').endOf('month').format("YYYY-MM-DD")
+    let from_date=moment().subtract(3,'month').startOf('month').format("YYYY-MM-DD")
+    let to_date=moment().subtract(3,'month').endOf('month').format("YYYY-MM-DD")
     // getSalaryDetails(from_date,to_date,12000)
   // let from_date=moment().subtract(1,'month').startOf('month').format("YYYY-MM-DD")
   // let to_date=moment().subtract(1,'month').endOf('month').format("YYYY-MM-DD")
@@ -250,6 +250,10 @@ router.post("/api/addInterview",
 
 router.get("/api/getTotalExpenseADay",
  verifyAuth,getTotalExpenseADay
+   
+)
+router.get("/api/getSalarySlipDetails",
+ verifyAuth,getSalarySlipDetails
    
 )
 router.get("/api/getGrade",

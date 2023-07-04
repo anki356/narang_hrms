@@ -164,7 +164,9 @@ const editEmployee=require("../api/modules/employees/editEmployee")
 const getPermissions=require("../api/getPermissions")
 const postNotifications=require("../api/modules/notifications/postNotifications")
 const getNotifications=require("../api/modules/Notifications/getNotifications")
-const getParentRole=require("../api/modules/hierarchy/getParentRole")
+const getParentRole=require("../api/modules/hierarchy/getParentRole");
+const deleteNotification = require("../api/modules/Notifications/deleteNotification");
+const editNotification = require("../api/modules/Notifications/editNotification");
 // addSalary()
 // cron.schedule("0 47 10 15 * *",addSalary)
 
@@ -438,6 +440,8 @@ router.post("/api/addFine",
 verifyAuth,addFine
    
 )
+router.patch("/api/editNotification/:id",verifyAuth,editNotification)
+router.delete("/api/deleteNotification/:id",verifyAuth,deleteNotification)
 router.post("/api/addTransfer",
 verifyAuth,addTransfer
    

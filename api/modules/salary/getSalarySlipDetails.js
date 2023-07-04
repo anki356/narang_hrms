@@ -20,6 +20,9 @@ const getSalarySlipDetails = async ( req,res,next) => {
                if(req.query.id){
                 queryString+=" and employees.id ="+ req.query.id
                }
+               if(req.query.year){
+                queryString+=" and salaries.year ="+ req.query.year
+               }
                console.log(queryString)
 
 database.query(queryString,(err,salary)=>{

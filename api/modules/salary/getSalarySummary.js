@@ -18,8 +18,9 @@ database.query("select * from attendance  where attendance.employee_id="+req.que
     database.query("select * from fines  where fines.employee_id="+req.query.employee_id+" and fines.date>=" + mysql.escape(req.query.from_date) + " and fines.date< " +mysql.escape(req.query.to_date),(err,fine)=>{  
         fine.forEach((fineData)=>{
             salary.forEach((salaryData)=>{
-                let fineDate=fineData.date.split(" ")[0]
-                let salaryDate=salaryData.check_in_datetime.split(" ")[0]
+                console.log(fineData.date)
+                let fineDate=fineData.date.toString().split("T")[0]
+                let salaryDate=salaryData.check_in_datetime.toString().split(" ")[0]
                 if(fineDate===salaryDate){
                 
                     salaryData.amount=fineData.amount

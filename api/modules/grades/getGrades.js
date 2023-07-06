@@ -26,7 +26,7 @@ const getGrades = (req, res, next) => {
                 queryString+=" Offset "+req.query.offset
                }
                 database.query(queryString , (err, gradesData, fields) => {
-                    console.log(err);
+                    console.log(queryString);
                 res.send(gradesData) 
                     
             })

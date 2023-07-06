@@ -22,7 +22,7 @@ database.query("select employee_id from attendance where check_in_datetime>="+my
     return !workingEmployeeResult.includes(data.id)
 })
 workingEmployeeResult=workingEmployeeResult.filter((data)=>{
-    return !leaveEmployees(data)
+    return !leaveEmployees.includes(data)
 })
 workingEmployeeResult.forEach((data)=>{
     database.query("Insert into attendance (check_in_datetime,employee_id,status) values("+mysql.escape(moment([date.getFullYear(),date.getMonth(),date.getDate()]).toISOString(true))+","+data+",'WeekOff')",(err,attendanceInsertResult)=>{

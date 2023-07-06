@@ -116,7 +116,7 @@ const getTotal=require('../api/modules/attendance/getTotal')
 const getTotalOutSessions=require('../api/modules/timing/getTotalOutSessions')
 const uploadFile=require("../upload/uploadFile")
 const getStoreIncharge=require("../api/getStoreIncharge")
-const getStoreIdOfGuard=require("../api/modules/locations/getStoreIdOfGuard")
+const getLocationIdOfGuard=require("../api/modules/locations/getStoreIdOfGuard")
 const getAllEmployees=require("../api/modules/employees/getAllEmployees")
 const getEmployeesWithTotalOutSessions=require("../api/modules/timing/getEmployeesWithTotalOutSessions")
 const getStoreIdOfFloorIncharge=require("../api/getStoreIdOfFloorIncharge")
@@ -330,8 +330,8 @@ router.get("/api/getTotalSessions",
  verifyAuth,getTotalSessions
    
 )
-router.get("/api/getlocationIdOfGuard",
- verifyAuth,getStoreIdOfGuard
+router.get("/api/getLocationIdOfGuard",
+ verifyAuth,getLocationIdOfGuard
    
 )
 router.post("/api/addTiming",

@@ -7,7 +7,7 @@ const getTotalApprovals = (req, res, next) => {
         let allowed_roles = ['Floor Incharge', 'Guard']
         if (allowed_roles.includes(result[0].role_name)) {
            
-            let queryString = "SELECT count(timing.id) as count_id from timing left join employees on employees.id=timing.employee_id left join job_details on job_details.id=employees.job_details_id where timing.approval_status='Approved' and date>=" + mysql.escape(req.query.from_date) + " and date<" + mysql.escape(req.query.to_date) + " and timing.status_id in (" + req.query.status_id+")"
+            let queryString = "SELECT count(timing.id) as count_id from timing left join employees on employees.id=timing.employee_id left join job_details on job_details.id=employees.job_details_id where timing.approval_status='Approved' and date>=" + mysql.escape(req.query.from_date) + " and date<" + mysql.escape(req.query.to_date)
             if (req.query.in_time) {
                 queryString += " and in_time is " + req.query.in_time
             }
@@ -20,6 +20,8 @@ const getTotalApprovals = (req, res, next) => {
                     }
 
                     database.query(queryString, (err, timingResult, fields) => {
+                        console.log("err",err)
+                        console.log("timingResult",timingResult)
                         res.send(timingResult)
 
                     })
@@ -31,8 +33,8 @@ const getTotalApprovals = (req, res, next) => {
                 }
                 console.log(queryString)
                 database.query(queryString, (err, timingResult, fields) => {
-                    console.log(err)
-                    console.log(timingResult)
+                    console.log("err",err)
+                    console.log("timingResult",timingResult)
                     res.send(timingResult)
 
                 })

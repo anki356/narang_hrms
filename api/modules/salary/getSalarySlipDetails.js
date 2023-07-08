@@ -14,7 +14,7 @@ const getSalarySlipDetails = async ( req,res,next) => {
              return data.role_id
            })
         if (allowed_roles.includes(role_id)) {
-            let queryString="select salaries.*,employees.min_wages_as_per_rule,employees.id as employee_id,roles.role_name as role_name,employees.name as employee_name,floors.name AS floor_name,locations.name as location_name ,employees.employee_id as empID from salaries left join employees on employees.id =salaries.employee_id left join job_details on job_details.id=employees.job_details_id left JOIN floors ON job_details.floor_id=floors.id left join roles on job_details.role_id=roles.id left join file_upload on file_upload.id=employees.photo_id left join locations on locations.id=job_details.location_id where month in ("+req.query.month+")"
+            let queryString="select base_salaries.amount as base_salary,salaries.*,employees.min_wages_as_per_rule,employees.id as employee_id,roles.role_name as role_name,employees.name as employee_name,floors.name AS floor_name,locations.name as location_name ,employees.employee_id as empID from salaries left join employees on employees.id =salaries.employee_id left join job_details on job_details.id=employees.job_details_id left JOIN floors ON job_details.floor_id=floors.id left join roles on job_details.role_id=roles.id left join file_upload on file_upload.id=employees.photo_id left join locations on locations.id=job_details.location_id left join base_salaries on base_salaries.employee_id=employees.id  where month in ("+req.query.month+")"
            
            
                if(req.query.id){

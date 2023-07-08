@@ -187,8 +187,8 @@ cron.schedule("00 00 00 1 * *",()=>{
     let from_date=moment().subtract(3,'month').startOf('month').format("YYYY-MM-DD")
     let to_date=moment().subtract(3,'month').endOf('month').format("YYYY-MM-DD")
     // getSalaryDetails(from_date,to_date,12000)
-  // let from_date=moment().subtract(1,'month').startOf('month').format("YYYY-MM-DD")
-  // let to_date=moment().subtract(1,'month').endOf('month').format("YYYY-MM-DD")
+  // let from_date=moment().subtract(3,'month').startOf('month').format("YYYY-MM-DD")
+  // let to_date=moment().subtract(3,'month').endOf('month').format("YYYY-MM-DD")
   // 
 // addGrades(from_date,to_date,12000)
 const storage = multer.diskStorage({

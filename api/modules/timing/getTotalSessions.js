@@ -10,7 +10,7 @@ const getTotalSessions = (req, res, next) => {
                 database.query("select employees.id from employees left join job_details on job_details.id=employees.job_details_id where job_details.role_id="+role_id,(err,employeesResult,fields)=>{
                    
                 database.query("select count(timing.id) from timing left join employees on timing.employee_id=employees.id left join job_details on job_details.id=employees.job_details_id where timing.date>="+mysql.escape(req.query.from_date)+"and timing.date<"+mysql.escape(req.query.to_date)+" and head_employee_id="+employeesResult[0].id , (err, timingResult, fields) => {
-                    
+                    console.log(err)
                     res.send(timingResult) 
                         
                 })

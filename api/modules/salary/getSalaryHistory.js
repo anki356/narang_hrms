@@ -15,7 +15,7 @@ const getSalaryHistory = (req,res,next) => {
            })
         if (allowed_roles.includes(role_id)) {
       
-         database.query("select *,employees.employee_id as empID  from salaries left join employees on employees.id=salaries.employee_id where salaries.employee_id="+req.query.employee_id,(err,salariesResult,fields)=>{
+         database.query("select *,employees.employee_id as empID  from salaries left join employees on employees.id=salaries.employee_id where salaries.employee_id="+req.query.employee_id +" and employees.status=1",(err,salariesResult,fields)=>{
             console.log(err)   
             res.send(salariesResult)
                

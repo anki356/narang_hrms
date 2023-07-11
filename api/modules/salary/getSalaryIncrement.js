@@ -16,7 +16,7 @@ const getSalaryIncrement = (req,res,next) => {
         if (allowed_roles.includes(role_id)) {
         
       
-         database.query("select *,base_salaries.amount as base_salary,salaries_increment.amount as increment  from salaries_increment left join employees on employees.id=salaries_increment.employee_id left join base_salaries on base_salaries.employee_id=salaries_increment.employee_id where salaries_increment.employee_id="+req.query.employee_id,(err,salariesIncrementResult,fields)=>{
+         database.query("select *,base_salaries.amount as base_salary,salaries_increment.amount as increment  from salaries_increment left join employees on employees.id=salaries_increment.employee_id left join base_salaries on base_salaries.employee_id=salaries_increment.employee_id where salaries_increment.employee_id="+req.query.employee_id +" and employees.status=1",(err,salariesIncrementResult,fields)=>{
                 console.log(err)
             res.send(salariesIncrementResult)
                

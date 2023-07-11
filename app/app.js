@@ -35,7 +35,7 @@ app.use(
 
 app.use(cors());
 
-app.use("/", router)
+
 app.use(express.static('uploads'));
 const multer = require("multer")
 const errorHandlerMiddleware = require("../errorHandler/errorHandlerMiddleware")
@@ -166,7 +166,9 @@ const postNotifications = require("../api/modules/notifications/postNotification
 const getNotifications = require("../api/modules/Notifications/getNotifications")
 const getParentRole = require("../api/modules/hierarchy/getParentRole");
 const deleteNotification = require("../api/modules/Notifications/deleteNotification");
-const editNotification = require("../api/modules/Notifications/editNotification");
+const editNotification = require("../api/modules/Notifications/editNotification")
+const deleteEmployee = require("../api/modules/employees/deleteEmployee")
+
 // addSalary()
 // cron.schedule("0 47 10 15 * *",addSalary)
 
@@ -207,18 +209,18 @@ const upload = multer({ storage: storage });
 
 
 
-router.post("/api/auth/login", async (req, res, next) => {
+router.post("/auth/login", async (req, res, next) => {
   const verifyLogin = require('../api/modules/auth/verifyLogin')
 
   verifyLogin(req, res, next)
 
 })
-router.get("/api/getAttendance",
+router.get("/getAttendance",
   verifyAuth,
   getAttendance
 
 )
-router.get("/api/getAllSalary",
+router.get("/getAllSalary",
   verifyAuth,
   getAllSalary
 )
@@ -238,64 +240,64 @@ router.get("/home",
   }
 
 )
-router.post("/api/auth/register",
+router.post("/auth/register",
   verifyAuth, register
 
 )
-router.get("/api/getNotifications",
+router.get("/getNotifications",
   verifyAuth,
   getNotifications
 
 )
-router.post("/api/postNotifications",
+router.post("/postNotifications",
   verifyAuth, postNotifications
 
 )
 
-router.patch("/api/updateAttendance/:id",
+router.patch("/updateAttendance/:id",
   verifyAuth, uploadFile, updateAttendance
 
 )
-router.patch("/api/rejectAttendance/:id",
+router.patch("/rejectAttendance/:id",
   verifyAuth, updateAttendance
 
 )
-router.post("/api/addInterview",
+router.post("/addInterview",
   [verifyAuth, upload.any('download')], verifyAuth, addInterview
 
 
 
 )
 
-router.get("/api/getTotalExpenseADay",
+router.get("/getTotalExpenseADay",
   verifyAuth, getTotalExpenseADay
 
 )
-router.get("/api/getSalarySlipDetails",
+router.get("/getSalarySlipDetails",
   verifyAuth, getSalarySlipDetails
 
 )
-router.get("/api/getGrade",
+router.get("/getGrade",
   verifyAuth, getGrade
 
 )
-router.get("/api/getExpenses",
+router.get("/getExpenses",
   verifyAuth, getExpenses
 
 )
-router.get("/api/getLeaves",
+router.get("/getLeaves",
   verifyAuth, getLeaves
 
 )
-router.get("/api/getFloors",
+router.get("/getFloors",
   verifyAuth, getFloors
 
 )
-router.get("/api/getlocations",
+router.get("/getlocations",
   verifyAuth, getlocations
 
 )
-router.get("/api/getSalarySummary",
+router.get("/getSalarySummary",
   verifyAuth, getSalarySummary
 
 )
@@ -305,57 +307,57 @@ router.get("/api/getSalarySummary",
 
 
 
-router.get("/api/getTotalEmployeesExpending",
+router.get("/getTotalEmployeesExpending",
   verifyAuth, getTotalEmployeesExpending
 
 )
-router.get("/api/getHierarchy",
+router.get("/getHierarchy",
   verifyAuth, getHierarchy
 
 )
-router.get("/api/getFineHistory",
+router.get("/getFineHistory",
   verifyAuth, getFineHistory
 
 )
 
-router.post("/api/addExpenses",
+router.post("/addExpenses",
   verifyAuth, addExpenses
 
 )
-router.post("/api/addExpenseSubCategory",
+router.post("/addExpenseSubCategory",
   verifyAuth, addExpenseSubCategory
 
 )
 
-router.patch("/api/updateExpenseStatus/:id",
+router.patch("/updateExpenseStatus/:id",
   verifyAuth, updateExpenseStatus
 
 )
-router.patch("/api/editEmployee/:id",
+router.patch("/editEmployee/:id",
   [verifyAuth, upload.any('download')], verifyAuth, editEmployee
 
 )
-router.patch("/api/paySalary/:id",
+router.patch("/paySalary/:id",
   verifyAuth, paySalary
 
 )
-router.get("/api/getTimings",
+router.get("/getTimings",
   verifyAuth, getTimings
 
 )
-router.get("/api/getTotalSessions",
+router.get("/getTotalSessions",
   verifyAuth, getTotalSessions
 
 )
-router.get("/api/getLocationIdOfGuard",
+router.get("/getLocationIdOfGuard",
   verifyAuth, getLocationIdOfGuard
 
 )
-router.post("/api/addTiming",
+router.post("/addTiming",
   verifyAuth, addTiming
 
 )
-router.patch("/api/updateTiming/:id",
+router.patch("/updateTiming/:id",
   verifyAuth, updateTiming
 
 )
@@ -365,177 +367,177 @@ router.patch("/api/updateTiming/:id",
 
 
 
-router.get("/api/getTotalApprovals",
+router.get("/getTotalApprovals",
   verifyAuth, getTotalApprovals
 
 )
 
 
-router.get("/api/getEmployees",
+router.get("/getEmployees",
   verifyAuth, getEmployees
 
 )
 
-router.get("/api/getLoans",
+router.get("/getLoans",
   verifyAuth, getLoans
 
 )
 
 
-router.get("/api/getTotalLoansGranted",
+router.get("/getTotalLoansGranted",
   verifyAuth, getTotalLoansGranted
 
 )
-router.get("/api/getTotalEmployeesTakenLoan",
+router.get("/getTotalEmployeesTakenLoan",
   verifyAuth, getTotalEmployeesTakenLoan
 
 )
-router.get("/api/getTotalEmployeesOnLeave",
+router.get("/getTotalEmployeesOnLeave",
   verifyAuth, getTotalEmployeesOnLeave
 
 )
-router.get("/api/getTotalPendingEmis",
+router.get("/getTotalPendingEmis",
   verifyAuth, getTotalPendingEmis
 
 )
-router.get("/api/getAdvances",
+router.get("/getAdvances",
   verifyAuth, getAdvances
 
 )
-router.get("/api/getAdvance",
+router.get("/getAdvance",
   verifyAuth, getAdvance
 
 )
 
-router.get("/api/getFines",
+router.get("/getFines",
   verifyAuth, getFines
 
 )
-router.patch("/api/updateFineApproval/:id",
+router.patch("/updateFineApproval/:id",
   verifyAuth, updateFineApproval
 
 )
 
 
 
-router.get("/api/getTotalFines",
+router.get("/getTotalFines",
   verifyAuth, getTotalFines
 
 )
-router.post("/api/addGradesForFI",
+router.post("/addGradesForFI",
   verifyAuth, addGradesForFI
 
 )
-router.get("/api/getTotalFinedEmployees",
+router.get("/getTotalFinedEmployees",
   verifyAuth, getTotalFinedEmployees
 
 )
 
-router.get("/api/getTransfer",
+router.get("/getTransfer",
   verifyAuth, getTransfer
 
 )
 
 
-router.patch("/api/updateLeaveStatus",
+router.patch("/updateLeaveStatus",
   verifyAuth, updateLeaveStatus
 
 )
-router.post("/api/addLoan",
+router.post("/addLoan",
   [verifyAuth, upload.single('download')], verifyAuth, addLoan
 
 )
-router.post("/api/restructureLoans",
+router.post("/restructureLoans",
   verifyAuth, restructureLoans
 
 )
-router.post("/api/addAdvance",
+router.post("/addAdvance",
   [verifyAuth, upload.single('download')], verifyAuth, addAdvance
 
 )
-router.post("/api/addFine",
+router.post("/addFine",
   verifyAuth, addFine
 
 )
-router.patch("/api/editNotification/:id", verifyAuth, editNotification)
-router.delete("/api/deleteNotification/:id", verifyAuth, deleteNotification)
-router.post("/api/addTransfer",
+router.patch("/editNotification/:id", verifyAuth, editNotification)
+router.delete("/deleteNotification/:id", verifyAuth, deleteNotification)
+router.post("/addTransfer",
   verifyAuth, addTransfer
 
 )
-router.get("/api/getSalary",
+router.get("/getSalary",
   verifyAuth, getSalary
 
 )
-router.post("/api/addTransferWithlocationId",
+router.post("/addTransferWithlocationId",
   verifyAuth, addTransferWithlocationId
 
 )
-router.put("/api/updateTimingCorrection/:id",
+router.put("/updateTimingCorrection/:id",
   [verifyAuth, upload.single('download')], verifyAuth, updateTimingCorrection
 
 )
-router.post("/api/addLeave",
+router.post("/addLeave",
   [verifyAuth, upload.single('download')], verifyAuth, addLeave
 
 )
-router.patch("/api/updateAdvanceStatus/:id",
+router.patch("/updateAdvanceStatus/:id",
   verifyAuth, updateAdvanceStatus
 
 )
-router.patch("/api/updateTimingStatus/:id",
+router.patch("/updateTimingStatus/:id",
   verifyAuth, updateTimingStatus
 
 )
-router.patch("/api/editFine/:id",
+router.patch("/editFine/:id",
   verifyAuth, editFine
 
 )
 
 
-router.patch("/api/updateLoanStatus/:id",
+router.patch("/updateLoanStatus/:id",
   verifyAuth, updateLoanStatus
 
 )
-router.get("/api/getInterview",
+router.get("/getInterview",
   verifyAuth, getInterview
 
 )
-router.get("/api/totalAmountOfBonusGiven",
+router.get("/totalAmountOfBonusGiven",
   verifyAuth, totalAmountOfBonusGiven
 
 )
 
-router.post("/api/addGradesBYFI",
+router.post("/addGradesBYFI",
   verifyAuth, addGradesBYFI
 
 )
-router.get("/api/getGrades",
+router.get("/getGrades",
   verifyAuth, getGrades
 
 )
-router.get("/api/totalEmployeesGivenBonus",
+router.get("/totalEmployeesGivenBonus",
   verifyAuth, totalEmployeesGivenBonus
 
 )
 
-router.post("/api/makeAttendanceCorrectionRequests",
+router.post("/makeAttendanceCorrectionRequests",
   verifyAuth, makeAttendanceCorrectionRequests
 
 )
-router.get("/api/getAttendanceCorrectionRequests",
+router.get("/getAttendanceCorrectionRequests",
   verifyAuth, getAttendanceCorrectionRequests
 
 )
-router.get("/api/getEmployeeDetails",
+router.get("/getEmployeeDetails",
   verifyAuth, getEmployeeDetails
 
 )
-router.get("/api/getRoles",
+router.get("/getRoles",
   verifyAuth, getRoles
 
 )
-router.post("/api/addEmployee",
+router.post("/addEmployee",
   [verifyAuth, upload.any()], verifyAuth, addEmployee
 
 )
@@ -544,59 +546,62 @@ router.patch('/api/markPresent', verifyAuth, markPresent)
 router.get('/api/getBonus', verifyAuth, getBonus)
 router.patch('/api/auth/changePassword', verifyAuth, changePassword)
 router.post('/api/addRole', verifyAuth, addRole)
-router.get("/api/getGradeByEmployeeID", verifyAuth, getGradeByEmployeeID)
-router.get("/api/getSalaryDetails", verifyAuth, getSalaryDetails)
-router.post("/api/addGrades", verifyAuth, addGrades)
-router.post("/api/addSalaryDetails", verifyAuth, addSalaryDetails)
-router.post("/api/addTimingyByFI", verifyAuth, addTimingyByFI)
-router.post("/api/incrementSalary", verifyAuth, incrementSalary)
-router.patch("/api/updateTimingByFiByGuard/:id", verifyAuth, updateTimingByFiByGuard)
-router.patch("/api/updateInterview/:id", verifyAuth, updateInterview)
-router.get("/api/calculateGradesForAll", verifyAuth, calculateGradesForAll)
-router.get("/api/calculateGradesOtherThanSalesman", verifyAuth, calculateGradesOtherThanSalesman)
-router.post("/api/addTimingCorrection", verifyAuth, addTimingCorrection)
-router.get("/api/getTimingCorrectionRequests", verifyAuth, getTimingCorrectionRequests)
-router.get("/api/getTotal", verifyAuth, getTotal)
-router.get("/api/getTotalOutSessions", verifyAuth, getTotalOutSessions)
-router.get("/api/getlocationIncharge", verifyAuth, getStoreIncharge)
-router.get("/api/getAllEmployees", verifyAuth, getAllEmployees)
-router.get("/api/getEmployeesWithTotalOutSessions", verifyAuth, getEmployeesWithTotalOutSessions)
-router.get("/api/getlocationIdOfFloorIncharge", verifyAuth, getStoreIdOfFloorIncharge)
-router.get("/api/getSubcategories", verifyAuth, getSubcategories)
-router.get("/api/getTotalEmployeesApproved", verifyAuth, getTotalEmployeesApproved)
-router.get("/api/getTotalApproved", verifyAuth, getTotalApproved)
-router.get("/api/getPendingExpenses", verifyAuth, getPendingExpenses)
-router.get("/api/getAttendanceCorrectionDatabyAttendanceID", verifyAuth, getAttendanceCorrectionDatabyAttendanceID)
-router.get("/api/getExpenseDataByExpenseId", verifyAuth, getExpenseDataByExpenseId)
-router.get("/api/getExpenseHistory", verifyAuth, getExpenseHistory)
-router.get("/api/getCategories", verifyAuth, getCategories)
-router.get("/api/getTotalEmployees", verifyAuth, getTotalEmployees)
-router.get("/api/getSalaryIncrement", verifyAuth, getSalaryIncrement)
-router.get("/api/getSalaryHistory", verifyAuth, getSalaryHistory)
-router.get("/api/getTotalLeaves", verifyAuth, getTotalLeaves)
-router.get("/api/getTotalAdvanceGranted", verifyAuth, getTotalAdvanceGranted)
-router.get("/api/getTotalEmployeesGranted", verifyAuth, getTotalEmployeesGranted)
-router.get("/api/getTotalUnpaidAdvance", verifyAuth, getTotalUnpaidAdvance)
-router.get("/api/getTotalInterviews", verifyAuth, getTotalInterviews)
-router.get("/api/getLeave", verifyAuth, getLeave)
-router.get("/api/getLoan", verifyAuth, getLoan)
-router.get("/api/getFine", verifyAuth, getFine)
-router.get("/api/getEmployeesBasedOnRole", verifyAuth, getEmployeesBasedOnRole)
-router.get("/api/getRoleData", verifyAuth, getRoleData)
-router.patch("/api/editRole/:id", verifyAuth, editRole)
-router.get("/api/getStoreDep", verifyAuth, getStoreDep)
-router.get("/api/calculateAverageGrade", verifyAuth, calculateAverageGrade)
-router.get("/api/isGraded", verifyAuth, isGraded)
-router.get("/api/getTransferDetails", verifyAuth, getTransferDetails)
-router.patch("/api/updateTransfer/:id", verifyAuth, updateTransfer)
-router.get("/api/getDepartments", verifyAuth, getDepartments)
-router.get("/api/getCountSalary", verifyAuth, getCountSalary)
-router.get("/api/getLoansHistory", verifyAuth, getLoansHistory)
-router.get("/api/getAdvanceHistory", verifyAuth, getAdvanceHistory)
-router.get("/api/getPermissions", verifyAuth, getPermissions)
-router.get("/api/getParentRole", verifyAuth, getParentRole)
-router.post("/api/insertAttendance", insertAttendanceData)
+router.get("/getGradeByEmployeeID", verifyAuth, getGradeByEmployeeID)
+router.get("/getSalaryDetails", verifyAuth, getSalaryDetails)
+router.post("/addGrades", verifyAuth, addGrades)
+router.post("/addSalaryDetails", verifyAuth, addSalaryDetails)
+router.post("/addTimingyByFI", verifyAuth, addTimingyByFI)
+router.post("/incrementSalary", verifyAuth, incrementSalary)
+router.patch("/updateTimingByFiByGuard/:id", verifyAuth, updateTimingByFiByGuard)
+router.patch("/updateInterview/:id", verifyAuth, updateInterview)
+router.get("/calculateGradesForAll", verifyAuth, calculateGradesForAll)
+router.get("/calculateGradesOtherThanSalesman", verifyAuth, calculateGradesOtherThanSalesman)
+router.post("/addTimingCorrection", verifyAuth, addTimingCorrection)
+router.get("/getTimingCorrectionRequests", verifyAuth, getTimingCorrectionRequests)
+router.get("/getTotal", verifyAuth, getTotal)
+router.get("/getTotalOutSessions", verifyAuth, getTotalOutSessions)
+router.get("/getlocationIncharge", verifyAuth, getStoreIncharge)
+router.get("/getAllEmployees", verifyAuth, getAllEmployees)
+router.get("/getEmployeesWithTotalOutSessions", verifyAuth, getEmployeesWithTotalOutSessions)
+router.get("/getlocationIdOfFloorIncharge", verifyAuth, getStoreIdOfFloorIncharge)
+router.get("/getSubcategories", verifyAuth, getSubcategories)
+router.get("/getTotalEmployeesApproved", verifyAuth, getTotalEmployeesApproved)
+router.get("/getTotalApproved", verifyAuth, getTotalApproved)
+router.get("/getPendingExpenses", verifyAuth, getPendingExpenses)
+router.get("/getAttendanceCorrectionDatabyAttendanceID", verifyAuth, getAttendanceCorrectionDatabyAttendanceID)
+router.get("/getExpenseDataByExpenseId", verifyAuth, getExpenseDataByExpenseId)
+router.get("/getExpenseHistory", verifyAuth, getExpenseHistory)
+router.get("/getCategories", verifyAuth, getCategories)
+router.get("/getTotalEmployees", verifyAuth, getTotalEmployees)
+router.get("/getSalaryIncrement", verifyAuth, getSalaryIncrement)
+router.get("/getSalaryHistory", verifyAuth, getSalaryHistory)
+router.get("/getTotalLeaves", verifyAuth, getTotalLeaves)
+router.get("/getTotalAdvanceGranted", verifyAuth, getTotalAdvanceGranted)
+router.get("/getTotalEmployeesGranted", verifyAuth, getTotalEmployeesGranted)
+router.get("/getTotalUnpaidAdvance", verifyAuth, getTotalUnpaidAdvance)
+router.get("/getTotalInterviews", verifyAuth, getTotalInterviews)
+router.get("/getLeave", verifyAuth, getLeave)
+router.get("/getLoan", verifyAuth, getLoan)
+router.get("/getFine", verifyAuth, getFine)
+router.get("/getEmployeesBasedOnRole", verifyAuth, getEmployeesBasedOnRole)
+router.get("/getRoleData", verifyAuth, getRoleData)
+router.patch("/editRole/:id", verifyAuth, editRole)
+router.get("/getStoreDep", verifyAuth, getStoreDep)
+router.get("/calculateAverageGrade", verifyAuth, calculateAverageGrade)
+router.get("/isGraded", verifyAuth, isGraded)
+router.get("/getTransferDetails", verifyAuth, getTransferDetails)
+router.patch("/updateTransfer/:id", verifyAuth, updateTransfer)
+router.get("/getDepartments", verifyAuth, getDepartments)
+router.get("/getCountSalary", verifyAuth, getCountSalary)
+router.get("/getLoansHistory", verifyAuth, getLoansHistory)
+router.get("/getAdvanceHistory", verifyAuth, getAdvanceHistory)
+router.get("/getPermissions", verifyAuth, getPermissions)
+router.get("/getParentRole", verifyAuth, getParentRole)
+router.post("/insertAttendance", insertAttendanceData)
+router.patch("/deleteEmployee/:id",verifyAuth , deleteEmployee)
+
 // markAbsent()
+app.use('/api',router);
 app.use(errorHandlerMiddleware)
 app.use(notFound)
 

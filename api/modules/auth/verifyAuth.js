@@ -7,7 +7,7 @@ const verifyAuth = (req, res, next) => {
     const token = req.headers["authorization"];
     if(token)
    {
-
+    
    jwt.verify(token.substring(7, token.length), 'secret', function (err, decoded) {
         if (decoded !== undefined) {
             database.connect(() => {

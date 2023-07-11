@@ -16,8 +16,10 @@ const getSalarySummary = async ( req,res,next) => {
         if (allowed_roles.includes(role_id)) {
 database.query("select * from attendance  where attendance.employee_id="+req.query.employee_id+" and attendance.check_in_datetime>=" + mysql.escape(req.query.from_date) + " and attendance.check_in_datetime< " +mysql.escape(req.query.to_date),(err,salary)=>{
     database.query("select * from fines  where fines.employee_id="+req.query.employee_id+" and fines.date>=" + mysql.escape(req.query.from_date) + " and fines.date< " +mysql.escape(req.query.to_date),(err,fine)=>{  
+        salary.forEach((salaryData)=>{
+            salaryData.amount=0
         fine.forEach((fineData)=>{
-            salary.forEach((salaryData)=>{
+           
                 console.log(fineData.date)
                 let fineDate=fineData.date.toString().split("T")[0]
                 let salaryDate=salaryData.check_in_datetime.toString().split(" ")[0]

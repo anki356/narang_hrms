@@ -14,7 +14,7 @@ const getCountSalary = async ( req,res,next) => {
              return data.role_id
            })
         if (allowed_roles.includes(role_id)) {
-            let queryString="select count(distinct salaries.employee_id) as count_id  from salaries left join employees on employees.id =salaries.employee_id where month="+req.query.month
+            let queryString="select count(distinct salaries.employee_id) as count_id  from salaries left join employees on employees.id =salaries.employee_id where month="+req.query.month +" and employees.status=1"
             if(req.query.status){
                 queryString+=" and status="+req.query.status
             }

@@ -2,10 +2,10 @@
   "name": "naranghrms",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon app/app.js"
   },
   "author": "Ankita",
   "license": "ISC",

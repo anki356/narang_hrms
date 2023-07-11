@@ -7,7 +7,7 @@ const getBonus = (req, res, next) => {
         let allowed_roles = ['HR Head','Super Admin','Admin']
         if (allowed_roles.includes(result[0].role_name)) {
             
-                let queryString="select bonus.*, employees.name as employee_name,employees.employee_id as empID from bonus left join employees on employees.id=bonus.employee_id left join job_details on job_details.id=employees.job_details_id left JOIN floors ON job_details.floor_id=floors.id left join roles on job_details.role_id=roles.id left join file_upload on file_upload.id=employees.photo_id left join locations on locations.id=job_details.location_id where locations.name="+ mysql.escape(req.query.location_name)
+                let queryString="select bonus.*, employees.name as employee_name,employees.employee_id as empID from bonus left join employees on employees.id=bonus.employee_id left join job_details on job_details.id=employees.job_details_id left JOIN floors ON job_details.floor_id=floors.id left join roles on job_details.role_id=roles.id left join file_upload on file_upload.id=employees.photo_id left join locations on locations.id=job_details.location_id where locations.name="+ mysql.escape(req.query.location_name) +" and employees.status=1"  
             if(result[0].role_name.split(" ")[0]==='Floor'){
                 database.query("select employees.id from employees left join job_details on job_details.id=employees.job_details_id where job_details.role_id="+role_id,(err,employeesResult,fields)=>{
                     console.log(err)

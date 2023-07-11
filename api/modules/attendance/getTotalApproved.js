@@ -16,7 +16,7 @@ const getTotalApproved = (req, res, next) => {
             if(result[0].role_name.split(" ")[0]==='Floor'){
                 database.query("select employees.id from employees left join job_details on job_details.id=employees.job_details_id where job_details.role_id="+role_id,(err,employeesResult,fields)=>{
 console.log(err)
-            let queryString="Select count(attendance_requests.id) as count_id from attendance_requests left join employees on employees.id=attendance_requests.employee_id left join job_details on job_details.id=employees.job_details_id where date_time>="+mysql.escape(req.query.from_date)+"and date_time<"+mysql.escape(req.query.to_date)+" and status="+req.query.status+" and job_details.head_employee_id="+employeesResult[0].id
+            let queryString="Select count(attendance_requests.id) as count_id from attendance_requests left join employees on employees.id=attendance_requests.employee_id left join job_details on job_details.id=employees.job_details_id where date_time>="+mysql.escape(req.query.from_date)+"and date_time<"+mysql.escape(req.query.to_date)+" and attendance.status="+req.query.status+" and job_details.head_employee_id="+employeesResult[0].id  +" and employees.status=1"  
             if(req.query.role_name){
                 queryString+=" and job_details.role_id="+ req.query.role_id
                }
@@ -25,7 +25,7 @@ console.log(err)
             })
         })
         }else{
-            let queryString="Select count(attendance_requests.id) as count_id from attendance_requests left join employees on employees.id=attendance_requests.employee_id left join job_details on job_details.id=employees.job_details_id where date_time>="+mysql.escape(req.query.from_date)+"and date_time<"+mysql.escape(req.query.to_date)+" and status="+req.query.status
+            let queryString="Select count(attendance_requests.id) as count_id from attendance_requests left join employees on employees.id=attendance_requests.employee_id left join job_details on job_details.id=employees.job_details_id where date_time>="+mysql.escape(req.query.from_date)+"and date_time<"+mysql.escape(req.query.to_date)+" and attendance.status="+req.query.status  +" and employees.status=1"  
             if(req.query.role_name){
                 queryString+=" and roles.role_name="+ req.query.role_name
                }

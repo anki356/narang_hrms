@@ -19,7 +19,7 @@ const getHierarchy =(req, res, next) => {
               async function fetchEmployeeData(value) {
                 return new Promise((resolve, reject) => {
                   const query =
-                    "select *,file_upload.name as photo,employees.name as employee_name from employees left join job_details on job_details.id=employees.job_details_id left join file_upload on file_upload.id=employees.photo_id where role_id="+value;
+                    "select *,file_upload.name as photo,employees.name as employee_name from employees left join job_details on job_details.id=employees.job_details_id left join file_upload on file_upload.id=employees.photo_id where role_id="+value +" and employees.status=1";
                   database.query(query, (err, rows) => {
                     if (err) reject(err);
                     resolve(rows);

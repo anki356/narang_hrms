@@ -10,9 +10,9 @@ const getAllEmployees = (req, res, next) => {
             if(result[0].role_name.split(" ")[0]==='Floor'){
                 database.query("select employees.id from employees left join job_details on job_details.id=employees.job_details_id where job_details.role_id="+role_id,(err,employeesResult,fields)=>{
                     console.log(err)
-                    queryString+="  job_details.head_employee_id=" +employeesResult[0].id
+                    queryString+=" where job_details.head_employee_id=" +employeesResult[0].id +" and employees.status=1"  
                     if(req.query.location_id){
-                        queryString+=" where job_details.location_id="+req.query.location_id
+                        queryString+=" and job_details.location_id="+req.query.location_id
                        }
                     if(req.query.employee_query){
                         queryString+=" and (employees.employee_id like '%"+ req.query.employee_query+"%'or employees.name like '%"+req.query.employee_query+"%')"
@@ -22,7 +22,7 @@ const getAllEmployees = (req, res, next) => {
                         queryString+=" and floors.name=" +mysql.escape(req.query.floor_name)
                        }
                        if(req.query.role_name){
-                        queryString+=" and roles.role_name="+mysql.escape( req.query.role_name)
+                        queryString+=" and roles.role_name="+mysql.escape(req.query.role_name)
                        }
                        if(req.query.limit){
                         queryString+=" limit "+req.query.limit
@@ -38,7 +38,7 @@ const getAllEmployees = (req, res, next) => {
                 
                }else{
                 if(req.query.location_id){
-                    queryString+=" where job_details.location_id="+req.query.location_id
+                    queryString+=" where job_details.location_id="+req.query.location_id +" and employees.status=1"  
                    }
                 if(req.query.employee_query){
                     queryString+=" and (employees.employee_id like '%"+ req.query.employee_query+"%'or employees.name like '%"+req.query.employee_query+"%')"

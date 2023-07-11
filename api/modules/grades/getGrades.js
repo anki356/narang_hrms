@@ -6,7 +6,7 @@ const getGrades = (req, res, next) => {
         if (err) console.log(err)
         let allowed_roles = ['Floor Incharge','Super Admin']
         if (allowed_roles.includes(result[0].role_name)) {
-            let queryString="SELECT file_upload.name as photo, automated_grades.*,roles.role_name as role_name,employees.name as employee_name ,employees.employee_id as empID, floors.name as floor_name from automated_grades left join employees on employees.id=automated_grades.employee_id left join job_details on job_details.id=employees.job_details_id left join floors on floors.id=job_details.floor_id left join file_upload on file_upload.id=employees.photo_id left join roles on job_details.role_id=roles.id left join locations on job_details.location_id=locations.id where automated_grades.date>="+mysql.escape(req.query.from_date)+" and automated_grades.date<= "+mysql.escape(req.query.to_date)
+            let queryString="SELECT file_upload.name as photo, automated_grades.*,roles.role_name as role_name,employees.name as employee_name ,employees.employee_id as empID, floors.name as floor_name from automated_grades left join employees on employees.id=automated_grades.employee_id left join job_details on job_details.id=employees.job_details_id left join floors on floors.id=job_details.floor_id left join file_upload on file_upload.id=employees.photo_id left join roles on job_details.role_id=roles.id left join locations on job_details.location_id=locations.id where automated_grades.date>="+mysql.escape(req.query.from_date)+" and automated_grades.date<= "+mysql.escape(req.query.to_date) +" and employees.status=1" 
             if(req.query.floor_name){
                 queryString+=" and floors.name=" +mysql.escape(req.query.floor_name)
                }

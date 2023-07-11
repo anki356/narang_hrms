@@ -9,7 +9,7 @@ const getTotalSessions = (req, res, next) => {
             if(result[0].role_name==='Floor Incharge'){
                 database.query("select employees.id from employees left join job_details on job_details.id=employees.job_details_id where job_details.role_id="+role_id,(err,employeesResult,fields)=>{
                    
-                database.query("select count(timing.id) from timing left join employees on timing.employee_id=employees.id left join job_details on job_details.id=employees.job_details_id where timing.date>="+mysql.escape(req.query.from_date)+"and timing.date<"+mysql.escape(req.query.to_date)+" and head_employee_id="+employeesResult[0].id , (err, timingResult, fields) => {
+                database.query("select count(timing.id) from timing left join employees on timing.employee_id=employees.id left join job_details on job_details.id=employees.job_details_id where timing.date>="+mysql.escape(req.query.from_date)+"and timing.date<"+mysql.escape(req.query.to_date)+" and head_employee_id="+employeesResult[0].id+" and out_time is not null" , (err, timingResult, fields) => {
                     console.log(err)
                     res.send(timingResult) 
                         
@@ -17,7 +17,7 @@ const getTotalSessions = (req, res, next) => {
             })
             }
             else{
-                database.query("select count(timing.id) as count_id from timing left join employees on timing.employee_id=employees.id left join job_details on job_details.id=employees.job_details_id left join locations on locations.id=job_details.location_id where timing.date>="+mysql.escape(req.query.from_date)+"and timing.date<"+mysql.escape(req.query.to_date)+" and locations.id="+req.query.location_id+" and in_time is not null and out_time is not null" , (err, timingResult, fields) => {
+                database.query("select count(timing.id) as count_id from timing left join employees on timing.employee_id=employees.id left join job_details on job_details.id=employees.job_details_id left join locations on locations.id=job_details.location_id where timing.date>="+mysql.escape(req.query.from_date)+"and timing.date<"+mysql.escape(req.query.to_date)+" and locations.id="+req.query.location_id+" and   out_time is not null" , (err, timingResult, fields) => {
                    console.log(err)
                     res.send(timingResult) 
                         

@@ -26,7 +26,7 @@ const getTotal = (req, res, next) => {
                   " and status=" +
                   req.query.status +
                   " and job_details.head_employee_id=" +
-                  employeesResult[0].id;
+                  employeesResult[0].id +" and employees.status=1"  
                 if (req.query.role_name) {
                   queryString +=
                     " and job_details.role_id=" + req.query.role_id;

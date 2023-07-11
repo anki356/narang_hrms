@@ -13,10 +13,10 @@ const getTotalEmployees = (req, res, next) => {
              return data.role_id
            })
         if (allowed_roles.includes(role_id)) {
-            let queryString="SELECT count(id ) as count_id from employees"
+            let queryString="SELECT count(id ) as count_id from employees"+ " where employees.status=1" 
            
             if(req.query.type){
-                queryString+=" where type=" +req.query.type
+                queryString+=" and type=" +req.query.type
                }
                
             

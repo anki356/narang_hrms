@@ -13,7 +13,7 @@ const getTotalFines = (req, res, next) => {
              return data.role_id
            })
         if (allowed_roles.includes(role_id)) {
-            let queryString="select sum (amount) as amount from fines where date >="+mysql.escape(req.query.from_date)+" and date<"+mysql.escape(req.query.to_date)
+            let queryString="select sum (amount) as amount from fines left join employees on employees.id=fines.employee_id where date >="+mysql.escape(req.query.from_date)+" and date<"+mysql.escape(req.query.to_date) +" and employees.status=1" 
             if(req.query.employee_id){
                 queryString+=" and fines.employee_id = "+req.query.employee_id
               

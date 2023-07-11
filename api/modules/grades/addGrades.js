@@ -3,7 +3,7 @@ const mysql = require("mysql")
 const moment=require("moment")
 const addGrades = (from_date,to_date,commission) => {
    
-           let query="select count(attendance.id)  as attendance_count,attendance.employee_id,sum(amount)as total_fine from attendance left join fines on fines.employee_id=attendance.employee_id  where check_in_datetime>="+mysql.escape(from_date)+" and check_in_datetime<="+mysql.escape(to_date)+" and attendance.status='Present' group by attendance.employee_id"
+           let query="select count(attendance.id)  as attendance_count,attendance.employee_id,sum(amount)as total_fine from attendance left join employees on employees.id=attendance.employee_id left join fines on fines.employee_id=attendance.employee_id  where check_in_datetime>="+mysql.escape(from_date)+" and check_in_datetime<="+mysql.escape(to_date)+" and attendance.status='Present' group by attendance.employee_id" +" and employees.status=1"
            database.query(query,(err,result)=>{
             console.log(err)
             let promiseArray=[]

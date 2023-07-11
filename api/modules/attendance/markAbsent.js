@@ -9,7 +9,7 @@ database.query("select employee_id from attendance where check_in_datetime>="+my
     let leaveEmployees=attendanceResult.map((data)=>{
         return data.employee_id
     })
-    database.query("select id from employees",(err,employeeIds)=>{
+    database.query("select id from employees where status=1",(err,employeeIds)=>{
         employeeIds=employeeIds.filter((data)=>{
             return !leaveEmployees.includes(data.id)
         })

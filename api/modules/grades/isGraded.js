@@ -9,7 +9,7 @@ const isGraded = (req, res, next) => {
         if (allowed_roles.includes(result[0].role_name)) {
             let from_date=moment().startOf('month').subtract(1,'month')
             let to_date=moment().endOf('month').add(1,'d').subtract(1,'month')
-          database.query("Select count(distinct employee_id ) as count_id from grades left join employees on employees.id=grades.employee_id where date>="+mysql.escape(from_date.format("YYYY-MM-DD"))+" and date<="+mysql.escape(to_date.format("YYYY-MM-DD"))+" and employees.status=1" ,(err,result)=>{
+          database.query("Select count(distinct grades.employee_id ) as count_id from grades left join employees on employees.id=grades.employee_id where date>="+mysql.escape(from_date.format("YYYY-MM-DD"))+" and date<="+mysql.escape(to_date.format("YYYY-MM-DD"))+" and employees.status=1" ,(err,result)=>{
            res.send(result)
           })
         }

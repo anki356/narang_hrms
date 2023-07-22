@@ -8,56 +8,8 @@ const getBonus = (req, res, next) => {
         if (allowed_roles.includes(result[0].role_name)) {
             
                 let queryString="select bonus.*, employees.name as employee_name,employees.employee_id as empID from bonus left join employees on employees.id=bonus.employee_id left join job_details on job_details.id=employees.job_details_id left JOIN floors ON job_details.floor_id=floors.id left join roles on job_details.role_id=roles.id left join file_upload on file_upload.id=employees.photo_id left join locations on locations.id=job_details.location_id where locations.name="+ mysql.escape(req.query.location_name) +" and employees.status=1"  
-            if(result[0].role_name.split(" ")[0]==='Floor'){
-                database.query("select employees.id from employees left join job_details on job_details.id=employees.job_details_id where job_details.role_id="+role_id,(err,employeesResult,fields)=>{
-                    console.log(err)
-                    queryString+=" and job_details.head_employee_id=" +employeesResult[0].id
-                    if(req.query.floor_name){
-                        queryString+=" and floors.name=" +mysql.escape(req.query.floor_name)
-                       }
-                       
-                       if(req.query.status){
-                        queryString+=" and leaves.status in ("+ req.query.status+")"
-                       }
-                       if(req.query.role_name){
-                        queryString+=" and roles.role_name="+mysql.escape(req.query.role_name)
-                       }
-                       if(req.query.employee_id){
-                        queryString+="and employees.employee_id="+ req.query.employee_id
-                       }
-                       if(req.query.from_date && req.query.to_date){
-                        queryString+=" and fines.date>="+mysql.escape(req.query.from_date)+" and fines.date<"+mysql.escape(req.query.to_date)
-                       }
-                       
-                       if(req.query.employee_query){
-                        queryString+=" and (employees.employee_id like '%"+ req.query.employee_query+"%'or employees.name like '%"+req.query.employee_query+"%')"
-                       }
-                       if(req.query.limit){
-                        queryString+=" limit "+req.query.limit
-                       }
-                       if(req.query.offset){
-                        queryString+=" Offset "+req.query.offset
-                       }           
-                       console.log(queryString)
-            
-                        database.query(queryString , (err, bonusResult, fields) => {
-                            console.log(err)
-                            let employeeIds=bonusResult.map((data)=>data.employee_id)
-                            if(bonusResult.length>0){
-                                let employeeIds=bonusResult.map((data)=>data.employee_id)
-                                database.query("select * from base_salaries where employee_id in ("+employeeIds+")", (err, baseSalariesData, fields) => {
-                                console.log(err)
-                                res.json({"bonusResult":bonusResult,"baseSalariesData":baseSalariesData}) 
-                            })
-                            }
-                            else{
-                                res.json({"bonusResult":bonusResult}) 
-                            }
-                    })
-                })
-                
-               }
-               else{
+       
+     
                 if(req.query.floor_name){
                     queryString+=" and floors.name=" +mysql.escape(req.query.floor_name)
                    }
@@ -67,7 +19,9 @@ const getBonus = (req, res, next) => {
                    if(req.query.role_name){
                     queryString+=" and roles.role_name="+ mysql.escape(req.query.role_name)
                    }
-                   
+                   if(req.query.from_date && req.query.to_date){
+                    queryString+=" and bonus.created_on>="+mysql.escape(req.query.from_date)+" and bonus.created_on<"+mysql.escape(req.query.to_date)
+                   }
                    if(req.query.employee_query){
                     queryString+=" and (employees.employee_id like '%"+ req.query.employee_query+"%'or employees.name like '%"+req.query.employee_query+"%')"
                    }
@@ -101,7 +55,7 @@ const getBonus = (req, res, next) => {
                     
             })
             
-               }
+               
         
         }
 

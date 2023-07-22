@@ -23,7 +23,7 @@ const getTotal = (req, res, next) => {
                   mysql.escape(req.query.from_date) +
                   "and check_in_datetime<" +
                   mysql.escape(req.query.to_date) +
-                  " and status=" +
+                  " and attendance.status=" +
                   req.query.status +
                   " and job_details.head_employee_id=" +
                   employeesResult[0].id +" and employees.status=1"  

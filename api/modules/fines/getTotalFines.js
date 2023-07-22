@@ -19,7 +19,11 @@ const getTotalFines = (req, res, next) => {
               
                }
                if(req.query.status){
-                queryString+=" and fines.status = "+req.query.status
+                queryString+=" and fines.status in ("+req.query.status+")"
+              
+               }
+               if(req.query.reason){
+                queryString+=" and fines.reason = "+req.query.reason
               
                }
             console.log(queryString)

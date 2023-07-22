@@ -22,7 +22,7 @@ const getLeaves = (req, res, next) => {
                 queryString+="and employees.employee_id="+ req.query.employee_id
                }
                if(req.query.from_date && req.query.to_date){
-                queryString+=" and leaves.from_date<="+mysql.escape(req.query.from_date)+" and leaves.to_date>="+mysql.escape(req.query.from_date)
+                queryString+=" and leaves.from_date>="+mysql.escape(req.query.from_date)+" and leaves.to_date<="+mysql.escape(req.query.to_date)
                }
                
                if(req.query.employee_query){

@@ -22,7 +22,7 @@ if(attendanceAbsentResult.length>0)
                     if(fine>0){
                      
                         
-                        database.query("Insert into fines (employee_id,amount,reason,date,recall_head,head_approval,status,payment_status) values ("+req.body.employee_id+","+fine+",'Late Coming', current_timestamp(),1,1,'Pending','Unpaid')",(err,fineResult)=>{
+                        database.query("Insert into fines (employee_id,amount,reason,date,recall_head,head_approval,status,payment_status,status_date) values ("+req.body.employee_id+","+Number(fine)+1+",'Late Coming', current_timestamp(),1,1,'Approved','Unpaid',current_timestamp)",(err,fineResult)=>{
                             
                             res.send(attendanceResult) 
                         })

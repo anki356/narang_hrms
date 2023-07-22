@@ -4,13 +4,14 @@ const mysql = require('mysql')
 const getSalaryDetails = async (from_date, to_date, commission) => {
     let month = moment(from_date).month()
     let year = moment(from_date).year()
-    database.query("select count(attendance.id)  as attendance_count,attendance.employee_id,sum(amount)as total_fine from attendance left join employees on employees.id=attendance.employee_id left join fines on fines.employee_id=attendance.employee_id  where check_in_datetime>="+mysql.escape(from_date)+" and check_in_datetime<="+mysql.escape(to_date)+" and attendance.status='Present' group by attendance.employee_id" +" and employees.status=1", (err, result, fields) => {
+    console.log("select count(attendance.id)  as attendance_count,attendance.employee_id,sum(amount)as total_fine from attendance left join employees on employees.id=attendance.employee_id left join fines on fines.employee_id=attendance.employee_id  where check_in_datetime>="+mysql.escape(from_date)+" and check_in_datetime<="+mysql.escape(to_date)+" and attendance.status='Present'" +"and employees.status=1"+" group by attendance.employee_id")
+    database.query("select count(distinct attendance.id)  as attendance_count,attendance.employee_id,sum(amount)as total_fine from attendance left join employees on employees.id=attendance.employee_id left join fines on fines.employee_id=attendance.employee_id  where check_in_datetime>="+mysql.escape(from_date)+" and check_in_datetime<="+mysql.escape(to_date)+" and attendance.status='Present'" +"and employees.status=1"+" group by attendance.employee_id" , (err, result, fields) => {
         console.log(err, result)
         console.log(result)
         let total_days = moment(from_date).daysInMonth()
         let promiseArray = []
         result.forEach((data, index) => {
-
+console.log(data.attendance_count)
             let pr = {}
             pr.pr = new Promise((resolve, reject) => {
                 pr.resolve = resolve
@@ -60,18 +61,18 @@ console.log(err)
                                         database.query("select amount from loan_repayment where loan_id=" + loanResult[0].id + " and month=" + month + " and year=" + year, (err, loanRepaymentResult, fields) => {
 
                                             if (loanRepaymentResult.length > 0) {
-                                                net_salary = salary + commission - expense - tea - advance - loanRepaymentResult[0].amount - fine
+                                                net_salary = salary + commission + expense + tea - advance - loanRepaymentResult[0].amount - fine
                                                 loan = loanRepaymentResult[0].amount
                                             }
                                             else {
-                                                net_salary = Number(salary) + Number(commission) - Number(expense) - tea - Number(advance) - fine
+                                                net_salary = Number(salary) + Number(commission) + Number(expense) + tea - Number(advance) - fine
                                                 loan = 0
                                             }
 
                                         })//number
                                     }
                                     else {
-                                        net_salary = Number(salary) + Number(commission) - Number(expense) - tea - Number(advance) - fine
+                                        net_salary = Number(salary) + Number(commission) + Number(expense) + tea - Number(advance) - fine
                                         loan = 0
                                     }
                                     database.query("select sub_type from employees where id=" + data.employee_id, (err, employeeTypeResponse) => {
@@ -83,19 +84,19 @@ console.log(err)
                                                 let per_day_salary = salary_as_per_rule / total_days
                                                 let days
                                                 for (let i = total_days; i > 0; i--) {
-                                                    if ((per_day_salary * i) - net_salary < per_day_salary) {
+                                                    if ((per_day_salary * i) - net_salary < per_day_salary&&(per_day_salary * i) - net_salary>0 ) {
                                                         days = i
                                                         break;
                                                     }
                                                 }
-                                                let cash_incentive = per_day_salary * days - net_salary
+                                                let cash_incentive = per_day_salary * days - net_salary>0?per_day_salary * days - net_salary:0
                                                 database.query("Select value from settings where name in ('hra','basic')", (err, settingsResult) => {
                                                     console.log(err)
                                                     
                                     
                                                    
-                                                    let total_deduction = (Number(expense) + Number(tea) + Number(advance) + Number(loan) + Number(fine))
-                                                    let total_earnings = Number(salary) + Number(commission)
+                                                    let total_deduction =  Number(advance) + Number(loan) + Number(fine)
+                                                    let total_earnings = Number(expense) + Number(tea) + Number(salary) + Number(commission)
                                                     let basic_salary = Number(settingsResult[1].value) * total_earnings / 100
                                                     let hra = Number(settingsResult[0].value) * total_earnings / 100
                                                     let esi
@@ -112,8 +113,8 @@ console.log(err)
                                             })
                                         }
                                         else {
-                                            let total_deduction = (Number(expense) + Number(tea) + Number(advance) + Number(loan) + Number(fine))
-                                            let total_earnings = Number(salary) + Number(commission)
+                                            let total_deduction = ( Number(advance) + Number(loan) + Number(fine))
+                                            let total_earnings = Number(expense) + Number(tea) +Number(salary) + Number(commission)
                                             database.query("Insert into salaries (employee_id, working_days,fine, month, computed, commission, expense, tea, advance, loan_emi, total_earnings, total_deductions, net_salary, status,  basic_salary, hra, days_shown, cash_incentive,net_payable_salary,year)values (" + data.employee_id + "," + data.attendance_count + "," + fine + "," + month + "," + salary + "," + commission + "," + expense + "," + tea + "," + advance + "," + loan + "," + total_earnings + "," + total_deduction +","+net_salary + ",'Pending'," + null + "," + null + "," + null + "," + null + "," + null + ","+moment(from_date).year()+")", (err, salariesResult) => {
                                                 console.log("here", err)
                                                 pr.resolve(true)

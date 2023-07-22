@@ -17,7 +17,7 @@ const incrementSalary = async(req,res,next) => {
         if(req.body.type==='Percentage'){
             database.query("select amount from base_salaries where employee_id="+req.body.employee_id,(err,baseSalariesResult)=>{   
                 let amount=((100+Number(req.body.amount))/100)*Number(baseSalariesResult[0].amount)
-            database.query("Insert into salaries_increment (employee_id,amount,date,percentage,type) values("+req.body.employee_id+","+amount+","+mysql.escape(req.body.date)+","+req.body.amount+",'percentage')",(err,incrementSalariesResult)=>{   
+            database.query("Insert into salaries_increment (employee_id,amount,date,increment,type) values("+req.body.employee_id+","+amount+","+mysql.escape(req.body.date)+","+req.body.amount+",'percentage')",(err,incrementSalariesResult)=>{   
                 console.log(err)
        database.query("update base_salaries set amount="+amount+" where employee_id="+req.body.employee_id,(err,baseSalariesResult)=>{
         console.log(err)
@@ -29,7 +29,7 @@ const incrementSalary = async(req,res,next) => {
         else{
             database.query("select amount from base_salaries where employee_id="+req.body.employee_id,(err,baseSalariesResult)=>{   
                 let amount=Number(req.body.amount)+Number(baseSalariesResult[0].amount)
-                database.query("Insert into salaries_increment (employee_id,amount,date,type) values("+req.body.employee_id+","+req.body.amount+","+mysql.escape(req.body.date)+",'flat')",(err,incrementSalariesResult)=>{   
+                database.query("Insert into salaries_increment (employee_id,amount,date,type,increment) values("+req.body.employee_id+","+amount+","+mysql.escape(req.body.date)+",'flat',"+req.body.amount+")",(err,incrementSalariesResult)=>{   
                 database.query("update base_salaries set amount="+amount+" where employee_id="+req.body.employee_id,(err,baseSalariesResult)=>{
                  console.log(err)
                  res.json({"baseSalariesResult":baseSalariesResult,"incrementSalariesResult":incrementSalariesResult})

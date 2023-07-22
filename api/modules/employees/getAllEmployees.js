@@ -31,7 +31,7 @@ const getAllEmployees = (req, res, next) => {
                         queryString+=" Offset "+req.query.offset
                        }      
                     database.query(queryString , (err, employeesResult, fields) => {
-                        console.log(err)
+                        console.log(queryString)
                       res.send(employeesResult)
                     })
                 })

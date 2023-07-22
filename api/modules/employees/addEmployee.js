@@ -95,6 +95,9 @@ const getEmployees = (req, res, next) => {
                                 })
                             })
                         }else{
+                            if (req.body.min_wages_as_per_rule === undefined || req.body.min_wages_as_per_rule === '') {
+                                req.body.min_wages_as_per_rule = null
+                            }
                             database.query("Insert into employees(name,father_name,phone,emergency_number,employee_id,dob,gender,marital_status,qualification,local_address,permanent_address,aadhar_no,pan_no,photo_id,job_details_id,uan_no,fine_management,min_wages_as_per_rule,type,sub_type) values(" + mysql.escape(req.body.name) + "," + mysql.escape(req.body.father_name) + "," + req.body.phone + "," + req.body.emergency_no + "," + countId + "," + mysql.escape(req.body.dob) + "," + mysql.escape(req.body.gender) + "," + mysql.escape(req.body.marital_status) + "," + mysql.escape(req.body.qualification) + "," + mysql.escape(req.body.local_address) + "," + mysql.escape(req.body.permanent_address) + "," + req.body.aadhar_no + "," + mysql.escape(req.body.pan_no) + "," + photo_id + "," + jobDetailsResult.insertId + "," + mysql.escape(req.body.uan_no) + "," + req.body.fine_management + "," + req.body.min_wages_as_per_rule + "," + mysql.escape(req.body.type) + "," + mysql.escape(req.body.sub_type) + ")", (err, employeesResult, fields) => {
                                 console.log(err)
                                 employeeId = employeesResult.insertId

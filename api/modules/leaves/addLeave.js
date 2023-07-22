@@ -13,31 +13,31 @@ const addLeave = (req, res, next) => {
             let attendanceArray = []
 
             let from_array = []
-            
+
             for (let i = 0; i <= d; i++) {
 
                 let day = moment(req.body.from_date).add(i, 'd')
                 from_array.push(day.format("YYYY-MM-DD"))
 
             }
-            let queryString=''
-            from_array.forEach((data,index)=>{
-                if(index!==from_array.length-1){
-                    queryString+=mysql.escape(data)+","
+            let queryString = ''
+            from_array.forEach((data, index) => {
+                if (index !== from_array.length - 1) {
+                    queryString += mysql.escape(data) + ","
                 }
-                else{
-                    queryString+=mysql.escape(data)
+                else {
+                    queryString += mysql.escape(data)
                 }
 
             })
             console.log(queryString)
-            database.query("select id from attendance where check_in_datetime  in (" + queryString + ") and employee_id="+req.body.employee_id, (err, duplicateResult) => {
-                console.log(err)
+            database.query("select id from attendance where check_in_datetime  in (" + queryString + ") and employee_id=" + req.body.employee_id, (err, duplicateResult) => {
+                console.log("duplicateResult",duplicateResult)
                 if (duplicateResult.length === 0) {
-            database.query("Insert into file_upload (type,name) values ('leave_document_image'," + mysql.escape(req.file.filename) + ")", (err, fileResult, fields) => {
-               
-             
-                   
+                    database.query("Insert into file_upload (type,name) values ('leave_document_image'," + mysql.escape(req.file.filename) + ")", (err, fileResult, fields) => {
+
+
+
                         for (let i = 0; i <= d; i++) {
 
                             let day = moment(req.body.from_date).add(i, 'd')
@@ -49,26 +49,26 @@ const addLeave = (req, res, next) => {
                                 })
                             }
                             else {
-                                
-database.query("select week_off from weekoffs where employee_id="+req.body.employee_id,(err,weekOffResult)=>{
-   
-    const dayArray=['Sunday','Monday','TuesDay','Wednesday','Thursday','Friday','Saturday']
-if(weekOffResult.length>0&&dayArray[day.day()]===weekOffResult[0].week_off ){
-    database.query("Insert into attendance (check_in_datetime,employee_id,status,approval_document_id) values(" + mysql.escape(day.format("YYYY-MM-DD")) + "," + req.body.employee_id + ",'WeekOff'," + fileResult.insertId + ")", (err, attendanceData, fields) => {
 
-        attendanceArray.push(attendanceData)
-    })
-    
-}
-else{
-    database.query("Insert into attendance (check_in_datetime,employee_id,status,approval_document_id) values(" + mysql.escape(day.format("YYYY-MM-DD")) + "," + req.body.employee_id + ",'Pending'," + fileResult.insertId + ")", (err, attendanceData, fields) => {
+                                database.query("select week_off from weekoffs where employee_id=" + req.body.employee_id, (err, weekOffResult) => {
 
-        attendanceArray.push(attendanceData)
-    })
-  
+                                    const dayArray = ['Sunday', 'Monday', 'TuesDay', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+                                    if (weekOffResult.length > 0 && dayArray[day.day()] === weekOffResult[0].week_off) {
+                                        database.query("Insert into attendance (check_in_datetime,employee_id,status,approval_document_id) values(" + mysql.escape(day.format("YYYY-MM-DD")) + "," + req.body.employee_id + ",'WeekOff'," + fileResult.insertId + ")", (err, attendanceData, fields) => {
 
-}
-})
+                                            attendanceArray.push(attendanceData)
+                                        })
+
+                                    }
+                                    else {
+                                        database.query("Insert into attendance (check_in_datetime,employee_id,status,approval_document_id) values(" + mysql.escape(day.format("YYYY-MM-DD")) + "," + req.body.employee_id + ",'Pending'," + fileResult.insertId + ")", (err, attendanceData, fields) => {
+
+                                            attendanceArray.push(attendanceData)
+                                        })
+
+
+                                    }
+                                })
                             }
 
 
@@ -77,12 +77,12 @@ else{
                             console.log(err)
                             res.json({ "leaveData": leaveData, "attendanceArray": attendanceArray })
                         })
-                    
-                })
-            }
-            else{
-                res.json({status:"409",mssg:"Duplicate Entry"})
-            }
+
+                    })
+                }
+                else {
+                    res.sendStatus(409)
+                }
 
             })
         }

@@ -19,8 +19,9 @@ const getTotalEmployeesExpending = (req, res, next) => {
               })
           })
       }else{
-          let  queryString="SELECT count(distinct expenses.employee_id) as total from expenses left join employees on employees.id=expenses.employee_id left join job_details on job_details.id=employees.job_details_id where date>="+mysql.escape(req.query.from_date)+" and date<"+mysql.escape(req.query.to_date)+" and status='Approved'" +" and employees.status=1" 
+          let  queryString="SELECT count(distinct expenses.employee_id) as total from expenses left join employees on employees.id=expenses.employee_id left join job_details on job_details.id=employees.job_details_id where date>="+mysql.escape(req.query.from_date)+" and date<"+mysql.escape(req.query.to_date)+" and expenses.status='Approved'" +" and employees.status=1" 
           database.query( queryString, (err, employee_total, fields) => {
+            console.log(err)
               res.send(employee_total) 
                   
           })

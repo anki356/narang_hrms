@@ -97,7 +97,7 @@ const getRoles = require("../api/modules/roles/getRoles");
 const getGradeByEmployeeID = require("../api/modules/grades/getGradeByEmployeeID");
 const getSalaryDetails = require("../api/modules/salary/getSalaryDetails");
 const addSalaryDetails = require("../api/modules/salary/addSalaryDetails");
-// const incrementSalary = require('../api/modules/salary/incrementSalary')
+const incrementSalary = require('../api/modules/salary/incrementSalary')
 const addTimingyByFI = require("../api/modules/timing/addTimingyByFI");
 const updateTimingByFiByGuard = require("../api/modules/timing/updateTimingByFiByGuard");
 const updateInterview = require("../api/modules/interview/updateInterview");
@@ -150,7 +150,7 @@ const getTransferDetails = require("../api/modules/transfer/getTransferDetails")
 const updateTransfer = require("../api/modules/transfer/updateTransfer");
 const getDepartments = require("../api/getDepartments");
 const getGrade = require("../api/modules/grades/getGrade");
-
+const getPendingInModules=require("../api/getPendingInModules")
 const addGradesForFI = require("../api/modules/grades/addGradesForFI");
 const getCountSalary = require("../api/modules/salary/getCountSalary");
 const getLoansHistory = require("../api/modules/loan/getLoansHistory");
@@ -160,7 +160,7 @@ const getSalarySummary = require("../api/modules/salary/getSalarySummary");
 const paySalary = require("../api/modules/salary/paySalary");
 const editEmployee = require("../api/modules/employees/editEmployee");
 const getPermissions = require("../api/getPermissions");
-// const postNotifications = require("../api/modules/notifications/postNotifications")
+const postNotifications = require("../api/modules/notifications/postNotifications")
 const getNotifications = require("../api/modules/Notifications/getNotifications");
 const getParentRole = require("../api/modules/hierarchy/getParentRole");
 const deleteNotification = require("../api/modules/Notifications/deleteNotification");
@@ -211,7 +211,7 @@ let from_date = moment()
   .startOf("month")
   .format("YYYY-MM-DD");
 let to_date = moment().subtract(3, "month").endOf("month").format("YYYY-MM-DD");
-// getSalaryDetails(from_date,to_date,12000)
+// getSalaryDetails(from_date,to_date,5000)
 // let from_date=moment().subtract(3,'month').startOf('month').format("YYYY-MM-DD")
 // let to_date=moment().subtract(3,'month').endOf('month').format("YYYY-MM-DD")
 //
@@ -254,11 +254,11 @@ router.get("/home", (req, res) => {
 });
 router.post("/auth/register", verifyAuth, register);
 router.get("/getNotifications", verifyAuth, getNotifications);
-// router.post("/postNotifications",
-//   verifyAuth, postNotifications
+router.post("/postNotifications",
+  verifyAuth, postNotifications
 
-// )
-
+)
+router.get("/getPendingInModules",verifyAuth,getPendingInModules)
 router.patch("/updateAttendance/:id", verifyAuth, uploadFile, updateAttendance);
 router.patch("/rejectAttendance/:id", verifyAuth, updateAttendance);
 router.post(
@@ -395,22 +395,22 @@ router.post(
   addEmployee
 );
 router.post(
-  "/api/addBonus",
+  "/addBonus",
   verifyAuth,
   upload.single("download"),
   verifyAuth,
   addBonus
 );
-router.patch("/api/markPresent", verifyAuth, markPresent);
-router.get("/api/getBonus", verifyAuth, getBonus);
-router.patch("/api/auth/changePassword", verifyAuth, changePassword);
-router.post("/api/addRole", verifyAuth, addRole);
+router.patch("/markPresent", verifyAuth, markPresent);
+router.get("/getBonus", verifyAuth, getBonus);
+router.patch("/auth/changePassword", verifyAuth, changePassword);
+router.post("/addRole", verifyAuth, addRole);
 router.get("/getGradeByEmployeeID", verifyAuth, getGradeByEmployeeID);
 router.get("/getSalaryDetails", verifyAuth, getSalaryDetails);
 router.post("/addGrades", verifyAuth, addGrades);
 router.post("/addSalaryDetails", verifyAuth, addSalaryDetails);
 router.post("/addTimingyByFI", verifyAuth, addTimingyByFI);
-// router.post("/incrementSalary", verifyAuth, incrementSalary)
+router.post("/incrementSalary", verifyAuth, incrementSalary)
 router.patch(
   "/updateTimingByFiByGuard/:id",
   verifyAuth,
@@ -488,7 +488,7 @@ app.use("/api", router);
 app.use(errorHandlerMiddleware);
 app.use(notFound);
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 9000;
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

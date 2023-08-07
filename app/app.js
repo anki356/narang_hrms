@@ -166,6 +166,8 @@ const getParentRole = require("../api/modules/hierarchy/getParentRole");
 const deleteNotification = require("../api/modules/Notifications/deleteNotification");
 const editNotification = require("../api/modules/Notifications/editNotification");
 const deleteEmployee = require("../api/modules/employees/deleteEmployee");
+const getLastGrade = require("../api/modules/grades/getLastGrade");
+const editGrade  = require("../api/modules/grades/editGrades");
 
 // addSalary()
 // cron.schedule("0 47 10 15 * *",addSalary)
@@ -179,7 +181,7 @@ cron.schedule(
       .format("YYYY-MM-DD");
     let to_date = moment()
       .subtract(1, "month")
-      .endOf("month")
+      .endOf("month").add(1,'d')
       .format("YYYY-MM-DD");
     addGrades(from_date, to_date, 12000);
   },
@@ -197,7 +199,7 @@ cron.schedule(
       .format("YYYY-MM-DD");
     let to_date = moment()
       .subtract(1, "month")
-      .endOf("month")
+      .endOf("month").add(1,'d')
       .format("YYYY-MM-DD");
     getSalaryDetails(from_date, to_date, 12000);
   },
@@ -403,7 +405,10 @@ router.post(
 );
 router.patch("/markPresent", verifyAuth, markPresent);
 router.get("/getBonus", verifyAuth, getBonus);
+router.get("/getLastGrade", verifyAuth, getLastGrade);
+
 router.patch("/auth/changePassword", verifyAuth, changePassword);
+router.patch("/editGrade/:id",verifyAuth,editGrade);
 router.post("/addRole", verifyAuth, addRole);
 router.get("/getGradeByEmployeeID", verifyAuth, getGradeByEmployeeID);
 router.get("/getSalaryDetails", verifyAuth, getSalaryDetails);

@@ -99,8 +99,8 @@ console.log(data)
                             grade_equivalent = "C"
                         }
                         if(automatedGradeResult.length>0){
-
-                            const updateQuery = 'UPDATE automated_grades SET WD_Grade='+grade_5th+',COM_Grade='+grade_6th+',Fine_Marks='+grade_7th+',grade_1st_avg='+gradeResult[0].first_Avg+', grade_2nd_avg='+gradeResult[0].second_Avg+', grade_3rd_avg='+gradeResult[0].third_Avg+', grade_4th_avg='+gradeResult[0].fourth_AVG+', Grade_Equivalent='+grade_equivalent+', Total='+total_grades+',date=current_timestamp() WHERE id='+automatedGradeResult[0].id;
+let to_date=moment(to_date).subtract(1,'d').format("YYYY")
+                            const updateQuery = 'UPDATE automated_grades SET WD_Grade='+grade_5th+',COM_Grade='+grade_6th+',Fine_Marks='+grade_7th+',grade_1st_avg='+gradeResult[0].first_Avg+', grade_2nd_avg='+gradeResult[0].second_Avg+', grade_3rd_avg='+gradeResult[0].third_Avg+', grade_4th_avg='+gradeResult[0].fourth_AVG+', Grade_Equivalent='+grade_equivalent+', Total='+total_grades+',date='+to_date+' WHERE id='+automatedGradeResult[0].id;
                            database.query(updateQuery,(err,finalResult)=>{
                             pr.resolve(true)
                            })

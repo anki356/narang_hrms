@@ -24,9 +24,10 @@ const updateAttendance= (req, res, next) => {
                     let break_point=moment().set('year',year).set('month',month).set('date',date).set('hour',10).set('minute',40).set('second',0)
                     let fine=moment(req.body.date_time).diff(break_point,'minutes')
                     console.log('fine',fine,"break_point",break_point)
+                    fine=Number(fine)+Number(1)
                     if(fine>0){
                      
-                        fine=Number(fine)+Number(1)
+                      
                         database.query("Insert into fines (employee_id,amount,reason,date,recall_head,head_approval,status,payment_status,status_date) values ("+req.body.employee_id+","+fine+",'Late Coming', current_timestamp(),1,1,'Approved','Unpaid',current_timestamp() )",(err,fineResult)=>{
                             
                             
@@ -61,9 +62,10 @@ const updateAttendance= (req, res, next) => {
                 let break_point=moment().set('year',year).set('month',month).set('date',date).set('hour',10).set('minute',40).set('second',0)
                 let fine=moment(req.body.date_time).diff(break_point,'minutes')
                 console.log('fine',fine,"break_point",break_point)
+                fine=Number(fine)+Number(1)
                 if(fine>0){
                  
-                    fine=Number(fine)+Number(1)
+                    
                     database.query("Insert into fines (employee_id,amount,reason,date,recall_head,head_approval,status,payment_status,status_date) values ("+req.body.employee_id+","+fine+",'Late Coming', current_timestamp(),1,1,'Approved','Unpaid',current_timestamp() )",(err,fineResult)=>{
                         
                         

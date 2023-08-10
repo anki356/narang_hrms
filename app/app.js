@@ -160,7 +160,7 @@ const getSalarySummary = require("../api/modules/salary/getSalarySummary");
 const paySalary = require("../api/modules/salary/paySalary");
 const editEmployee = require("../api/modules/employees/editEmployee");
 const getPermissions = require("../api/getPermissions");
-const postNotifications = require("../api/modules/notifications/postNotifications")
+//const postNotifications = require("../api/modules/notifications/postNotifications")
 const getNotifications = require("../api/modules/Notifications/getNotifications");
 const getParentRole = require("../api/modules/hierarchy/getParentRole");
 const deleteNotification = require("../api/modules/Notifications/deleteNotification");
@@ -257,10 +257,10 @@ router.get("/home", (req, res) => {
 });
 router.post("/auth/register", verifyAuth, register);
 router.get("/getNotifications", verifyAuth, getNotifications);
-router.post("/postNotifications",
-  verifyAuth, postNotifications
+//router.post("/postNotifications",
+//   verifyAuth, postNotifications
 
-)
+// )
 router.get("/getPendingInModules",verifyAuth,getPendingInModules)
 router.patch("/updateAttendance/:id", verifyAuth, uploadFile, updateAttendance);
 router.patch("/rejectAttendance/:id", verifyAuth, updateAttendance);

@@ -33,10 +33,10 @@ app.use(
 );
 
 app.use(cors());
-
+const errorHandlerMiddleware = require("../errorHandler/errorHandlerMiddleware");
 app.use(express.static("uploads"));
 const multer = require("multer");
-const errorHandlerMiddleware = require("../errorHandler/errorHandlerMiddleware");
+
 const notFound = require("../errorHandler/notFound");
 const verifyAuth = require("../api/modules/auth/verifyAuth");
 const register = require("../api/modules/auth/register");
@@ -168,6 +168,7 @@ const editNotification = require("../api/modules/Notifications/editNotification"
 const deleteEmployee = require("../api/modules/employees/deleteEmployee");
 const getLastGrade = require("../api/modules/grades/getLastGrade");
 const editGrade  = require("../api/modules/grades/editGrades");
+const markPresentManually = require("../api/modules/attendance/markPresentManually");
 
 // addSalary()
 // cron.schedule("0 47 10 15 * *",addSalary)
@@ -487,13 +488,15 @@ router.get("/getPermissions", verifyAuth, getPermissions);
 router.get("/getParentRole", verifyAuth, getParentRole);
 router.post("/insertAttendance", insertAttendanceData);
 router.patch("/deleteEmployee/:id", verifyAuth, deleteEmployee);
+router.post("/markPresentManually", verifyAuth, markPresentManually);
 
 // markAbsent()
 app.use("/api", router);
+
 app.use(errorHandlerMiddleware);
 app.use(notFound);
 
-const port = process.env.PORT || 9000;
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

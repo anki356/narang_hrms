@@ -47,7 +47,7 @@ const verifyLogin = (req, res, next) => {
 
             }
         })
-        database.end()
+        
     })
 
 

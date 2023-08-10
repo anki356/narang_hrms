@@ -3,6 +3,7 @@ const app = express();
 const database = require("../config/database");
 var cors = require("cors");
 const path = require("path");
+const mysql=require('mysql')
 const router = express.Router();
 require("express-async-errors");
 const cron = require("node-cron");
@@ -499,5 +500,7 @@ app.use(notFound);
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
+  
   console.log(`Server running on port ${port}`);
 });
+ 

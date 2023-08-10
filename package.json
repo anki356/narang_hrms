@@ -5,7 +5,7 @@
   "main": "app/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app/app.js"
+    "start": "nodemon app/app.js"
   },
   "author": "Ankita",
   "license": "ISC",
@@ -23,6 +23,7 @@
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
     "multer": "^1.4.5-lts.1",
+    "my-sql": "^1.2.15",
     "mysql": "^2.18.1",
     "node-cron": "^3.0.2",
     "pdf-lib": "^1.17.1",

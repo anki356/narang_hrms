@@ -97,7 +97,7 @@ const getRoles = require("../api/modules/roles/getRoles");
 const getGradeByEmployeeID = require("../api/modules/grades/getGradeByEmployeeID");
 const getSalaryDetails = require("../api/modules/salary/getSalaryDetails");
 const addSalaryDetails = require("../api/modules/salary/addSalaryDetails");
-const incrementSalary = require("../api/modules/salary/incrementSalary");
+// const incrementSalary = require("../api/modules/salary/incrementSalary");
 const addTimingyByFI = require("../api/modules/timing/addTimingyByFI");
 const updateTimingByFiByGuard = require("../api/modules/timing/updateTimingByFiByGuard");
 const updateInterview = require("../api/modules/interview/updateInterview");
@@ -416,7 +416,7 @@ router.get("/getSalaryDetails", verifyAuth, getSalaryDetails);
 router.post("/addGrades", verifyAuth, addGrades);
 router.post("/addSalaryDetails", verifyAuth, addSalaryDetails);
 router.post("/addTimingyByFI", verifyAuth, addTimingyByFI);
-router.post("/incrementSalary", verifyAuth, incrementSalary)
+// router.post("/incrementSalary", verifyAuth, incrementSalary)
 router.patch(
   "/updateTimingByFiByGuard/:id",
   verifyAuth,

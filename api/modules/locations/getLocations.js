@@ -1,7 +1,12 @@
 const database = require("../../../config/database");
 const mysql = require("mysql")
 const getlocations = (req, res, next) => {
-            database.query("select * from locations", (err, locationData, fields) => {
+    let query="select locations.*,count(floors.id) as no_of_floors from locations left join floors on locations.id=floors.location_id"
+    if(req.query.location_id){
+        query+=" where locations.id="+req.query.location_id
+    }
+    query+=" group by locations.id"
+            database.query(query, (err, locationData, fields) => {
                 console.log(err)
                 res.send(locationData) 
             })

@@ -7,7 +7,7 @@ const getTotalApprovals = (req, res, next) => {
         let allowed_roles = ['Floor Incharge', 'Guard']
         if (allowed_roles.includes(result[0].role_name)) {
            
-            let queryString = "SELECT count(timing.id) as count_id from timing left join employees on employees.id=timing.employee_id left join job_details on job_details.id=employees.job_details_id where timing.approval_status='Approved' and date>=" + mysql.escape(req.query.from_date) + " and date<" + mysql.escape(req.query.to_date)+" and status_id in ("+req.query.status_id+")" +" and employees.status=1"
+            let queryString = "SELECT count(timing.id) as count_id from timing left join employees on employees.id=timing.employee_id left join job_details on job_details.id=employees.job_details_id left join locations on locations.id=job_details.location_id where timing.approval_status='Approved' and date>=" + mysql.escape(req.query.from_date) + " and date<" + mysql.escape(req.query.to_date)+" and status_id in ("+req.query.status_id+")" +" and employees.status=1"
             if (req.query.in_time) {
                 queryString += " and in_time is " + req.query.in_time
             }
@@ -18,7 +18,9 @@ const getTotalApprovals = (req, res, next) => {
                     if (req.query.role_id) {
                         queryString += " and job_details.role_id=" + req.query.role_id
                     }
-
+                    if(req.query.location_id) {
+                        queryString+=  " and locations.id="+req.query.location_id  
+                    }
                     database.query(queryString, (err, timingResult, fields) => {
                         console.log("err",err)
                         console.log("timingResult",timingResult)
@@ -30,6 +32,9 @@ const getTotalApprovals = (req, res, next) => {
             else {
                 if (req.query.role_id) {
                     queryString += " and job_details.role_id=" + req.query.role_id
+                }
+                if(req.query.location_id) {
+                    queryString+=  " and locations.id="+req.query.location_id  
                 }
                 console.log(queryString)
                 database.query(queryString, (err, timingResult, fields) => {

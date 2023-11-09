@@ -45,6 +45,12 @@ queryString+=" and timing.in_time is null"
                if (req.query.status_id){
                 queryString+=" and timing.status_id in("+ req.query.status_id+")"
                }
+               if(req.query.limit){
+                queryString+=" limit "+req.query.limit
+               }
+               if(req.query.offset){
+                queryString+=" Offset "+req.query.offset
+               }
             database.query( queryString, (err, timingResult, fields) => {
                 console.log(err)
                 res.send(timingResult) 
@@ -84,6 +90,12 @@ queryString+=" and timing.in_time is null"
                            if (req.query.status_id){
                             queryString+=" and timing.status_id in("+ req.query.status_id+")"
                            }
+                           if(req.query.limit){
+                            queryString+=" limit "+req.query.limit
+                           }
+                           if(req.query.offset){
+                            queryString+=" Offset "+req.query.offset
+                           } 
                         database.query( queryString, (err, timingResult, fields) => {
                             console.log(err)
                             res.send(timingResult) 

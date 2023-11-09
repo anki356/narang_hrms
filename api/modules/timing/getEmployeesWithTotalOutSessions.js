@@ -10,6 +10,9 @@ const getEmployeesWithTotalOutSessions = (req, res, next) => {
              if(req.query.floor_name){
                 queryString+=" and floors.name=" + mysql.escape(req.query.floor_name)
                }
+               if(req.query.location_id) {
+                queryString+=  " and locations.id="+req.query.location_id  
+            }
                if(req.query.employee_query){
                 queryString+=" and (employees.employee_id like '%"+ req.query.employee_query+"%'or employees.name like '%"+req.query.employee_query+"%')"
                }

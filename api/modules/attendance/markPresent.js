@@ -11,10 +11,10 @@ const addAttendance = (req, res, next) => {
             if (allowed_roles.includes(result[0].role_name)) {
                 let day = moment()
                 let timeOfAbsent = day.set('h', 0).set('m', 0).set('s', 0)
-                axios.get('http://49.205.181.193:8081/api/v2/WebAPI/GetDeviceLogs?APIKey=330718082302&FromDate=' + moment().subtract(1,'d').format("YYYY-MM-DD") + "&ToDate=" + moment().format("YYYY-MM-DD")).then((response) => {
+             
                     let log_array=[]
     
-    var new_array=response.data.map((data)=>data.EmployeeCode)
+    var new_array=req.body.map((data)=>data.EmployeeCode)
     var new_array=new_array.filter((value, index, new_array) =>{
       return new_array.indexOf(value) === index;
     })
@@ -22,7 +22,7 @@ const addAttendance = (req, res, next) => {
         let obj={}
         obj.EmployeeCode=data
         obj.timing=[]
-        response.data.forEach((element)=>{
+        req.body.forEach((element)=>{
         if(element.EmployeeCode===data){
             obj.timing.push(element.LogDate)
         }
@@ -74,12 +74,12 @@ const addAttendance = (req, res, next) => {
                                                         let date = today.getDate()
                                                         let month = Number(today.getMonth()) + 1
                                                         let break_point = moment().set('hour', 10).set('minute', 40).set('second', 0)
-                                                        let fine = moment().diff(break_point, 'minutes')
-                                                        fine = Number(fine) + Number(1)
+                                                        let fine = moment(element.timing[0]).diff(break_point, 'minutes')
+                                                        
                                                         if (fine > 0) {
                         
                         
-                                                            database.query("Insert into fines (employee_id,amount,reason,date,recall_head,head_approval,status,payment_status,status_date) values (" + response[0].id + "," + Number(fine) + 1 + ",'Late Coming', current_timestamp(),1,1,'Approved','Unpaid',current_timestamp)", (err, fineResult) => {
+                                                            database.query("Insert into fines (employee_id,amount,reason,date,recall_head,head_approval,status,payment_status,status_date) values (" + response[0].id + "," + fine + ",'Late Coming', current_timestamp(),1,1,'Approved','Unpaid',current_timestamp)", (err, fineResult) => {
                         
                                                                 pr.resolve(true)
                                                             })
@@ -136,12 +136,12 @@ const addAttendance = (req, res, next) => {
                                                         let date = today.getDate()
                                                         let month = Number(today.getMonth()) + 1
                                                         let break_point = moment().set('hour', 10).set('minute', 40).set('second', 0)
-                                                        let fine = moment().diff(break_point, 'minutes')
-                                                        fine = Number(fine) + Number(1)
+                                                        let fine = moment(element.timing[2]).diff(break_point, 'minutes')
+                                                        
                                                         if (fine > 0) {
                         
                         
-                                                            database.query("Insert into fines (employee_id,amount,reason,date,recall_head,head_approval,status,payment_status,status_date) values (" + response[0].id + "," + Number(fine) + 1 + ",'Late Coming', current_timestamp(),1,1,'Approved','Unpaid',current_timestamp)", (err, fineResult) => {
+                                                            database.query("Insert into fines (employee_id,amount,reason,date,recall_head,head_approval,status,payment_status,status_date) values (" + response[0].id + "," + fine + ",'Late Coming', current_timestamp(),1,1,'Approved','Unpaid',current_timestamp)", (err, fineResult) => {
                         
                                                                 pr.resolve(true)
                                                             })
@@ -277,15 +277,7 @@ const addAttendance = (req, res, next) => {
             res.sendStatus(409)
         }
     })
-                }) .catch(error => {
-                    if (axios.isCancel(error)) {
-                      // Request was canceled due to timeout
-                      console.log('Request canceled due to timeout');
-                    } else {
-                      // Handle other errors
-                      console.error('Error:', error);
-                    }
-                  });
+               
             }
         })
     

@@ -7,11 +7,13 @@ const getLoans = (req, res, next) => {
         if (err) console.log(err)
         let allowed_roles = ['HR Head','Admin','Super Admin']
         if (allowed_roles.includes(result[0].role_name)) {
-            let queryString= "SELECT  loan.*,locations.name as location_name,roles.role_name as role_name,file_upload.name as photo,employees.name as employee_name,employees.employee_id as empID,floors.name as floor_name from loan left join employees on employees.id=loan.employee_id left join job_details on job_details.id=employees.job_details_id left join floors on floors.id=job_details.floor_id left join file_upload on file_upload.id=employees.photo_id left join roles on job_details.role_id=roles.id left join locations on locations.id =job_details.location_id where locations.name="+ mysql.escape(req.query.location_name) +" and employees.status=1"
+            let queryString= "SELECT  loan.*,locations.name as location_name,roles.role_name as role_name,file_upload.name as photo,employees.name as employee_name,employees.employee_id as empID,floors.name as floor_name from loan left join employees on employees.id=loan.employee_id left join job_details on job_details.id=employees.job_details_id left join floors on floors.id=job_details.floor_id left join file_upload on file_upload.id=employees.photo_id left join roles on job_details.role_id=roles.id left join locations on locations.id =job_details.location_id where employees.status=1"
             if(req.query.floor_name){
                 queryString+=" and floors.name=" +mysql.escape(req.query.floor_name)
                }
-               
+               if(req.query.location_name){
+                queryString+= " and locations.name="+ mysql.escape(req.query.location_name)
+               }
                if(req.query.status){
                 queryString+=" and loan.status in ("+ req.query.status+")"
                }

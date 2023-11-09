@@ -26,14 +26,14 @@ workingEmployeeResult=workingEmployeeResult.filter((data)=>{
     return !leaveEmployees.includes(data)
 })
 workingEmployeeResult.forEach((data)=>{
-    database.query("Insert into attendance (check_in_datetime,employee_id,status) values("+mysql.escape(moment([date.getFullYear(),date.getMonth(),date.getDate()]).toISOString(true))+","+data+",'WeekOff')",(err,attendanceInsertResult)=>{
+    database.query("Insert into attendance (check_in_datetime,employee_id,status,'no_of_shifts) values("+mysql.escape(moment([date.getFullYear(),date.getMonth(),date.getDate()]).toISOString(true))+","+data+",'WeekOff',0)",(err,attendanceInsertResult)=>{
         console.log(attendanceInsertResult)
     }) 
 })
              
 
                 employeeIds.forEach(element => {
-                database.query("Insert into attendance (check_in_datetime,employee_id,status) values("+mysql.escape(moment([date.getFullYear(),date.getMonth(),date.getDate()]).toISOString(true))+","+element.id+",'absent')",(err,attendanceInsertResult)=>{
+                database.query("Insert into attendance (check_in_datetime,employee_id,status,no_of_shifts) values("+mysql.escape(moment([date.getFullYear(),date.getMonth(),date.getDate()]).toISOString(true))+","+element.id+",'absent',0)",(err,attendanceInsertResult)=>{
                     console.log(attendanceInsertResult)
                    }) 
                 

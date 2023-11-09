@@ -24,8 +24,11 @@ const getAllSalary = async ( req,res,next) => {
                if(req.query.role_name){
                 queryString+=" and roles.role_name= "+mysql.escape(req.query.role_name)
                }
+               if(req.query.sub_type){
+                queryString+=" and employees.sub_type= "+mysql.escape(req.query.sub_type)
+               }
                if(req.query.status){
-                queryString+=" and attendance.status in ("+ req.query.status+")"
+                queryString+=" and salaries.status in ("+ req.query.status+")"
                }
                
                if(req.query.employee_query){

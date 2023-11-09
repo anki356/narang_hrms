@@ -76,7 +76,9 @@ const updateAttendance= (req, res, next) => {
                     res.json({"attendanceResult":attendanceResult,"attendanceRequestResult":attendanceRequestResult})
                 }
                             }
-                                 
+                            else{
+                                res.json({"attendanceResult":attendanceResult,"attendanceRequestResult":attendanceRequestResult})
+                            }   
                          })
                      })
                 }

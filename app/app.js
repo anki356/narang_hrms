@@ -79,13 +79,14 @@ const getTransfer = require("../api/modules/transfer/getTransfer");
 const addTransferWithlocationId = require("../api/modules/transfer/addTransferWithLocationId");
 const updateAttendance = require("../api/modules/attendance/updateAttendance");
 const addInterview = require("../api/modules/interview/addInterview");
-const getInterview = require("../api/modules/interview/getInterview");
+const getInterviews = require("../api/modules/interview/getInterviews");
 const addGradesBYFI = require("../api/modules/grades/addGradesBYFI");
 const getGrades = require("../api/modules/grades/getGrades");
 const makeAttendanceCorrectionRequests = require("../api/modules/attendance/makeAttendanceCorrectionRequests");
 const getAttendanceCorrectionRequests = require("../api/modules/attendance/getAttendanceCorrectionRequests");
 const getTotalEmployeesOnLeave = require("../api/modules/leaves/getTotalEmployeesOnLeave");
 const restructureLoans = require("../api/modules/loan/restructureLoans");
+const getInterview=require("../api/modules/interview/getInterview")
 const addSalary = require("../api/modules/salary/getSalaryDetails");
 const addEmployee = require("../api/modules/employees/addEmployee");
 const getEmployeeDetails = require("../api/modules/employees/getEmployeeDetails");
@@ -170,10 +171,31 @@ const deleteEmployee = require("../api/modules/employees/deleteEmployee");
 const getLastGrade = require("../api/modules/grades/getLastGrade");
 const editGrade  = require("../api/modules/grades/editGrades");
 const markPresentManually = require("../api/modules/attendance/markPresentManually");
-
+const getGradesManual=require("../api/modules/grades/getGradesManual")
+const getGradeManual=require("../api/modules/grades/getGradesManual")
+const getCommissionData=require("../api/getCommissionData")
+const deleteRole=require("../api/modules/roles/deleteRole")
+const addLocation=require("../api/modules/locations/addLocation")
+const addDepartment=require("../api/modules/departments/addDepartment")
+const editlocation=require("../api/modules/locations/editLocation")
+router.post("/addLocation",verifyAuth,addLocation)
+router.post("/addDepartment",verifyAuth,addDepartment)
+router.patch("/editLocation/:id",verifyAuth,editlocation)
 // addSalary()
 // cron.schedule("0 47 10 15 * *",addSalary)
 
+// cron.schedule(
+//   "00 00 00 1,8,15,22,29 * *",
+//   () => {
+    
+//     addGradesManual();
+//   },
+//   {
+//     scheduled: true,
+//     timezone: "Asia/Calcutta",
+//   }
+// );
+const uploadCommissionData=require("../api/uploadCommissionData");
 cron.schedule(
   "00 00 00 1 * *",
   () => {
@@ -185,41 +207,17 @@ cron.schedule(
       .subtract(1, "month")
       .endOf("month").add(1,'d')
       .format("YYYY-MM-DD");
-    addGrades(from_date, to_date, 12000);
+    getSalaryDetails(from_date, to_date);
   },
   {
     scheduled: true,
     timezone: "Asia/Calcutta",
   }
 );
-cron.schedule(
-  "00 00 00 1 * *",
-  () => {
-    let from_date = moment()
-      .subtract(1, "month")
-      .startOf("month")
-      .format("YYYY-MM-DD");
-    let to_date = moment()
-      .subtract(1, "month")
-      .endOf("month").add(1,'d')
-      .format("YYYY-MM-DD");
-    getSalaryDetails(from_date, to_date, 12000);
-  },
-  {
-    scheduled: true,
-    timezone: "Asia/Calcutta",
-  }
-);
-let from_date = moment()
-  .subtract(3, "month")
-  .startOf("month")
-  .format("YYYY-MM-DD");
-let to_date = moment().subtract(3, "month").endOf("month").format("YYYY-MM-DD");
-// getSalaryDetails(from_date,to_date,5000)
-// let from_date=moment().subtract(3,'month').startOf('month').format("YYYY-MM-DD")
-// let to_date=moment().subtract(3,'month').endOf('month').format("YYYY-MM-DD")
-//
-// addGrades(from_date,to_date,12000)
+
+// let from_date = moment().subtract(1,'month').startOf("month").format("YYYY-MM-DD");
+// let  to_date = moment().subtract(1,'month').endOf("month").add(1,'d').format("YYYY-MM-DD");
+// addGrades(from_date,to_date)
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads/");
@@ -242,9 +240,11 @@ router.get("/getAttendance", verifyAuth, getAttendance);
 router.get("/home", (req, res) => {
   return res.send("hello");
 });
-
-
+router.get("/getCommissionData",verifyAuth,getCommissionData)
 router.get("/getAllSalary", verifyAuth, getAllSalary);
+router.get("/getInterview", verifyAuth, getInterview);
+router.post("/uploadCommissionData",verifyAuth,upload.any(),verifyAuth,uploadCommissionData)
+router.delete("/deleteRole/:id",verifyAuth,deleteRole)
 router.get("/home", (req, res) => {
   database.query("Select * from roles", (err, result) => {
     if (err) {
@@ -271,7 +271,7 @@ router.post(
   verifyAuth,
   addInterview
 );
-
+router.get("/getGradesManual",verifyAuth,getGradesManual)
 router.get("/getTotalExpenseADay", verifyAuth, getTotalExpenseADay);
 router.get("/getSalarySlipDetails", verifyAuth, getSalarySlipDetails);
 router.get("/getGrade", verifyAuth, getGrade);
@@ -280,7 +280,7 @@ router.get("/getLeaves", verifyAuth, getLeaves);
 router.get("/getFloors", verifyAuth, getFloors);
 router.get("/getlocations", verifyAuth, getlocations);
 router.get("/getSalarySummary", verifyAuth, getSalarySummary);
-
+router.get("/getGradeManual",verifyAuth,getGradeManual)
 router.get(
   "/getTotalEmployeesExpending",
   verifyAuth,
@@ -373,7 +373,7 @@ router.patch("/updateTimingStatus/:id", verifyAuth, updateTimingStatus);
 router.patch("/editFine/:id", verifyAuth, editFine);
 
 router.patch("/updateLoanStatus/:id", verifyAuth, updateLoanStatus);
-router.get("/getInterview", verifyAuth, getInterview);
+router.get("/getInterviews", verifyAuth, getInterviews);
 router.get("/totalAmountOfBonusGiven", verifyAuth, totalAmountOfBonusGiven);
 
 router.post("/addGradesBYFI", verifyAuth, addGradesBYFI);
@@ -382,6 +382,8 @@ router.get("/totalEmployeesGivenBonus", verifyAuth, totalEmployeesGivenBonus);
 
 router.post(
   "/makeAttendanceCorrectionRequests",
+  verifyAuth,
+  upload.any(),
   verifyAuth,
   makeAttendanceCorrectionRequests
 );
@@ -490,6 +492,7 @@ router.get("/getParentRole", verifyAuth, getParentRole);
 router.post("/insertAttendance", insertAttendanceData);
 router.patch("/deleteEmployee/:id", verifyAuth, deleteEmployee);
 router.post("/markPresentManually", verifyAuth, markPresentManually);
+
 
 // markAbsent()
 app.use("/api", router);

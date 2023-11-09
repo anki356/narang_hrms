@@ -16,7 +16,7 @@ const verifyLogin = (req, res, next) => {
                 if (userResult?.length === 0) {
     
     
-                    res.json({
+                  return  res.json({
                         statusCode: 401,
                         error: "Username is in correct"
                     })
@@ -25,7 +25,7 @@ const verifyLogin = (req, res, next) => {
                 else {
     
                     bcrypt.compare(req.body.password, userResult[0].password, function (err, result) {
-                        if (!result) res.json({
+                        if (!result)  return res.json({
                             statusCode: 401,
                             error: "Password is incorrect"
                         })
@@ -37,7 +37,7 @@ const verifyLogin = (req, res, next) => {
                                     role_id: userResult[0].role_id
                                 }
                             }, 'secret');
-                            res.json({
+                            return res.json({
                                 token: token,
                                 username: userResult[0].username,
                                 role_id: userResult[0].role_id

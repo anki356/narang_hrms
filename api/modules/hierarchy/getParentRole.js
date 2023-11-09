@@ -7,7 +7,7 @@ const getParentRole = (req, res, next) => {
         let allowed_roles = ['HR Head','Admin','Super Admin','HR Assistant']
         if (allowed_roles.includes(result[0].role_name)) {
 
-database.query("Select roles_b.role_name,roles_b.id from hierarchy left join roles as roles_a on roles_a.id =hierarchy.child_role_id left join roles as roles_b on roles_b.id =hierarchy.parent_role_id where roles_a.id in("+req.query.role_id+")",(err,result)=>{
+database.query("Select roles.role_name as name, roles.id from hierarchy left join roles_locations as roles_locations_a on roles_locations_a.id =hierarchy.child_role_id  left join roles_locations as roles_locations_b on roles_locations_b.id =hierarchy.parent_role_id left join roles on roles.id=roles_locations_b.role_id where roles_locations_a.role_id in("+req.query.role_id+")",(err,result)=>{
     console.log(err);
     res.send(result)
 })

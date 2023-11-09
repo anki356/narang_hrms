@@ -14,22 +14,9 @@ const addLocation = (req, res, next) => {
                         pr.reject=reject
                     })
                     var loopPromises=[]
-                    for(let i=0;i<req.body.floors;i++){
+                    for(let i=0;i<req.body.floors.length;i++){
                         loopPromises.push(pr.pr)
-                        let name
-                        if(i===0){
-name="1st"
-                        }
-                        else if(i===1){
-                        name="2nd"
-                        }
-                        else if(i===2){
-                        name="3rd"
-                        }
-else{
-    name=(Number(i)+1)+"th"
-}
-                            database.query("insert into floors (name,location_id) values("+mysql.escape(name)+","+result.insertId+")",(err,floorResult)=>{
+                          database.query("insert into floors (name,location_id) values("+mysql.escape(req.body.floors[i].floor_name)+","+result.insertId+")",(err,floorResult)=>{
 pr.resolve(true)
                                 console.log(err)
                             })

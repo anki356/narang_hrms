@@ -1,7 +1,7 @@
 const database = require("../../../config/database");
 const mysql = require('mysql')
 const register =require ("../auth/register.js")
-const addEmployee = (req, res, next) => {
+const getEmployees = (req, res, next) => {
     const role_id = req.body.result.role_id
     database.query("Select * from roles where id=" + role_id, async (err, result) => {
         if (err) console.log(err)
@@ -19,7 +19,7 @@ const addEmployee = (req, res, next) => {
                 if(req.body.username!==null&&req.body.password!==null){
 
                    
-                database.query("select * from users where username= binary "+mysql.escape(req.body.username),(err,result)=>{
+                database.query("select * from users where username= "+mysql.escape(req.body.username),(err,result)=>{
 if(result.length===0){
     database.query("Insert into file_upload (type,name,created_on) values('photo'," + mysql.escape(req.files[0].filename) + ",current_timestamp())", (err, fileUploadResult, fields) => {
 
@@ -108,8 +108,8 @@ if(result.length===0){
                 if (req.body.min_wages_as_per_rule === undefined || req.body.min_wages_as_per_rule === '') {
                     req.body.min_wages_as_per_rule = null
                 }
-                database.query("Insert into employees(name,father_name,email_address,phone,emergency_number,employee_id,dob,gender,marital_status,qualification,local_address,permanent_address,aadhar_no,pan_no,photo_id,job_details_id,uan_no,fine_management,min_wages_as_per_rule,type,sub_type) values(" + mysql.escape(req.body.name) + "," + mysql.escape(req.body.father_name) +","+mysql.escape(req.body.email)+ "," + req.body.phone +  "," + req.body.emergency_no + "," + countId + "," + mysql.escape(req.body.dob) + "," + mysql.escape(req.body.gender) + "," + mysql.escape(req.body.marital_status) + "," + mysql.escape(req.body.qualification) + "," + mysql.escape(req.body.local_address) + "," + mysql.escape(req.body.permanent_address) + "," + req.body.aadhar_no + "," + mysql.escape(req.body.pan_no) + "," + photo_id + "," + jobDetailsResult.insertId + "," + mysql.escape(req.body.uan_no) + "," + req.body.fine_management + "," + req.body.min_wages_as_per_rule + "," + mysql.escape(req.body.type) + "," + mysql.escape(req.body.sub_type) + ")", async(err, employeesResult) => {
-                    console.log("employees error",err)
+                database.query("Insert into employees(name,father_name,phone,emergency_number,employee_id,dob,gender,marital_status,qualification,local_address,permanent_address,aadhar_no,pan_no,photo_id,job_details_id,uan_no,fine_management,min_wages_as_per_rule,type,sub_type) values(" + mysql.escape(req.body.name) + "," + mysql.escape(req.body.father_name) + "," + req.body.phone + "," + req.body.emergency_no + "," + countId + "," + mysql.escape(req.body.dob) + "," + mysql.escape(req.body.gender) + "," + mysql.escape(req.body.marital_status) + "," + mysql.escape(req.body.qualification) + "," + mysql.escape(req.body.local_address) + "," + mysql.escape(req.body.permanent_address) + "," + req.body.aadhar_no + "," + mysql.escape(req.body.pan_no) + "," + photo_id + "," + jobDetailsResult.insertId + "," + mysql.escape(req.body.uan_no) + "," + req.body.fine_management + "," + req.body.min_wages_as_per_rule + "," + mysql.escape(req.body.type) + "," + mysql.escape(req.body.sub_type) + ")", async(err, employeesResult, fields) => {
+                    console.log(err)
                     employeeId = employeesResult.insertId
                     await  register(req.body.username,req.body.password,employeeId)
                     database.query("Insert into base_salaries (amount,employee_id) values(" + req.body.base_salary + "," + employeeId + ")", (err, baseSalariesResult) => {
@@ -209,7 +209,7 @@ else{
                                     
                                     database.query("INSERT INTO bank_details (name,branch,ifsc,account_number) values(" + mysql.escape(req.body.bank_name) + "," + mysql.escape(req.body.branch) + "," + mysql.escape(req.body.ifsc) + "," + req.body.account_number + ")", (err, bankDetailsResult, fields) => {
                                         console.log(err)
-                                        database.query("Insert into employees(name,father_name,phone,email_address,emergency_number,employee_id,dob,gender,marital_status,qualification,local_address,permanent_address,aadhar_no,pan_no,photo_id,job_details_id,bank_details_id,uan_no,fine_management,min_wages_as_per_rule,type,sub_type) values(" + mysql.escape(req.body.name) + "," + mysql.escape(req.body.father_name)  + ","+mysql.escape(req.body.email)+ "," + req.body.phone + "," + req.body.emergency_no + "," + countId + "," + mysql.escape(req.body.dob) + "," + mysql.escape(req.body.gender) + "," + mysql.escape(req.body.marital_status) + "," + mysql.escape(req.body.qualification) + "," + mysql.escape(req.body.local_address) + "," + mysql.escape(req.body.permanent_address) + "," + req.body.aadhar_no + "," + mysql.escape(req.body.pan_no) + "," + photo_id + "," + jobDetailsResult.insertId + "," + bankDetailsResult.insertId + "," + mysql.escape(req.body.uan_no) + "," + req.body.fine_management + "," + req.body.min_wages_as_per_rule + "," + mysql.escape(req.body.type) + "," + mysql.escape(req.body.sub_type) + ")", (err, employeesResult, fields) => {
+                                        database.query("Insert into employees(name,father_name,email_address,phone,emergency_number,employee_id,dob,gender,marital_status,qualification,local_address,permanent_address,aadhar_no,pan_no,photo_id,job_details_id,uan_no,fine_management,min_wages_as_per_rule,type,sub_type) values(" + mysql.escape(req.body.name) + "," + mysql.escape(req.body.father_name) +","+mysql.escape(req.body.email)+ "," + req.body.phone +  "," + req.body.emergency_no + "," + countId + "," + mysql.escape(req.body.dob) + "," + mysql.escape(req.body.gender) + "," + mysql.escape(req.body.marital_status) + "," + mysql.escape(req.body.qualification) + "," + mysql.escape(req.body.local_address) + "," + mysql.escape(req.body.permanent_address) + "," + req.body.aadhar_no + "," + mysql.escape(req.body.pan_no) + "," + photo_id + "," + jobDetailsResult.insertId + "," + mysql.escape(req.body.uan_no) + "," + req.body.fine_management + "," + req.body.min_wages_as_per_rule + "," + mysql.escape(req.body.type) + "," + mysql.escape(req.body.sub_type) + ")", async(err, employeesResult) => {
                                             console.log(err)
                                             employeeId = employeesResult.insertId
                                             
@@ -255,7 +255,7 @@ else{
                                     if (req.body.min_wages_as_per_rule === undefined || req.body.min_wages_as_per_rule === '') {
                                         req.body.min_wages_as_per_rule = null
                                     }
-                                    database.query("Insert into employees(name,father_name,email_address,phone,emergency_number,employee_id,dob,gender,marital_status,qualification,local_address,permanent_address,aadhar_no,pan_no,photo_id,job_details_id,uan_no,fine_management,min_wages_as_per_rule,type,sub_type) values(" + mysql.escape(req.body.name) + "," + mysql.escape(req.body.father_name) +","+mysql.escape(req.body.email)+ "," + req.body.phone + "," + req.body.emergency_no + "," + countId + "," + mysql.escape(req.body.dob) + "," + mysql.escape(req.body.gender) + "," + mysql.escape(req.body.marital_status) + "," + mysql.escape(req.body.qualification) + "," + mysql.escape(req.body.local_address) + "," + mysql.escape(req.body.permanent_address) + "," + req.body.aadhar_no + "," + mysql.escape(req.body.pan_no) + "," + photo_id + "," + jobDetailsResult.insertId + "," + mysql.escape(req.body.uan_no) + "," + req.body.fine_management + "," + req.body.min_wages_as_per_rule + "," + mysql.escape(req.body.type) + "," + mysql.escape(req.body.sub_type) + ")", (err, employeesResult, fields) => {
+                                    database.query("Insert into employees(name,father_name,email_address,phone,emergency_number,employee_id,dob,gender,marital_status,qualification,local_address,permanent_address,aadhar_no,pan_no,photo_id,job_details_id,bank_details_id,uan_no,fine_management,min_wages_as_per_rule,type,sub_type) values(" + mysql.escape(req.body.name) + "," + mysql.escape(req.body.father_name)  + ","+mysql.escape(req.body.email)+ "," + req.body.phone + "," + req.body.emergency_no + "," + countId + "," + mysql.escape(req.body.dob) + "," + mysql.escape(req.body.gender) + "," + mysql.escape(req.body.marital_status) + "," + mysql.escape(req.body.qualification) + "," + mysql.escape(req.body.local_address) + "," + mysql.escape(req.body.permanent_address) + "," + req.body.aadhar_no + "," + mysql.escape(req.body.pan_no) + "," + photo_id + "," + jobDetailsResult.insertId + "," + bankDetailsResult.insertId + "," + mysql.escape(req.body.uan_no) + "," + req.body.fine_management + "," + req.body.min_wages_as_per_rule + "," + mysql.escape(req.body.type) + "," + mysql.escape(req.body.sub_type) + ")", (err, employeesResult, fields) => {
                                         console.log(err)
                                         employeeId = employeesResult.insertId
                                         database.query("Insert into base_salaries (amount,employee_id) values(" + req.body.base_salary + "," + employeeId + ")", (err, baseSalariesResult) => {
@@ -313,4 +313,4 @@ else{
 
 }
 
-module.exports = addEmployee
+module.exports = getEmployees

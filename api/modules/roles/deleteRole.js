@@ -6,7 +6,8 @@ const deleteRole = (req, res, next) => {
         if (err) console.log(err)
         let allowed_roles = ['Super Admin']
         if (allowed_roles.includes(result[0].role_name)) {
-database.query("update roles set status=0 where roles.id="+req.params.id,(err,results)=>{
+database.query("delete from roles where id="+req.params.id,(err,results)=>{
+    console.log(err)
     res.send(results)
 })
 

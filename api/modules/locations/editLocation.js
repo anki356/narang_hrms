@@ -15,51 +15,46 @@ const editlocation = (req, res, next) => {
                             pr.reject=reject
                         })
                         var loopPromises=[]
-                    if(req.body.floors>floorData.length){
+                    if(req.body.floors.length>floorData.length){
                         
-                        for(let i=0;i<parseInt((req.body.floors-floorData.length));i++){
+                        for(let i=0;i<req.body.floors.length;i++){
 loopPromises.push(pr.pr)
-let name
-if(Number(i)+Number(floorData.length)===0){
-name="1st"
-}
-else if(Number(i)+Number(floorData.length)===1){
-name="2nd"
-}
-else if(Number(i)+Number(floorData.length)===2){
-name="3rd"
+
+
+if(i>floorData.length-1){
+
+    database.query("insert into floors (name,location_id) values("+mysql.escape(req.body.floors[i].floor_name)+","+req.params.id+")",(err,floorResult)=>{
+        pr.resolve(true)
+                                        console.log(err)
+                                    })
 }
 else{
-name=(Number(i)+Number(floorData.length)+1)+"th"
+    database.query("update floors set name="+mysql.escape(req.body.floors[i].floor_name)+" where id="+floorData[i].id,(err,floorResult)=>{
+        pr.resolve(true)
+                                        console.log(err)
+                                    })
 }
-
-database.query("insert into floors (name,location_id) values("+mysql.escape(name)+","+req.params.id+")",(err,floorResult)=>{
-    pr.resolve(true)
-                                    console.log(err)
-                                })
                         }
                     }
                     else{
-                        for(let i=0;i<parseInt((floorData.length-req.body.floors));i++){
+
+                        for(let i=0;i<parseInt((floorData.length));i++){
                             loopPromises.push(pr.pr)
-                            let name
-                            if(Number(i)+Number(req.body.floors)===0){
-                            name="1st"
-                            }
-                            else if(Number(i)+Number(req.body.floors)===1){
-                            name="2nd"
-                            }
-                            else if(Number(i)+Number(req.body.floors)===2){
-                            name="3rd"
+                            if(i>req.body.floors.length-1){
+
+
+
+                                database.query("delete from floors where id="+floorData[i].id,(err,floorResult)=>{
+                                    pr.resolve(true)
+                                                                    console.log(err)
+                                                                })
                             }
                             else{
-                            name=(Number(i)+Number(req.body.floors)+1)+"th"
+                                database.query("update floors set name="+mysql.escape(req.body.floors[i].floor_name)+" where id="+floorData[i].id,(err,floorResult)=>{
+                                    pr.resolve(true)
+                                                                    console.log(err)
+                                                                })
                             }
-                            
-                            database.query("delete from floors where name="+mysql.escape(name),(err,floorResult)=>{
-                                pr.resolve(true)
-                                                                console.log(err)
-                                                            })
                                                     }
                     }
                     Promise.all([loopPromises]).then(()=>{

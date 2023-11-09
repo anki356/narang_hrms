@@ -8,6 +8,7 @@ const getEmployeesBasedOnRole = (req, res, next) => {
         if (allowed_roles.includes(result[0].role_name)) {
             let queryString="SELECT base_salaries.amount as base_salary,file_upload.name as photo,job_details.*,bank_details.*,floors.name as floor_name,locations.*,employees.id as employee_id,employees.name as employee_name,roles.*,store_departments.name as location_department_name,employees.*,employees.employee_id as empID from employees left join job_details on job_details.id=employees.job_details_id left join bank_details on bank_details.id=employees.bank_details_id left join floors on floors.id =job_details.floor_id left join locations on locations.id =job_details.location_id left join roles on roles.id=job_details.role_id left join store_departments on store_departments.id=job_details.store_department_id left join file_upload on file_upload.id=employees.photo_id left join base_salaries on base_salaries.employee_id=employees.id where roles.role_name in("+mysql.escape(req.query.role_name)+")"+" and employees.status=1" 
             if(result[0].role_name.split(" ")[0]==='Floor'){
+                
                 database.query("select employees.id from employees left join job_details on job_details.id=employees.job_details_id where job_details.role_id="+role_id,(err,employeesResult,fields)=>{
                     console.log(err)
                     queryString+=" and job_details.head_employee_id=" +employeesResult[0].id
@@ -42,7 +43,7 @@ const getEmployeesBasedOnRole = (req, res, next) => {
                    
                   
                 database.query(queryString , (err, employeesResult, fields) => {
-                    console.log("employeesResult",err)
+                    console.log("employeesResult",queryString)
                   res.send(employeesResult)
                 })
 

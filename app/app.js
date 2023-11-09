@@ -178,9 +178,18 @@ const deleteRole=require("../api/modules/roles/deleteRole")
 const addLocation=require("../api/modules/locations/addLocation")
 const addDepartment=require("../api/modules/departments/addDepartment")
 const editlocation=require("../api/modules/locations/editLocation")
+const deleteLocation=require("../api/modules/locations/deleteLocation")
+const deleteDepartment=require("../api/modules/departments/deleteDepartment")
+const editDepartment=require("../api/modules/departments/editDepartment")
+
+const getlocationById = require("../api/modules/locations/getLocationById");
 router.post("/addLocation",verifyAuth,addLocation)
 router.post("/addDepartment",verifyAuth,addDepartment)
 router.patch("/editLocation/:id",verifyAuth,editlocation)
+router.patch("/edit-department/:id",verifyAuth,editDepartment)
+router.delete("/delete-location/:id",verifyAuth,deleteLocation)
+router.delete("/delete-department/:id",verifyAuth,deleteDepartment)
+router.get("/get=location-by-id",verifyAuth,getlocationById)
 // addSalary()
 // cron.schedule("0 47 10 15 * *",addSalary)
 
@@ -244,7 +253,7 @@ router.get("/getCommissionData",verifyAuth,getCommissionData)
 router.get("/getAllSalary", verifyAuth, getAllSalary);
 router.get("/getInterview", verifyAuth, getInterview);
 router.post("/uploadCommissionData",verifyAuth,upload.any(),verifyAuth,uploadCommissionData)
-router.delete("/deleteRole/:id",verifyAuth,deleteRole)
+router.delete("/delete-role/:id",verifyAuth,deleteRole)
 router.get("/home", (req, res) => {
   database.query("Select * from roles", (err, result) => {
     if (err) {

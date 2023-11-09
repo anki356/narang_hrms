@@ -8,7 +8,7 @@ const verifyLogin = (req, res, next) => {
     database.connect((err) => {
         console.log(err)
         if(!err){
-            database.query("SELECT * from users WHERE username = " + mysql.escape(req.body.username), (err, userResult, fields) => {
+            database.query("SELECT * from users left join employees on employees.id=users.employee_id left join job_details on job_details.id=employees.job_details_id left join roles on roles.id=job_details.role_id  WHERE users.username = " + mysql.escape(req.body.username) +" and employees.status=1 ", (err, userResult, fields) => {
                 console.log(userResult)
     
                 console.log("err",err);

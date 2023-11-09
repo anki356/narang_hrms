@@ -14,6 +14,9 @@ const getRoles = (req, res, next) => {
             if(req.query.location_id){
                 queryString+=" where location_id="+req.query.location_id
             }
+            if(req.query.role_name){
+                queryString+=" where roles.role_name like '%"+ req.query.role_name+"%'"
+            }
             queryString+=" group by roles.id order by roles.role_name asc "
 
             if(req.query.limit){

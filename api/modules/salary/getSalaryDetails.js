@@ -5,7 +5,7 @@ const getSalaryDetails = async (from_date, to_date) => {
     let month = moment(from_date).month()
     let year = moment(from_date).year()
    
-    database.query("select sum(attendance.no_of_shifts)  as attendance_count,attendance.employee_id,sum(amount)as total_fine from attendance left join employees on employees.id=attendance.employee_id left join fines on fines.employee_id=attendance.employee_id  where check_in_datetime>="+mysql.escape(from_date)+" and check_in_datetime<="+mysql.escape(to_date) +"and employees.status=1"+" group by attendance.employee_id" , (err, result, fields) => {
+    database.query("select sum(attendance.no_of_shifts)  as attendance_count,attendance.employee_id,sum(amount)as total_fine from attendance left join employees on employees.id=attendance.employee_id left join fines on fines.employee_id=attendance.employee_id  where check_in_datetime>="+mysql.escape(from_date)+" and check_in_datetime<="+mysql.escape(to_date)+" and attendance.status='Present'" +"and employees.status=1"+" group by attendance.employee_id" , (err, result, fields) => {
         console.log(err, result)
         console.log(result)
         let total_days = moment(from_date).daysInMonth()
